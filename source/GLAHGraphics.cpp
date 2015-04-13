@@ -88,6 +88,7 @@ SDL_Texture* CreateSprite	( const char* textureName_,
     if( loadedSurface == NULL )
     {
         printf( "Unable to load image %s! SDL_image Error: %s\n", textureName_, IMG_GetError() );
+		return nullptr;
     }
     else
     {
@@ -96,6 +97,7 @@ SDL_Texture* CreateSprite	( const char* textureName_,
         if( newTexture == NULL )
         {
             printf( "Unable to create texture from %s! SDL Error: %s\n", textureName_, SDL_GetError() );
+			return nullptr;
         }
 
         //Get rid of old loaded surface
