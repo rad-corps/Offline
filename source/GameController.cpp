@@ -63,6 +63,19 @@ void GameController::Run()
 			inputSwitch = INPUT_TERRAIN;
 		}
 
+		if (IsKeyDown(SDLK_0))
+			terrain.SetTileDrawType(GRASS);
+		if (IsKeyDown(SDLK_1))
+			terrain.SetTileDrawType(TREE);
+		if (IsKeyDown(SDLK_2))
+			terrain.SetTileDrawType(BUILDING_WALL);
+		if (IsKeyDown(SDLK_3))
+			terrain.SetTileDrawType(BUILDING_FLOOR);
+		if (IsKeyDown(SDLK_4))
+			terrain.SetTileDrawType(DOOR);
+		if (IsKeyDown(SDLK_5))
+			terrain.SetTileDrawType(WATER);
+
 		if (IsKeyDown(SDLK_p))
 		{
 			inputSwitch = INPUT_PLAYER;

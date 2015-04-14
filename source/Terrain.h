@@ -52,7 +52,7 @@ public:
 	void Update(float delta_);
 	void Draw();
 	void UserInput();
-
+	void SetTileDrawType(TERRAIN_TILE_TYPE type_);
 	TerrainTile* TileAt(int row_, int col_);
 	TerrainTile* TileAtMouseCoords(int x_, int y_);
 	std::vector<TerrainTile*> Edges(TerrainTile* tile_);
@@ -73,6 +73,7 @@ private:
 	SDL_Texture* textureWater;
 	SDL_Texture* textureDoor;
 
+	TERRAIN_TILE_TYPE drawType;
 	//bool findingPath; //do not perform a search while one is in progress. 
 };
 

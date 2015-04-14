@@ -29,10 +29,16 @@ Terrain::Terrain(int w_, int h_)
 	}
 
 	tileArray[1][1]->type = BUILDING_WALL;
+	drawType = TREE;
 }
 
 Terrain::~Terrain()
 {
+}
+
+void Terrain::SetTileDrawType(TERRAIN_TILE_TYPE type_)
+{
+	drawType = type_;
 }
 
 void Terrain::UserInput()
@@ -44,17 +50,13 @@ void Terrain::UserInput()
 	//check for mouse left click (src)
 	if (GetMouseButtonDown(0))
 	{
-		cout << "LMB Clicked" << endl;
-
 		//convert that to row/col coordinates
-		TileAtMouseCoords(mouseX, mouseY)->type = DOOR;
+		TileAtMouseCoords(mouseX, mouseY)->type = drawType;
 	}
 
 	//check for mouse right click (dst)
 	if (GetMouseButtonDown(1))
 	{
-		cout << "RMB Clicked" << endl;
-
 		//convert that to row/col coordinates
 		TileAtMouseCoords(mouseX, mouseY)->type = WATER;
 	}
