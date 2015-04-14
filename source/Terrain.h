@@ -51,6 +51,8 @@ public:
 
 	void Update(float delta_);
 	void Draw();
+	void UserInput();
+
 	TerrainTile* TileAt(int row_, int col_);
 	TerrainTile* TileAtMouseCoords(int x_, int y_);
 	std::vector<TerrainTile*> Edges(TerrainTile* tile_);

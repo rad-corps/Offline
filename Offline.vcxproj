@@ -81,6 +81,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\GameController.cpp" />
     <ClCompile Include="source\DatabaseManager.cpp" />
     <ClCompile Include="source\FrameWorkHelpers.cpp" />
     <ClCompile Include="source\GLAHGraphics.cpp" />
@@ -90,6 +92,8 @@
     <ClCompile Include="source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Player.h" />
+    <ClInclude Include="source\GameController.h" />
     <ClInclude Include="source\DatabaseManager.h" />
     <ClInclude Include="source\FrameworkHelpers.h" />
     <ClInclude Include="source\Vector.h" />

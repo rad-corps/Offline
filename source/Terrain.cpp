@@ -35,33 +35,7 @@ Terrain::~Terrain()
 {
 }
 
-
-
-void Terrain::Draw(TERRAIN_TILE_TYPE type_, int row_, int col_)
-{
-	SDL_Texture* tempPtr = nullptr;
-
-	switch (type_)
-	{
-		case GRASS:				tempPtr = textureGrass; break;
-		case TREE:				tempPtr = textureTrees;	break;
-		case BUILDING_WALL:		tempPtr = textureWall;	break;
-		case BUILDING_FLOOR:	tempPtr = textureFloor;	break;
-		case DOOR:				tempPtr = textureDoor;	break;
-		case WATER:				tempPtr = textureWater;	break;
-	}
-
-	if (tempPtr == nullptr)
-	{
-		cout << "Unknown TERRAIN_TILE_TYPE in Terrain::Draw(TERRAIN_TILE_TYPE type_, int row_, int col_)" << endl;
-		return;
-	}
-
-	MoveSprite(tempPtr, col_ * 16, row_ * 16);
-	DrawSprite(tempPtr);
-}
-
-void Terrain::Update(float delta_)
+void Terrain::UserInput()
 {
 	//where is the mouse?
 	int mouseX, mouseY;
@@ -104,9 +78,39 @@ void Terrain::Update(float delta_)
 		//run aStar on it. 
 		if (src != nullptr && dst != nullptr)
 		{
-			SetTerrain(ShortestPath(src, dst), TREE);		
+			SetTerrain(ShortestPath(src, dst), TREE);
 		}
 	}
+}
+
+
+void Terrain::Draw(TERRAIN_TILE_TYPE type_, int row_, int col_)
+{
+	SDL_Texture* tempPtr = nullptr;
+
+	switch (type_)
+	{
+		case GRASS:				tempPtr = textureGrass; break;
+		case TREE:				tempPtr = textureTrees;	break;
+		case BUILDING_WALL:		tempPtr = textureWall;	break;
+		case BUILDING_FLOOR:	tempPtr = textureFloor;	break;
+		case DOOR:				tempPtr = textureDoor;	break;
+		case WATER:				tempPtr = textureWater;	break;
+	}
+
+	if (tempPtr == nullptr)
+	{
+		cout << "Unknown TERRAIN_TILE_TYPE in Terrain::Draw(TERRAIN_TILE_TYPE type_, int row_, int col_)" << endl;
+		return;
+	}
+
+	MoveSprite(tempPtr, col_ * 16, row_ * 16);
+	DrawSprite(tempPtr);
+}
+
+void Terrain::Update(float delta_)
+{
+
 }
 
 void Terrain::Draw()
