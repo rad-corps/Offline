@@ -23,6 +23,13 @@ void Player::UserInputGameSetup()
 	{
 		pos.x = mouseX;
 		pos.y = mouseY;
+
+		pos.x = (int)(pos.x / 16);
+		pos.y = (int)(pos.y / 16);;
+
+		pos.x *= 16;
+		pos.y *= 16;
+
 	}
 }
 
