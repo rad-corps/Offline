@@ -6,7 +6,7 @@
 //std::map<TERRAIN_TILE_TYPE, SDL_Texture*> Terrain::textureMap;
 using namespace std;
 
-Terrain::Terrain()
+Terrain::Terrain(int w_, int h_)
 {
 	//init the textures
 	textureGrass = CreateSprite("./resources/images/terrain_grass.png", 16, 16);
@@ -17,12 +17,12 @@ Terrain::Terrain()
 	textureDoor = CreateSprite("./resources/images/terrain_door.png", 16, 16);
 
 
-	for (int row = 0; row < 32; ++row)
+	for (int row = 0; row < h_; ++row)
 	{
 		vector<TerrainTile*> v;
 		tileArray.push_back(v);
 
-		for (int col = 0; col < 32; ++col)
+		for (int col = 0; col < w_; ++col)
 		{
 			tileArray[row].push_back(new TerrainTile(col, row, GRASS));
 		}
@@ -111,9 +111,9 @@ void Terrain::Update(float delta_)
 
 void Terrain::Draw()
 {
-	for (int row = 0; row < 32; ++row)
+	for (int row = 0; row < tileArray.size(); ++row)
 	{
-		for (int col = 0; col < 32; ++col)
+		for (int col = 0; col < tileArray[0].size(); ++col)
 		{
 			//get the type
 			Draw(tileArray[row][col]->type, row, col);

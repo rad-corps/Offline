@@ -46,7 +46,7 @@ struct TerrainTile
 class Terrain
 {
 public:
-	Terrain();
+	Terrain(int w_, int h_);
 	~Terrain();
 
 	void Update(float delta_);
