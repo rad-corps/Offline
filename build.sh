@@ -7,6 +7,7 @@ g++ -std=c++11 \
 ./source/Terrain.cpp \
 ./source/Player.cpp \
 ./source/GameController.cpp \
+./source/Enemy.cpp \
 -I./include \
 -lSDL2 \
 -lSDL2_image \
