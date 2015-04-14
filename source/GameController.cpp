@@ -44,7 +44,6 @@ GameController::~GameController()
 
 void GameController::Run()
 {
-
 	Terrain terrain(SCREEN_W / 16, SCREEN_H / 16);
 	Player player;
 
@@ -53,40 +52,45 @@ void GameController::Run()
 	do
 	{
 		//switch user input switch
-		if (IsKeyDown(SDLK_0)
-			|| IsKeyDown(SDLK_1)
-			|| IsKeyDown(SDLK_2)
-			|| IsKeyDown(SDLK_3)
-			|| IsKeyDown(SDLK_4)
-			|| IsKeyDown(SDLK_5))
+		if (state == GS_LEVEL_SETUP)
 		{
-			inputSwitch = INPUT_TERRAIN;
+			if (IsKeyDown(SDLK_0)
+				|| IsKeyDown(SDLK_1)
+				|| IsKeyDown(SDLK_2)
+				|| IsKeyDown(SDLK_3)
+				|| IsKeyDown(SDLK_4)
+				|| IsKeyDown(SDLK_5))
+			{
+				inputSwitch = INPUT_TERRAIN;
+			}
+
+			if (IsKeyDown(SDLK_0))
+				terrain.SetTileDrawType(GRASS);
+			if (IsKeyDown(SDLK_1))
+				terrain.SetTileDrawType(TREE);
+			if (IsKeyDown(SDLK_2))
+				terrain.SetTileDrawType(BUILDING_WALL);
+			if (IsKeyDown(SDLK_3))
+				terrain.SetTileDrawType(BUILDING_FLOOR);
+			if (IsKeyDown(SDLK_4))
+				terrain.SetTileDrawType(DOOR);
+			if (IsKeyDown(SDLK_5))
+				terrain.SetTileDrawType(WATER);
+
+			if (IsKeyDown(SDLK_p))
+			{
+				inputSwitch = INPUT_PLAYER;
+			}
+			if (IsKeyDown(SDLK_e))
+			{
+				inputSwitch = INPUT_ENEMIES;
+			}
 		}
 
-		if (IsKeyDown(SDLK_0))
-			terrain.SetTileDrawType(GRASS);
-		if (IsKeyDown(SDLK_1))
-			terrain.SetTileDrawType(TREE);
-		if (IsKeyDown(SDLK_2))
-			terrain.SetTileDrawType(BUILDING_WALL);
-		if (IsKeyDown(SDLK_3))
-			terrain.SetTileDrawType(BUILDING_FLOOR);
-		if (IsKeyDown(SDLK_4))
-			terrain.SetTileDrawType(DOOR);
-		if (IsKeyDown(SDLK_5))
-			terrain.SetTileDrawType(WATER);
-
-		if (IsKeyDown(SDLK_p))
-		{
-			inputSwitch = INPUT_PLAYER;
-		}
-		if (IsKeyDown(SDLK_e))
-		{
-			inputSwitch = INPUT_ENEMIES;
-		}
 		if (IsKeyDown(SDLK_RETURN) || IsKeyDown(SDLK_RETURN2))
 		{
 			state = GS_PLAY;
+			cout << "Game Started" << endl;
 		}
 
 		delta = GetDeltaTime();
@@ -101,6 +105,10 @@ void GameController::Run()
 		if (inputSwitch == INPUT_PLAYER && state == GS_LEVEL_SETUP)
 		{
 			player.UserInputGameSetup();
+		}
+		if (state == GS_PLAY)
+		{
+			player.UserInput(&terrain);
 		}
 
 		//draw calls

@@ -4,6 +4,7 @@
 #include <vector>
 #include "SDL2/SDL.h"
 #include "GLAHGraphics.h"
+#include "Vector.h"
 
 enum TERRAIN_TILE_TYPE
 {
@@ -23,11 +24,29 @@ struct TerrainTile
 	int cost;
 	TerrainTile* parent;
 
+	int Cost()
+	{
+		switch (type)
+		{
+			case GRASS :		return 1;
+			case TREE : 		return 2;
+			case BUILDING_WALL: return 9999999;
+			case BUILDING_FLOOR: return 1;
+			case DOOR:			return 9999999;
+			case WATER:			return 3;
+		}
+	}
+
 	void Reset()
 	{
 		g = 99999999;
 		f = 99999999;
 		parent = nullptr;
+	}
+
+	Vector2 Pos()
+	{
+		return Vector2(col * 16, row * 16);
 	}
 
 	TerrainTile(int col_, int row_, TERRAIN_TILE_TYPE type_)
