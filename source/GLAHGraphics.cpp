@@ -296,7 +296,7 @@ void DrawSprite(SDL_Texture* sprite_, bool xFlip_, float alpha_, SDL_Point* orig
 		float ySize = entity.size.y * entity.scaleY;
 				
 		//TODO Find all 768 and change to a screen height variable 
-		SDL_Rect src = { 0, 0, entity.size.x, entity.size.y};
+		SDL_Rect src = { 0, 0, static_cast<int>(entity.size.x), static_cast<int>(entity.size.y) };
 		SDL_Rect dst = { offset.x - (xSize / 2), 768 - offset.y - (ySize / 2), xSize, ySize };
 		//SDL_Rect dst = { offset.x , 768 - offset.y , xSize, ySize };
 

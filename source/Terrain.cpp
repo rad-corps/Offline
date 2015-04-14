@@ -1,6 +1,7 @@
 #include "Terrain.h"
 #include <iostream> //cout
 #include <cstdlib> //abs
+#include <algorithm>
 
 //std::map<TERRAIN_TILE_TYPE, SDL_Texture*> Terrain::textureMap;
 using namespace std;
@@ -83,6 +84,29 @@ void Terrain::Update(float delta_)
 		//convert that to row/col coordinates
 		TileAtMouseCoords(mouseX, mouseY)->type = WATER;
 	}
+
+	if (IsKeyDown(SDLK_SPACE))
+	{
+		//find the tile with the water and door terrains. (insert hax here)
+		TerrainTile* src = nullptr;
+		TerrainTile* dst = nullptr;
+		for (auto & row : tileArray)
+		{
+			for (auto & cell : row)
+			{
+				if (cell->type == DOOR)
+					src = cell;
+				if (cell->type == WATER)
+					dst = cell;
+			}
+		}
+
+		//run aStar on it. 
+		if (src != nullptr && dst != nullptr)
+		{
+			SetTerrain(ShortestPath(src, dst), TREE);		
+		}
+	}
 }
 
 void Terrain::Draw()
@@ -108,6 +132,14 @@ TerrainTile* Terrain::TileAtMouseCoords(int x_, int y_)
 	x_ /= 16;
 	y_ /= 16;
 	return TileAt(y_, x_);
+}
+
+void Terrain::SetTerrain(std::vector<TerrainTile*> tiles_, TERRAIN_TILE_TYPE type_)
+{
+	for (auto& tile : tiles_)
+	{
+		tile->type = type_;
+	}
 }
 
 //SHORTEST PATH / ASTAR SPECIFIC CODE //
@@ -156,49 +188,23 @@ std::vector<TerrainTile*> Terrain::Edges(TerrainTile* tile_)
 
 std::vector<TerrainTile*> Terrain::ShortestPath(TerrainTile* origin_, TerrainTile* dest_)
 {
-	std::vector<TerrainTile*> ret;
+	std::vector<TerrainTile*> ret;	
+	std::vector<TerrainTile*> closedList;
+	std::vector<TerrainTile*> openList;
+	TerrainTile* currentNode;
 	
-	
-	
-	
-	
-	return ret;
-}
+	origin_->g = 0;
+	origin_->f = Heuristic(origin_, dest_);
+	openList.push_back(origin_);
 
-/*
-std::vector<Node*> Graph::AStar()
-{
-	//closedset: = the empty set    // The set of nodes already evaluated.
-	std::vector<Node*> closedList;
 
-	//openset : = { start }    // The set of tentative nodes to be evaluated, initially containing the start node
-	std::vector<Node*> openList;
-	openList.push_back(startNode);
-
-	//set all g scores to infinite and all parents to nullptr
-	for (Node* node : graphData)
-	{
-		node->g = 9999999;
-		node->f = 9999999;
-		node->parent = nullptr;
-	}
-
-	//	g_score[start] : = 0    // Cost from start along best known path.
-	openList[0]->g = 0;
-	//openList[0]->parent = openList[0];
-
-	//	// Estimated total cost from start to goal through y.
-	//	f_score[start] : = g_score[start] + heuristic_cost_estimate(start, goal)
-	openList[0]->f = openList[0]->g + CalcH(openList[0], endNode);
-
-	//	while openset is not empty
 	while (!openList.empty())
 	{
 		//lowest f score node to go to front (use lambda as we dont want to compare Node pointer addresses) 
-		std::sort(openList.begin(), openList.end(), [](Node* a, Node* b){return a->f < b->f; });
+		std::sort(openList.begin(), openList.end(), [](TerrainTile* a, TerrainTile* b){return a->f < b->f; });
 
 		//get the lowest f score node TODO: are we getting the lowest or highest here? test
-		Node* currentNode = openList[0];
+		currentNode = openList[0];
 
 		//remove the node from the open list
 		openList.erase(openList.begin());
@@ -206,40 +212,49 @@ std::vector<Node*> Graph::AStar()
 		//add it to the closed (traversed list) 
 		closedList.push_back(currentNode);
 
-		//if we have found the end node. 
-		if (currentNode == endNode)
+			//if we have found the end node. 
+		if (currentNode == dest_)
 		{
 			//success: bail from loop and create the return list
 			break;
 		}
 
 		//loop through edges
-		for (Edge& edge : currentNode->edges)
+		for (TerrainTile* edge : Edges(currentNode))
 		{
 			//if end node is not traversed (does not appear in closed list) 
-			if (std::find(closedList.begin(), closedList.end(), edge.end) == closedList.end())
+			if (std::find(closedList.begin(), closedList.end(), edge) == closedList.end())
 			{
 				//calculate a tentative f cost of the edge's end node
-				int tentativeF = currentNode->g + edge.cost + CalcH(edge.end, endNode);
+				int tentativeF = currentNode->g + edge->cost + Heuristic(edge, dest_);
 
 				//if the tentative f cost is less than the edge node's current f cost, update its data
-				if (tentativeF < edge.end->f)
+				if (tentativeF < edge->f)
 				{
-					edge.end->parent = currentNode;
-					edge.end->g = currentNode->g + edge.cost;
-					edge.end->f = tentativeF;
-					if (std::find(openList.begin(), openList.end(), edge.end) == openList.end())
+					//update scores since we have found a new lower f cost for this node
+					edge->parent = currentNode;
+					edge->g = currentNode->g + edge->cost;
+					edge->f = tentativeF;
+
+					//add it to the open list if it is not there already
+					if (std::find(openList.begin(), openList.end(), edge) == openList.end())
 					{
-						openList.push_back(edge.end);
+						openList.push_back(edge);
 					}
 				}
 			}
 		}
-	}//while(!openList.empty())
+	}
 
-	//reconstruct the path
-	std::vector<Node*> ret;
-	Node* currentNode = endNode;
+	//could not find and we have searched the entire graph
+	if (currentNode != dest_)
+	{
+		//RETURN FAILURE
+		cout << "Could not find destination node" << endl;
+		return ret; //empty
+	}
+	
+	//reconstruct the path	
 	do
 	{
 		ret.push_back(currentNode);
@@ -247,8 +262,6 @@ std::vector<Node*> Graph::AStar()
 	} while (currentNode != nullptr);
 
 	return ret;
-
 }
-*/
 
 //END ASTAR SPECIFIC CODE

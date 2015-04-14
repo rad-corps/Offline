@@ -82,12 +82,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\DatabaseManager.cpp" />
-    <ClCompile Include="source\Edge.cpp" />
     <ClCompile Include="source\FrameWorkHelpers.cpp" />
     <ClCompile Include="source\GLAHGraphics.cpp" />
-    <ClCompile Include="source\Graph.cpp" />
     <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\Node.cpp" />
     <ClCompile Include="source\sqlite3.c" />
     <ClCompile Include="source\Vector.cpp" />
     <ClCompile Include="source\Terrain.cpp" />

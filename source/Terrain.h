@@ -19,19 +19,29 @@ struct TerrainTile
 {
 	TERRAIN_TILE_TYPE type;
 	int col, row;
+	int g, f;
+	int cost;
+	TerrainTile* parent;
 
-	TerrainTile(int col_, int row_)
-	{
-		type = GRASS; 
-		col = col_; 
-		row = row_; 
-	}
+	//TerrainTile(int col_, int row_)
+	//{
+	//	type = GRASS; 
+	//	col = col_; 
+	//	row = row_; 
+	//	g = 99999999;
+	//	f = 99999999;
+	//	parent = nullptr;
+	//}
 
 	TerrainTile(int col_, int row_, TERRAIN_TILE_TYPE type_)
 	{
 		type = type_; 
 		col = col_;
 		row = row_;
+		g = 99999999;
+		f = 99999999;
+		parent = nullptr;
+		cost = 1; //TODO different for each unit and TERRAIN_TILE_TYPE
 	}
 };
 
@@ -53,7 +63,7 @@ private:
 	int Heuristic(TerrainTile* origin_, TerrainTile* dest_);
 	void Draw(TERRAIN_TILE_TYPE type_, int row_, int col_);
 	std::vector<std::vector<TerrainTile*>> tileArray;
-	void SetTerrain(TerrainTile* tile_, TERRAIN_TILE_TYPE type_);
+	void SetTerrain(std::vector<TerrainTile*> tiles_, TERRAIN_TILE_TYPE type_);
 
 
 	SDL_Texture* textureGrass;
