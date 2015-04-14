@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Enemy.h"
+
 enum USER_INPUT_SWITCH
 {
 	INPUT_PLAYER,
@@ -24,5 +26,6 @@ public:
 private:
 	USER_INPUT_SWITCH inputSwitch;
 	GAME_STATE state;
+	std::vector<Enemy> enemyList;
 };
 

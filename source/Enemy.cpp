@@ -45,6 +45,10 @@ EnemyList::EnemyList()
  {
  	Enemy temp;
  	temp.SetTexture(texture);
+ 	temp.SetPos(x_, y_);
+
+ 	//TODO check if an enemy already exists at this position
+
  	enemyList.push_back(temp);
  }
 
