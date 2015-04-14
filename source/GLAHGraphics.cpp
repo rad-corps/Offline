@@ -297,7 +297,7 @@ void DrawSprite(SDL_Texture* sprite_, bool xFlip_, float alpha_, SDL_Point* orig
 				
 		//TODO Find all 768 and change to a screen height variable 
 		SDL_Rect src = { 0, 0, static_cast<int>(entity.size.x), static_cast<int>(entity.size.y) };
-		SDL_Rect dst = { offset.x - (xSize / 2), 768 - offset.y - (ySize / 2), xSize, ySize };
+		SDL_Rect dst = { static_cast<int>(offset.x - (xSize / 2)), static_cast<int>(768 - offset.y - (ySize / 2)), static_cast<int>(xSize), static_cast<int>(ySize) };
 		//SDL_Rect dst = { offset.x , 768 - offset.y , xSize, ySize };
 
 		//flipping horizontally?
@@ -314,9 +314,9 @@ void DrawSprite(SDL_Texture* sprite_, bool xFlip_, float alpha_, SDL_Point* orig
 	{
 		float xSize = entity.size.x * entity.scaleX;
 		float ySize = entity.size.y * entity.scaleY;
-		SDL_Rect src = { 0, 0, entity.size.x, entity.size.y};
+		SDL_Rect src = { 0, 0, static_cast<int>(entity.size.x), static_cast<int>(entity.size.y)};
 		//SDL_Rect dst = { entity.position.x - (xSize / 2), 768 - entity.position.y + (ySize / 2), xSize, ySize };
-		SDL_Rect dst = { entity.position.x , 768 - entity.position.y , xSize, ySize };
+		SDL_Rect dst = { static_cast<int>(entity.position.x) , static_cast<int>(entity.position.y) , static_cast<int>(xSize), static_cast<int>(ySize) };
 
 		//flipping horizontally?
 		SDL_RendererFlip flip = SDL_FLIP_NONE;
@@ -447,11 +447,11 @@ bool GetMouseButtonDown( int a_iMouseButtonToTest )
 
 void GetMouseLocation( int& a_iMouseX, int& a_iMouseY )
 {
-	int w, h;
-	SDL_GetWindowSize(window, &w, &h);
+	//int w, h;
+	//SDL_GetWindowSize(window, &w, &h);
 
 	SDL_GetMouseState( &a_iMouseX, &a_iMouseY );
-	a_iMouseY =  h - a_iMouseY;
+	//a_iMouseY =  h - a_iMouseY;
 }
 //END INPUT HANDLING
 ///////////////////////////////////////////////////////////////////////

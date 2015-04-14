@@ -4,10 +4,11 @@ g++ -std=c++11 \
 ./source/GLAHGraphics.cpp \
 ./source/main.cpp \
 ./source/Vector.cpp \
+./source/Terrain.cpp \
 -I./include \
 -lSDL2 \
 -lSDL2_image \
 -lsqlite3 \
 -w 
 
-mv ./a.out ./resources/a.out
+#mv ./a.out ./resources/a.out
