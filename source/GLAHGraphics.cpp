@@ -447,9 +447,11 @@ bool GetMouseButtonDown( int a_iMouseButtonToTest )
 
 void GetMouseLocation( int& a_iMouseX, int& a_iMouseY )
 {
+	int w, h;
+	SDL_GetWindowSize(window, &w, &h);
+
 	SDL_GetMouseState( &a_iMouseX, &a_iMouseY );
-	a_iMouseY =  a_iMouseY;
-	//cout << "mousex: " << x << "  mousey:" << y << endl;
+	a_iMouseY =  h - a_iMouseY;
 }
 //END INPUT HANDLING
 ///////////////////////////////////////////////////////////////////////

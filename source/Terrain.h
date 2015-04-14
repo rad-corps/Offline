@@ -18,9 +18,21 @@ enum TERRAIN_TILE_TYPE
 struct TerrainTile
 {
 	TERRAIN_TILE_TYPE type;
+	int col, row;
 
-	TerrainTile(){ type = GRASS;  }
-	TerrainTile(TERRAIN_TILE_TYPE type_){ type = type_; }
+	TerrainTile(int col_, int row_)
+	{
+		type = GRASS; 
+		col = col_; 
+		row = row_; 
+	}
+
+	TerrainTile(int col_, int row_, TERRAIN_TILE_TYPE type_)
+	{
+		type = type_; 
+		col = col_;
+		row = row_;
+	}
 };
 
 class Terrain
@@ -28,12 +40,21 @@ class Terrain
 public:
 	Terrain();
 	~Terrain();
+
+	void Update(float delta_);
 	void Draw();
+	TerrainTile* TileAt(int row_, int col_);
+	TerrainTile* TileAtMouseCoords(int x_, int y_);
+	std::vector<TerrainTile*> Edges(TerrainTile* tile_);
+	std::vector<TerrainTile*> ShortestPath(TerrainTile* origin_, TerrainTile* dest_);
 
 
 private:
+	int Heuristic(TerrainTile* origin_, TerrainTile* dest_);
 	void Draw(TERRAIN_TILE_TYPE type_, int row_, int col_);
-	std::vector<std::vector<TerrainTile>> tileArray;
+	std::vector<std::vector<TerrainTile*>> tileArray;
+	void SetTerrain(TerrainTile* tile_, TERRAIN_TILE_TYPE type_);
+
 
 	SDL_Texture* textureGrass;
 	SDL_Texture* textureWall;
