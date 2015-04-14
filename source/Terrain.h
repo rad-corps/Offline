@@ -21,7 +21,7 @@ struct TerrainTile
 	TERRAIN_TILE_TYPE type;
 	int col, row;
 	int g, f;
-	int cost;
+	//int cost;
 	TerrainTile* parent;
 
 	int Cost()
@@ -33,7 +33,7 @@ struct TerrainTile
 			case BUILDING_WALL: return 9999999;
 			case BUILDING_FLOOR: return 1;
 			case DOOR:			return 9999999;
-			case WATER:			return 3;
+			case WATER:			return 5;
 		}
 	}
 
@@ -54,7 +54,7 @@ struct TerrainTile
 		type = type_; 
 		col = col_;
 		row = row_;		
-		cost = 1; //TODO different for each unit and TERRAIN_TILE_TYPE
+		//cost = 1; //TODO different for each unit and TERRAIN_TILE_TYPE
 
 		Reset();
 	}

@@ -5,6 +5,8 @@ g++ -std=c++11 \
 ./source/main.cpp \
 ./source/Vector.cpp \
 ./source/Terrain.cpp \
+./source/Player.cpp \
+./source/GameController.cpp \
 -I./include \
 -lSDL2 \
 -lSDL2_image \

@@ -232,14 +232,14 @@ std::vector<TerrainTile*> Terrain::ShortestPath(TerrainTile* origin_, TerrainTil
 			if (std::find(closedList.begin(), closedList.end(), edge) == closedList.end())
 			{
 				//calculate a tentative f cost of the edge's end node
-				int tentativeF = currentNode->g + edge->cost + Heuristic(edge, dest_);
+				int tentativeF = currentNode->g + edge->Cost() + Heuristic(edge, dest_);
 
 				//if the tentative f cost is less than the edge node's current f cost, update its data
 				if (tentativeF < edge->f)
 				{
 					//update scores since we have found a new lower f cost for this node
 					edge->parent = currentNode;
-					edge->g = currentNode->g + edge->cost;
+					edge->g = currentNode->g + edge->Cost();
 					edge->f = tentativeF;
 
 					//add it to the open list if it is not there already
