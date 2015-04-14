@@ -36,6 +36,8 @@ GameController::GameController()
 	inputSwitch = INPUT_TERRAIN;
 
 	state = GS_LEVEL_SETUP;	
+
+	enemyList = new EnemyList();
 }
 
 
@@ -105,7 +107,14 @@ void GameController::Run()
 		terrain.Update(delta);
 		if (inputSwitch == INPUT_TERRAIN && state == GS_LEVEL_SETUP)
 			terrain.UserInput();
-		
+
+		//enemy updates
+		if (inputSwitch == INPUT_ENEMIES && state == GS_LEVEL_SETUP)
+			enemyList->UserInput();
+
+		if (state == GS_PLAY)
+			enemyList->Update(delta);
+
 		//player updates
 		player.Update(delta);
 		if (inputSwitch == INPUT_PLAYER && state == GS_LEVEL_SETUP)
@@ -120,5 +129,7 @@ void GameController::Run()
 		//draw calls
 		terrain.Draw();
 		player.Draw();
+		enemyList->Draw();
+
 	} while (!FrameworkUpdate());
 }

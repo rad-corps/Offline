@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Enemy.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\GameController.cpp" />
     <ClCompile Include="source\DatabaseManager.cpp" />
@@ -92,6 +93,7 @@
     <ClCompile Include="source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Enemy.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\GameController.h" />
     <ClInclude Include="source\DatabaseManager.h" />

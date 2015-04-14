@@ -10,4 +10,5 @@ int main( int argc, char* argv[] )
 {	
 	GameController gc;
 	gc.Run();
+	return 0;
 }

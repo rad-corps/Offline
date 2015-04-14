@@ -26,6 +26,6 @@ public:
 private:
 	USER_INPUT_SWITCH inputSwitch;
 	GAME_STATE state;
-	std::vector<Enemy> enemyList;
+	EnemyList* enemyList;
 };
 
