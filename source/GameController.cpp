@@ -28,6 +28,7 @@ GameController::GameController()
 	cout << "P: Place Player" << endl;
 	cout << "E: Place Enemy" << endl;
 	cout << "Enter: Start Game" << endl;
+	cout << "Escape: Editing Mode" << endl;
 
 	Initialise(SCREEN_W, SCREEN_H, false, "Offline");
 	AddFont("./fonts/feisarv5.fnt");
@@ -92,12 +93,17 @@ void GameController::Run()
 			state = GS_PLAY;
 			cout << "Game Started" << endl;
 		}
+		if (IsKeyDown(SDLK_ESCAPE))
+		{
+			state = GS_LEVEL_SETUP;
+			cout << "Editing Mode" << endl;
+		}
 
 		delta = GetDeltaTime();
 
 		//terrain updates
 		terrain.Update(delta);
-		if (inputSwitch == INPUT_TERRAIN)
+		if (inputSwitch == INPUT_TERRAIN && state == GS_LEVEL_SETUP)
 			terrain.UserInput();
 		
 		//player updates
