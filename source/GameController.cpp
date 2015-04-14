@@ -6,6 +6,7 @@
 #include <iostream>
 #include "GLAHGraphics.h"
 #include "Terrain.h"
+#include "Player.h"
 
 using namespace std;
 #define INVADERS_FONT "./fonts/feisarv5.fnt"
@@ -32,7 +33,8 @@ GameController::GameController()
 	AddFont("./fonts/feisarv5.fnt");
 
 	inputSwitch = INPUT_TERRAIN;
-	
+
+	state = GS_LEVEL_SETUP;	
 }
 
 
@@ -44,6 +46,7 @@ void GameController::Run()
 {
 
 	Terrain terrain(SCREEN_W / 16, SCREEN_H / 16);
+	Player player;
 
 	float delta;
 	//SDL_Texture* playerTexture = CreateSprite("./resources/images/player.png", 16, 16);
@@ -68,13 +71,27 @@ void GameController::Run()
 		{
 			inputSwitch = INPUT_ENEMIES;
 		}
+		if (IsKeyDown(SDLK_RETURN) || IsKeyDown(SDLK_RETURN2))
+		{
+			state = GS_PLAY;
+		}
 
 		delta = GetDeltaTime();
 
+		//terrain updates
 		terrain.Update(delta);
 		if (inputSwitch == INPUT_TERRAIN)
 			terrain.UserInput();
 		
+		//player updates
+		player.Update(delta);
+		if (inputSwitch == INPUT_PLAYER && state == GS_LEVEL_SETUP)
+		{
+			player.UserInputGameSetup();
+		}
+
+		//draw calls
 		terrain.Draw();
+		player.Draw();
 	} while (!FrameworkUpdate());
 }

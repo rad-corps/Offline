@@ -7,6 +7,12 @@ enum USER_INPUT_SWITCH
 	INPUT_ENEMIES
 };
 
+enum GAME_STATE
+{
+	GS_LEVEL_SETUP,
+	GS_PLAY
+};
+
 class GameController
 {
 public:
@@ -17,5 +23,6 @@ public:
 
 private:
 	USER_INPUT_SWITCH inputSwitch;
+	GAME_STATE state;
 };
 
