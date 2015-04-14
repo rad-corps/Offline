@@ -23,26 +23,24 @@ struct TerrainTile
 	int cost;
 	TerrainTile* parent;
 
-	//TerrainTile(int col_, int row_)
-	//{
-	//	type = GRASS; 
-	//	col = col_; 
-	//	row = row_; 
-	//	g = 99999999;
-	//	f = 99999999;
-	//	parent = nullptr;
-	//}
+	void Reset()
+	{
+		g = 99999999;
+		f = 99999999;
+		parent = nullptr;
+	}
 
 	TerrainTile(int col_, int row_, TERRAIN_TILE_TYPE type_)
 	{
 		type = type_; 
 		col = col_;
-		row = row_;
-		g = 99999999;
-		f = 99999999;
-		parent = nullptr;
+		row = row_;		
 		cost = 1; //TODO different for each unit and TERRAIN_TILE_TYPE
+
+		Reset();
 	}
+
+
 };
 
 class Terrain
@@ -72,5 +70,7 @@ private:
 	SDL_Texture* textureTrees;
 	SDL_Texture* textureWater;
 	SDL_Texture* textureDoor;
+
+	//bool findingPath; //do not perform a search while one is in progress. 
 };
 

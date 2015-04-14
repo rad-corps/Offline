@@ -261,6 +261,15 @@ std::vector<TerrainTile*> Terrain::ShortestPath(TerrainTile* origin_, TerrainTil
 		currentNode = currentNode->parent;
 	} while (currentNode != nullptr);
 
+	//clean up 
+	for (auto& row : tileArray)
+	{
+		for (auto& cell : row)
+		{
+			cell->Reset();
+		}
+	}
+
 	return ret;
 }
 
