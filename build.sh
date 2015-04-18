@@ -12,7 +12,7 @@ g++ -std=c++11 \
 -lSDL2 \
 -lSDL2_image \
 -lsqlite3 \
--w \
--o Offline.app
+-w #\
+#-o Offline.app
 
 #mv ./a.out ./resources/a.out

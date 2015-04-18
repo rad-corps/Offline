@@ -47,6 +47,7 @@ void GameController::Run()
 {
 	Terrain terrain(SCREEN_W / 16, SCREEN_H / 16);
 	Player player;
+	EnemyList enemyList;
 
 	float delta;
 	//SDL_Texture* playerTexture = CreateSprite("./resources/images/player.png", 16, 16);
@@ -112,6 +113,15 @@ void GameController::Run()
 		{
 			player.UserInputGameSetup();
 		}
+
+		//enemy updates
+		enemyList.Update(delta);
+		if ( inputSwitch == INPUT_ENEMIES && state == GS_LEVEL_SETUP)
+		{
+			enemyList.UserInputGameSetup();
+		}
+
+
 		if (state == GS_PLAY)
 		{
 			player.UserInput(&terrain);
@@ -120,5 +130,6 @@ void GameController::Run()
 		//draw calls
 		terrain.Draw();
 		player.Draw();
+		enemyList.Draw();
 	} while (!FrameworkUpdate());
 }

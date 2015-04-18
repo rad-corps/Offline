@@ -1,6 +1,9 @@
 //Enemy.cpp
 
 #include "Enemy.h"
+#include <iostream>
+
+using namespace std;
 
 Enemy::Enemy()
 {
@@ -10,38 +13,53 @@ Enemy::Enemy()
 Enemy::~Enemy()
 {}
 
-void Enemy::UserInputGameSetup()
+Vector2 Enemy::Pos()
 {
-	int mouseX, mouseY;
-	GetMouseLocation(mouseX, mouseY);
-
-	//check for mouse left click (src)
-	if (GetMouseButtonDown(0))
-	{
-		pos.x = mouseX;
-		pos.y = mouseY;
-
-		pos.x = (int)(pos.x / 16);
-		pos.y = (int)(pos.y / 16);
-
-		pos.x *= 16;
-		pos.y *= 16;
-	}
+	return pos;
 }
+
 
 void Enemy::SetTexture(SDL_Texture* texture_)
 {
 	enemyTexture = texture_;
 }
 
-//EnemyList
+void Enemy::SetPos(int x_, int y_)
+{
+	pos.x = x_;
+	pos.y = y_;
+}
 
 EnemyList::EnemyList()
 {
 	texture = CreateSprite("./resources/images/enemy.png", 16, 16);
 }
 
- void EnemyList::Create(int x_, int y_)
+EnemyList::~EnemyList()
+{
+	//texture = CreateSprite("./resources/images/enemy.png", 16, 16);
+}
+
+//EnemyList
+void
+EnemyList::Draw()
+{
+	for (auto& enemy : enemyList)
+	{
+		MoveSprite(texture, enemy.Pos().x, enemy.Pos().y);
+		DrawSprite(texture);	
+	}
+}
+
+void
+EnemyList::Update(float delta_)
+{
+	//
+}
+
+
+
+ void EnemyList::CreateEnemy(int x_, int y_)
  {
  	Enemy temp;
  	temp.SetTexture(texture);
@@ -52,8 +70,21 @@ EnemyList::EnemyList()
  	enemyList.push_back(temp);
  }
 
+ void EnemyList::UserInputGameSetup()
+{
+	int mouseX, mouseY;
+	GetMouseLocation(mouseX, mouseY);
+
+	//check for mouse left click (src)
+	if (GetMouseButtonDown(0))
+	{
+		mouseX = mouseX / 16;
+		mouseY = mouseY / 16;
+		mouseX *= 16;
+		mouseY *= 16;
+		cout << "Create Enemy \t x: " << mouseX << "\t y: " << mouseY << endl;
+		CreateEnemy((int)mouseX, (int)mouseY);
+	}
 
 
-private:
-	std::vector<Enemy> 
-};
+}

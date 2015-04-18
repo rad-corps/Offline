@@ -18,7 +18,8 @@ public:
 
 	void SetPos(int x_, int y_);
 	void SetTexture(SDL_Texture* texture_);
-	void UserInputGameSetup();
+	Vector2 Pos();
+	
 
 private:	
 	
@@ -35,8 +36,12 @@ class EnemyList
 public:
 	EnemyList();
 	~EnemyList();
+	void Draw();
+	void Update(float delta_);
 
 	void CreateEnemy(int x_, int y_);
+
+	void UserInputGameSetup();
 
 
 
