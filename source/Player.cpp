@@ -91,7 +91,6 @@ void Player::Update(float delta_)
 		//if reached pop it off the top
 		if ((pos - nextNode->Pos()).GetMagnitude() < 2.0f)
 		{
-			cout << "node reached, removing" << endl;
 			navigationList.erase(navigationList.end() - 1);
 		}
 		else
