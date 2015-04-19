@@ -21,9 +21,6 @@ public:
 	void SetTexture(SDL_Texture* texture_);
 	Vector2 Pos();
 
-
-	
-
 private:	
 	
 	//TODO: Make this static
@@ -47,6 +44,7 @@ public:
 	void UserInputGameSetup();
 	
 	virtual void LMBClick();
+
 
 private:
 	std::vector<Enemy> enemyList;

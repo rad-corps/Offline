@@ -68,7 +68,7 @@ void Player::Update(float delta_)
 		Vector2 nextNodePos = nextNode->Pos();
 
 		//if reached pop it off the top
-		if ((pos - nextNode->Pos()).GetMagnitude() < 1.0f)
+		if ((pos - nextNode->Pos()).GetMagnitude() < 2.0f)
 		{
 			cout << "node reached, removing" << endl;
 			navigationList.erase(navigationList.end() - 1);
@@ -77,7 +77,8 @@ void Player::Update(float delta_)
 		{
 			//TODO FIX - .GetNormal does not work on vector with Magnitude of 0
 			Vector2 direction = (nextNodePos - pos).GetNormal();
-			pos += direction;
+			Vector2 velocity = (direction * 100) * delta_;
+			pos += velocity;
 		}
 	}
 }
