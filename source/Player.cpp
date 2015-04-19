@@ -3,9 +3,11 @@
 
 using namespace std;
 
-Player::Player()
+Player::Player(Terrain* terrain_)
 {
+	terrain = terrain_;
 	playerTexture = CreateSprite("./resources/images/player.png", 16, 16);
+	playing = false;
 }
 
 
@@ -13,44 +15,63 @@ Player::~Player()
 {
 }
 
+void Player::SetPlaying(bool playing_)
+{
+	playing = playing_;
+}
+
 
 void Player::UserInputGameSetup()
 {
-	int mouseX, mouseY;
-	GetMouseLocation(mouseX, mouseY);
 
-	//check for mouse left click (src)
-	if (GetMouseButtonDown(0))
-	{
-		pos.x = mouseX;
-		pos.y = mouseY;
-
-		pos.x = (int)(pos.x / 16);
-		pos.y = (int)(pos.y / 16);
-
-		pos.x *= 16;
-		pos.y *= 16;
-	}
 }
 
 void Player::UserInput(Terrain* terrain_)
 {
-	int mouseX, mouseY;
-	GetMouseLocation(mouseX, mouseY);
 
-	//check for mouse left click (src)
-	if (GetMouseButtonDown(0))
+}
+
+void Player::MouseClick(int mouseButton)
+{
+	if (playing)
 	{
-		//convert click location to tile
-		TerrainTile* dstTile = terrain_->TileAtMouseCoords(mouseX, mouseY);
+		//check for mouse left click (src)
+		if (mouseButton == 1)
+		{
+			int mouseX, mouseY;
+			GetMouseLocation(mouseX, mouseY);
 
-		//convert player location to tile
-		TerrainTile* playerTile = terrain_->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
+			//convert click location to tile
+			TerrainTile* dstTile = terrain->TileAtMouseCoords(mouseX, mouseY);
 
-		//get the vector of tiles to nav to 
-		navigationList = terrain_->ShortestPath(playerTile, dstTile);
+			//convert player location to tile
+			TerrainTile* playerTile = terrain->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
+
+			//get the vector of tiles to nav to 
+			navigationList = terrain->ShortestPath(playerTile, dstTile);
+		}
+	}
+	else if ( !playing ) //implies game setup
+	{
+		if (mouseButton == 1)
+		{
+			int mouseX, mouseY;
+			GetMouseLocation(mouseX, mouseY);
+
+			pos.x = mouseX;
+			pos.y = mouseY;
+
+			pos.x = (int)(pos.x / 16);
+			pos.y = (int)(pos.y / 16);
+
+			pos.x *= 16;
+			pos.y *= 16;
+		}
 	}
 }
+
+void Player::KeyStroke(SDL_Keycode key_)
+{}
 
 void Player::Draw()
 {

@@ -29,7 +29,7 @@ std::map<int, bool> msBtnDwn;
 //contains additional information about sprite rotation, scale, position etc.
 std::map<SDL_Texture*, GLAHEntity> spriteList;
 
-//InputListener* inputListener;
+std::vector<InputListener*> inputListeners;
 
 //GLFWwindow* window;
 
@@ -38,7 +38,7 @@ std::map<SDL_Texture*, GLAHEntity> spriteList;
 //Main loop flag
 bool quit = false;
 
-bool lmbDown = false;
+//bool lmbDown = false;
 
 //Event handler
 SDL_Event e;
@@ -64,6 +64,18 @@ double delta;
 SDL_Window*		GetWindow()
 {
 	return window;
+}
+
+//one at a time. 
+void AddInputListener(InputListener* listener_)
+{
+	inputListeners.push_back(listener_);
+}
+
+//no bounds checking
+void ReplaceInputListener(InputListener* inputListener_, int index_)
+{
+	inputListeners[index_] = inputListener_;
 }
 
 //unsigned int	GLAHGraphics::CreateSprite	
@@ -187,17 +199,34 @@ bool FrameworkUpdate()
 		else if ( e.type == SDL_KEYDOWN ) 
 		{
 			keyDownList[e.key.keysym.sym] = true;
+			
+			//send to listeners
+			for (auto & inputListener : inputListeners)
+			{
+				if (inputListener != nullptr)
+				{
+					inputListener->KeyStroke(e.key.keysym.sym);
+				}
+			}
+
 		}
 		else if ( e.type == SDL_KEYUP ) 
 		{
 			keyDownList[e.key.keysym.sym] = false;
 		}
 		else if ( e.type == SDL_MOUSEBUTTONDOWN ) 
-		{			
-			if ( e.button.button == SDL_BUTTON_LEFT )
+		{		
+			//send off to the listeners if available			
+			for (auto & inputListener : inputListeners)
 			{
-				cout << "LMB DOWN" << endl;
-				lmbDown = true;
+				if (inputListener != nullptr)
+				{
+					inputListener->MouseClick(e.button.button);
+				}
+			}
+
+			if ( e.button.button == SDL_BUTTON_LEFT )
+			{			
 				msBtnDwn[0] = true;
 			}
 			if ( e.button.button == SDL_BUTTON_RIGHT )
@@ -209,8 +238,6 @@ bool FrameworkUpdate()
 		{
 			if ( e.button.button == SDL_BUTTON_LEFT )
 			{
-				cout << "LMB UP" << endl;
-				lmbDown = false;
 				msBtnDwn[0] = false;
 			}
 			if ( e.button.button == SDL_BUTTON_RIGHT )

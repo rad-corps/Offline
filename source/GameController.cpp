@@ -19,12 +19,7 @@ GameController::GameController()
 	srand((unsigned int)time(NULL));
 
 	//instructions
-	cout << "0: Place Grass Tile" << endl;
-	cout << "1: Place Tree Tile" << endl;
-	cout << "2: Place Wall Tile" << endl;
-	cout << "3: Place Floor Tile" << endl;
-	cout << "4: Place Door Tile" << endl;
-	cout << "5: Place Water Tile" << endl;
+	cout << "T: Switch To Terrain Editing" << endl;
 	cout << "P: Place Player" << endl;
 	cout << "E: Place Enemy" << endl;
 	cout << "Enter: Start Game" << endl;
@@ -33,11 +28,15 @@ GameController::GameController()
 	Initialise(SCREEN_W, SCREEN_H, false, "Offline");
 	AddFont("./fonts/feisarv5.fnt");
 
-	inputSwitch = INPUT_TERRAIN;
-
 	state = GS_LEVEL_SETUP;	
+	
 
+	terrain = new Terrain(SCREEN_W / 16, SCREEN_H / 16);
+	player = new Player(terrain);
 	enemyList = new EnemyList();
+
+	AddInputListener(this);
+	AddInputListener(terrain);
 }
 
 
@@ -45,102 +44,81 @@ GameController::~GameController()
 {
 }
 
+void GameController::KeyStroke(SDL_Keycode key_)
+{
+	if (state == GS_LEVEL_SETUP)
+	{
+		if (key_ == SDLK_t)
+		{
+			ReplaceInputListener(terrain, 1);
+			cout << "0: Select Grass Tile" << endl;
+			cout << "1: Select Tree Tile" << endl;
+			cout << "2: Select Wall Tile" << endl;
+			cout << "3: Select Floor Tile" << endl;
+			cout << "4: Select Door Tile" << endl;
+			cout << "5: Select Water Tile" << endl;
+		}
+
+		if (key_ == SDLK_p)
+		{
+			ReplaceInputListener(player, 1);
+			cout << "Left click to place player" << endl;
+		}
+		if (key_ == SDLK_e)
+		{
+			ReplaceInputListener(enemyList, 1);
+			cout << "Left click to add enemy" << endl;
+		}
+
+		if (key_ == SDLK_RETURN || key_ == SDLK_RETURN2 )
+		{
+			state = GS_PLAY;
+			player->SetPlaying(true);
+			ReplaceInputListener(player, 1);
+			cout << "Game Started" << endl;
+			cout << "Press Escape to go back to editing mode" << endl;
+		}
+	}
+
+	if (state == GS_PLAY)
+	{
+		if (key_ == SDLK_ESCAPE)
+		{
+			state = GS_LEVEL_SETUP;
+			player->SetPlaying(false);
+			cout << "Editing Mode" << endl;
+			cout << "------------" << endl;
+			cout << "T: Switch To Terrain Editing" << endl;
+			cout << "P: Place Player" << endl;
+			cout << "E: Place Enemy" << endl;
+			cout << "Enter: Start Game" << endl;
+		}
+	}
+}
+
+void GameController::MouseClick(int mouseButton)
+{}
+
 void GameController::Run()
 {
-	Terrain terrain(SCREEN_W / 16, SCREEN_H / 16);
-	Player player;
-	EnemyList enemyList;
-
 	float delta;
 	//SDL_Texture* playerTexture = CreateSprite("./resources/images/player.png", 16, 16);
 	do
 	{
-		//switch user input switch
-		if (state == GS_LEVEL_SETUP)
-		{
-			if (IsKeyDown(SDLK_0)
-				|| IsKeyDown(SDLK_1)
-				|| IsKeyDown(SDLK_2)
-				|| IsKeyDown(SDLK_3)
-				|| IsKeyDown(SDLK_4)
-				|| IsKeyDown(SDLK_5))
-			{
-				inputSwitch = INPUT_TERRAIN;
-			}
-
-			if (IsKeyDown(SDLK_0))
-				terrain.SetTileDrawType(GRASS);
-			if (IsKeyDown(SDLK_1))
-				terrain.SetTileDrawType(TREE);
-			if (IsKeyDown(SDLK_2))
-				terrain.SetTileDrawType(BUILDING_WALL);
-			if (IsKeyDown(SDLK_3))
-				terrain.SetTileDrawType(BUILDING_FLOOR);
-			if (IsKeyDown(SDLK_4))
-				terrain.SetTileDrawType(DOOR);
-			if (IsKeyDown(SDLK_5))
-				terrain.SetTileDrawType(WATER);
-
-			if (IsKeyDown(SDLK_p))
-			{
-				inputSwitch = INPUT_PLAYER;
-			}
-			if (IsKeyDown(SDLK_e))
-			{
-				inputSwitch = INPUT_ENEMIES;
-			}
-		}
-
-		if (IsKeyDown(SDLK_RETURN) || IsKeyDown(SDLK_RETURN2))
-		{
-			state = GS_PLAY;
-			cout << "Game Started" << endl;
-		}
-		if (IsKeyDown(SDLK_ESCAPE))
-		{
-			state = GS_LEVEL_SETUP;
-			cout << "Editing Mode" << endl;
-		}
-
 		delta = GetDeltaTime();
 
-		//terrain updates
-		terrain.Update(delta);
-		if (inputSwitch == INPUT_TERRAIN && state == GS_LEVEL_SETUP)
-			terrain.UserInput();
-
 		//enemy updates
-		if (inputSwitch == INPUT_ENEMIES && state == GS_LEVEL_SETUP)
-			enemyList->UserInput();
-
 		if (state == GS_PLAY)
+		{
 			enemyList->Update(delta);
-
-		//player updates
-		player.Update(delta);
-		if (inputSwitch == INPUT_PLAYER && state == GS_LEVEL_SETUP)
-		{
-			player.UserInputGameSetup();
-		}
-
-		//enemy updates
-		enemyList.Update(delta);
-		if ( inputSwitch == INPUT_ENEMIES && state == GS_LEVEL_SETUP)
-		{
-			enemyList.UserInputGameSetup();
-		}
-
-
-		if (state == GS_PLAY)
-		{
-			player.UserInput(&terrain);
+			player->Update(delta);
+			enemyList->Update(delta);
 		}
 
 		//draw calls
-		terrain.Draw();
-		player.Draw();
-		enemyList.Draw();
-
+		terrain->Draw();
+		player->Draw();
+		enemyList->Draw();
 
 	} while (!FrameworkUpdate());
 }

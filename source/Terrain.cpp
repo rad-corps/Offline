@@ -3,7 +3,6 @@
 #include <cstdlib> //abs
 #include <algorithm>
 
-//std::map<TERRAIN_TILE_TYPE, SDL_Texture*> Terrain::textureMap;
 using namespace std;
 
 Terrain::Terrain(int w_, int h_)
@@ -36,55 +35,41 @@ Terrain::~Terrain()
 {
 }
 
+
+void Terrain::KeyStroke(SDL_Keycode key_) 
+{
+	if (key_ == SDLK_0)
+		SetTileDrawType(GRASS);
+	if (key_ == SDLK_1)
+		SetTileDrawType(TREE);
+	if (key_ == SDLK_2)
+		SetTileDrawType(BUILDING_WALL);
+	if (key_ == SDLK_3)
+		SetTileDrawType(BUILDING_FLOOR);
+	if (key_ == SDLK_4)
+		SetTileDrawType(DOOR);
+	if (key_ == SDLK_5)
+		SetTileDrawType(WATER);
+}
+
+void Terrain::MouseClick(int mouseButton_)
+{
+	if (mouseButton_ == 1)
+	{
+		//where is the mouse?
+		int mouseX, mouseY;
+		GetMouseLocation(mouseX, mouseY);
+
+		//convert that to row/col coordinates
+		TileAtMouseCoords(mouseX, mouseY)->type = drawType;
+	}
+}
+
+
 void Terrain::SetTileDrawType(TERRAIN_TILE_TYPE type_)
 {
 	drawType = type_;
 }
-
-void Terrain::UserInput()
-{
-	//where is the mouse?
-	int mouseX, mouseY;
-	GetMouseLocation(mouseX, mouseY);
-
-	//check for mouse left click (src)
-	if (GetMouseButtonDown(0))
-	{
-		//convert that to row/col coordinates
-		TileAtMouseCoords(mouseX, mouseY)->type = drawType;
-	}
-
-	//check for mouse right click (dst)
-	if (GetMouseButtonDown(1))
-	{
-		//convert that to row/col coordinates
-		TileAtMouseCoords(mouseX, mouseY)->type = WATER;
-	}
-
-	if (IsKeyDown(SDLK_SPACE))
-	{
-		//find the tile with the water and door terrains. (insert hax here)
-		TerrainTile* src = nullptr;
-		TerrainTile* dst = nullptr;
-		for (auto & row : tileArray)
-		{
-			for (auto & cell : row)
-			{
-				if (cell->type == DOOR)
-					src = cell;
-				if (cell->type == WATER)
-					dst = cell;
-			}
-		}
-
-		//run aStar on it. 
-		if (src != nullptr && dst != nullptr)
-		{
-			SetTerrain(ShortestPath(src, dst), TREE);
-		}
-	}
-}
-
 
 void Terrain::Draw(TERRAIN_TILE_TYPE type_, int row_, int col_)
 {

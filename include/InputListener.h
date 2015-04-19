@@ -5,6 +5,10 @@
 class InputListener
 {
 public: 
-	virtual void KeyDown(SDL_Keycode key_) = 0;
-	//virtual void KeyUp(SDL_Keycode key_) = 0;
+	virtual void KeyStroke(SDL_Keycode key_) = 0;
+	
+	//#define SDL_BUTTON_LEFT     1
+	//#define SDL_BUTTON_MIDDLE   2
+	//#define SDL_BUTTON_RIGHT    3
+	virtual void MouseClick(int mouseButton) = 0;
 };

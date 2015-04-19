@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Enemy.h"
+#include "Terrain.h"
+#include "Player.h"
+#include "InputListener.h"
 
 enum USER_INPUT_SWITCH
 {
@@ -15,7 +18,7 @@ enum GAME_STATE
 	GS_PLAY
 };
 
-class GameController
+class GameController : public InputListener
 {
 public:
 	GameController();
@@ -23,9 +26,17 @@ public:
 
 	void Run();
 
+	void KeyStroke(SDL_Keycode key_);
+	void MouseClick(int mouseButton);
+
 private:
-	USER_INPUT_SWITCH inputSwitch;
+	//USER_INPUT_SWITCH inputSwitch;
 	GAME_STATE state;
+	
+	
+	Player* player;
+	Terrain* terrain;
+	EnemyList* enemyList;
 
 };
 

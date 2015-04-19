@@ -14,11 +14,9 @@ using namespace std;
 
 	//input handling
 void			AddInputListener(InputListener* inputListener_);
-void			RemoveInputListener();
+void			ReplaceInputListener(InputListener* inputListener_, int index_);
 
  bool			IsKeyDown( SDL_Keycode a_iKey );
-
- void 			AddMouseListener(MouseListener* mouseListener_)
 
  void			GetMouseLocation( int& a_iMouseX, int& a_iMouseY );
 
@@ -90,3 +88,4 @@ void			RemoveInputListener();
 	void			SetFont( char* fontName_ );
 	void			RemoveFont( char* fontName_ );
 	//END OF NOT YET IMPLEMENTED
+

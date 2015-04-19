@@ -6,11 +6,11 @@
 #include "GLAHGraphics.h"
 #include <vector>
 #include "Terrain.h"
-#include "MouseListener.h"
+#include "InputListener.h"
 
 
 
-class Enemy 
+class Enemy
 {
 public:
 
@@ -31,20 +31,19 @@ private:
 	bool loopPath;
 };
 
-class EnemyList : public MouseListener
+class EnemyList : public InputListener
 {
 public:
 	EnemyList();
 	~EnemyList();
 	void Draw();
 	void Update(float delta_);
-
 	void CreateEnemy(int x_, int y_);
-
 	void UserInputGameSetup();
 	
-	virtual void LMBClick();
-
+	//InputListener interface requirement
+	virtual void KeyStroke(SDL_Keycode key_);
+	virtual void MouseClick(int mouseButton);
 
 private:
 	std::vector<Enemy> enemyList;

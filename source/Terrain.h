@@ -5,6 +5,7 @@
 #include "SDL2/SDL.h"
 #include "GLAHGraphics.h"
 #include "Vector.h"
+#include "InputListener.h"
 
 enum TERRAIN_TILE_TYPE
 {
@@ -62,7 +63,7 @@ struct TerrainTile
 
 };
 
-class Terrain
+class Terrain : public InputListener
 {
 public:
 	Terrain(int w_, int h_);
@@ -70,13 +71,15 @@ public:
 
 	void Update(float delta_);
 	void Draw();
-	void UserInput();
 	void SetTileDrawType(TERRAIN_TILE_TYPE type_);
 	TerrainTile* TileAt(int row_, int col_);
 	TerrainTile* TileAtMouseCoords(int x_, int y_);
 	std::vector<TerrainTile*> Edges(TerrainTile* tile_);
 	std::vector<TerrainTile*> ShortestPath(TerrainTile* origin_, TerrainTile* dest_);
 
+	//InputListener interface requirement
+	virtual void KeyStroke(SDL_Keycode key_);
+	virtual void MouseClick(int mouseButton);
 
 private:
 	int Heuristic(TerrainTile* origin_, TerrainTile* dest_);
