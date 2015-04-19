@@ -54,6 +54,11 @@ void Terrain::KeyStroke(SDL_Keycode key_)
 
 void Terrain::MouseClick(int mouseButton_)
 {
+
+}
+
+void Terrain::MouseDown(int mouseButton_)
+{
 	if (mouseButton_ == 1)
 	{
 		//where is the mouse?

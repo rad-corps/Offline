@@ -208,7 +208,6 @@ bool FrameworkUpdate()
 					inputListener->KeyStroke(e.key.keysym.sym);
 				}
 			}
-
 		}
 		else if ( e.type == SDL_KEYUP ) 
 		{
@@ -246,6 +245,23 @@ bool FrameworkUpdate()
 			}
 		}
     }
+
+	//send MouseDown events
+	if (msBtnDwn[0] == true)
+	{
+		for (auto &listener : inputListeners)
+		{
+			listener->MouseDown(1);
+		}
+	}
+
+	if (msBtnDwn[1] == true)
+	{
+		for (auto &listener : inputListeners)
+		{
+			listener->MouseDown(3);
+		}
+	}
 
     //Clear screen
     SDL_RenderClear( renderer );

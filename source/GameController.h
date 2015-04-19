@@ -27,7 +27,8 @@ public:
 	void Run();
 
 	void KeyStroke(SDL_Keycode key_);
-	void MouseClick(int mouseButton);
+	void MouseClick(int mouseButton_);
+	void MouseDown(int mouseButton_){}
 
 private:
 	//USER_INPUT_SWITCH inputSwitch;

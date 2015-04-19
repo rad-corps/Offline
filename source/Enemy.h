@@ -44,6 +44,7 @@ public:
 	//InputListener interface requirement
 	virtual void KeyStroke(SDL_Keycode key_);
 	virtual void MouseClick(int mouseButton);
+	virtual void MouseDown(int mouseButton){}
 
 private:
 	std::vector<Enemy> enemyList;

@@ -11,4 +11,5 @@ public:
 	//#define SDL_BUTTON_MIDDLE   2
 	//#define SDL_BUTTON_RIGHT    3
 	virtual void MouseClick(int mouseButton) = 0;
+	virtual void MouseDown(int mouseButton) = 0;
 };
