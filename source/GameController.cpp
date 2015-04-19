@@ -7,6 +7,7 @@
 #include "GLAHGraphics.h"
 #include "Terrain.h"
 #include "Player.h"
+#include "CONSTS.h"
 
 using namespace std;
 #define INVADERS_FONT "./fonts/feisarv5.fnt"
@@ -31,9 +32,9 @@ GameController::GameController()
 	state = GS_LEVEL_SETUP;	
 	
 
-	terrain = new Terrain(SCREEN_W / 16, SCREEN_H / 16);
+	terrain = new Terrain(SCREEN_W / TILE_SIZE, SCREEN_H / TILE_SIZE);
 	player = new Player(terrain);
-	enemyList = new EnemyList();
+	enemyList = new EnemyList(terrain);
 
 	AddInputListener(this);
 	AddInputListener(terrain);

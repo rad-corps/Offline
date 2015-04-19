@@ -2,18 +2,19 @@
 #include <iostream> //cout
 #include <cstdlib> //abs
 #include <algorithm>
+#include "CONSTS.h"
 
 using namespace std;
 
 Terrain::Terrain(int w_, int h_)
 {
 	//init the textures
-	textureGrass = CreateSprite("./resources/images/terrain_grass.png", 16, 16);
-	textureWall = CreateSprite("./resources/images/terrain_wall.png", 16, 16);
-	textureFloor = CreateSprite("./resources/images/terrain_floor.png", 16, 16);
-	textureTrees = CreateSprite("./resources/images/terrain_tree.png", 16, 16);
-	textureWater = CreateSprite("./resources/images/terrain_water.png", 16, 16);
-	textureDoor = CreateSprite("./resources/images/terrain_door.png", 16, 16);
+	textureGrass = CreateSprite("./resources/images/terrain_grass.png", TILE_SIZE, TILE_SIZE);
+	textureWall = CreateSprite("./resources/images/terrain_wall.png", TILE_SIZE, TILE_SIZE);
+	textureFloor = CreateSprite("./resources/images/terrain_floor.png", TILE_SIZE, TILE_SIZE);
+	textureTrees = CreateSprite("./resources/images/terrain_tree.png", TILE_SIZE, TILE_SIZE);
+	textureWater = CreateSprite("./resources/images/terrain_water.png", TILE_SIZE, TILE_SIZE);
+	textureDoor = CreateSprite("./resources/images/terrain_door.png", TILE_SIZE, TILE_SIZE);
 
 
 	for (int row = 0; row < h_; ++row)
@@ -96,7 +97,7 @@ void Terrain::Draw(TERRAIN_TILE_TYPE type_, int row_, int col_)
 		return;
 	}
 
-	MoveSprite(tempPtr, col_ * 16, row_ * 16);
+	MoveSprite(tempPtr, col_ * TILE_SIZE, row_ * TILE_SIZE);
 	DrawSprite(tempPtr);
 }
 
@@ -125,8 +126,8 @@ TerrainTile* Terrain::TileAt(int row_, int col_)
 
 TerrainTile* Terrain::TileAtMouseCoords(int x_, int y_)
 {
-	x_ /= 16;
-	y_ /= 16;
+	x_ /= TILE_SIZE;
+	y_ /= TILE_SIZE;
 	return TileAt(y_, x_);
 }
 

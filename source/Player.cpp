@@ -1,12 +1,13 @@
 #include "Player.h"
 #include <iostream>
+#include "CONSTS.h"
 
 using namespace std;
 
 Player::Player(Terrain* terrain_)
 {
 	terrain = terrain_;
-	playerTexture = CreateSprite("./resources/images/player.png", 16, 16);
+	playerTexture = CreateSprite("./resources/images/player.png", TILE_SIZE, TILE_SIZE);
 	playing = false;
 }
 
@@ -61,11 +62,11 @@ void Player::MouseClick(int mouseButton)
 			pos.x = mouseX;
 			pos.y = mouseY;
 
-			pos.x = (int)(pos.x / 16);
-			pos.y = (int)(pos.y / 16);
+			pos.x = (int)(pos.x / TILE_SIZE);
+			pos.y = (int)(pos.y / TILE_SIZE);
 
-			pos.x *= 16;
-			pos.y *= 16;
+			pos.x *= TILE_SIZE;
+			pos.y *= TILE_SIZE;
 		}
 	}
 }

@@ -6,6 +6,7 @@
 #include "GLAHGraphics.h"
 #include "Vector.h"
 #include "InputListener.h"
+#include "CONSTS.h"
 
 enum TERRAIN_TILE_TYPE
 {
@@ -47,7 +48,7 @@ struct TerrainTile
 
 	Vector2 Pos()
 	{
-		return Vector2(col * 16, row * 16);
+		return Vector2(col * TILE_SIZE, row * TILE_SIZE);
 	}
 
 	TerrainTile(int col_, int row_, TERRAIN_TILE_TYPE type_)

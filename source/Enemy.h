@@ -17,9 +17,11 @@ public:
 	Enemy();
 	~Enemy();
 
+	void Update(float delta_);
 	void SetPos(int x_, int y_);
 	void SetTexture(SDL_Texture* texture_);
 	Vector2 Pos();
+	void AddNode(TerrainTile* tile_);
 
 private:	
 	
@@ -28,13 +30,14 @@ private:
 	
 	Vector2 pos;
 	std::vector<TerrainTile*> path;
+	std::vector<TerrainTile*>::iterator nextNode;
 	bool loopPath;
 };
 
 class EnemyList : public InputListener
 {
 public:
-	EnemyList();
+	EnemyList(Terrain* terrain_);
 	~EnemyList();
 	void Draw();
 	void Update(float delta_);
@@ -47,6 +50,8 @@ public:
 	virtual void MouseDown(int mouseButton){}
 
 private:
+	bool addingNodes;
 	std::vector<Enemy> enemyList;
 	SDL_Texture * texture;
+	Terrain* terrain;
 };

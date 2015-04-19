@@ -93,6 +93,7 @@
     <ClCompile Include="source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\CONSTS.h" />
     <ClInclude Include="source\Enemy.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\GameController.h" />
