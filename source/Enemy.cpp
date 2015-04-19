@@ -57,7 +57,11 @@ EnemyList::Update(float delta_)
 	//
 }
 
-
+void 
+EnemyList::LMBClick()
+{
+	cout << "Enemy::LMBClick();" << endl;
+}
 
  void EnemyList::CreateEnemy(int x_, int y_)
  {

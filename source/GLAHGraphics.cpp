@@ -38,6 +38,8 @@ std::map<SDL_Texture*, GLAHEntity> spriteList;
 //Main loop flag
 bool quit = false;
 
+bool lmbDown = false;
+
 //Event handler
 SDL_Event e;
 
@@ -194,18 +196,21 @@ bool FrameworkUpdate()
 		{			
 			if ( e.button.button == SDL_BUTTON_LEFT )
 			{
+				cout << "LMB DOWN" << endl;
+				lmbDown = true;
 				msBtnDwn[0] = true;
 			}
 			if ( e.button.button == SDL_BUTTON_RIGHT )
 			{
 				msBtnDwn[1] = true;
 			}
-			
 		}
 		else if ( e.type == SDL_MOUSEBUTTONUP ) 
 		{
 			if ( e.button.button == SDL_BUTTON_LEFT )
 			{
+				cout << "LMB UP" << endl;
+				lmbDown = false;
 				msBtnDwn[0] = false;
 			}
 			if ( e.button.button == SDL_BUTTON_RIGHT )

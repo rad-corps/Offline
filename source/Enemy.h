@@ -6,10 +6,11 @@
 #include "GLAHGraphics.h"
 #include <vector>
 #include "Terrain.h"
+#include "MouseListener.h"
 
 
 
-class Enemy
+class Enemy 
 {
 public:
 
@@ -19,6 +20,8 @@ public:
 	void SetPos(int x_, int y_);
 	void SetTexture(SDL_Texture* texture_);
 	Vector2 Pos();
+
+
 	
 
 private:	
@@ -31,7 +34,7 @@ private:
 	bool loopPath;
 };
 
-class EnemyList
+class EnemyList : public MouseListener
 {
 public:
 	EnemyList();
@@ -42,8 +45,8 @@ public:
 	void CreateEnemy(int x_, int y_);
 
 	void UserInputGameSetup();
-
-
+	
+	virtual void LMBClick();
 
 private:
 	std::vector<Enemy> enemyList;

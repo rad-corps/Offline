@@ -18,11 +18,15 @@ void			RemoveInputListener();
 
  bool			IsKeyDown( SDL_Keycode a_iKey );
 
+ void 			AddMouseListener(MouseListener* mouseListener_)
+
  void			GetMouseLocation( int& a_iMouseX, int& a_iMouseY );
 
  bool			GetMouseButtonDown( int a_iMouseButtonToTest );
 
  bool			GetMouseButtonReleased( int a_iMouseButtonToTest );
+
+ bool			GetLMBClick( );
 
 	//create a sprite (returns a spriteID)
 	//This also creates a GLAHEntity that maps to the sprite ID
@@ -33,6 +37,8 @@ void			RemoveInputListener();
 								SDL_Texture* parentSprite_ = nullptr, //sprite to parent to (nullptr if none)
 								Vector2 childOffsetInfo_ = Vector2(0.f,0.f), //x=child pos based on parent rot, y=distance from parent centre
 								SColour colour_ = SColour(0xFF,0xFF,0xFF,0xFF)); //RGBA (white default)
+
+
 	
 								
 
