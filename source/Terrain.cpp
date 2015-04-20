@@ -117,6 +117,30 @@ void Terrain::Draw()
 	}
 }
 
+TerrainTile* Terrain::TileAtDirection(TerrainTile* origin_, Vector2 dir_)
+{
+	int row = origin_->row;
+	int col = origin_->col;
+
+	if (dir_.x > 0.6) //heading right
+	{
+		return TileAt(row, col + 1);
+	}
+	else if (dir_.x < -0.6) //heading left
+	{
+		return TileAt(row, col - 1);
+	}
+	else if (dir_.y > 0.6) //heading down
+	{
+		return TileAt(row + 1, col);
+	}
+	else if (dir_.y < -0.6) //heading up
+	{	
+		return TileAt(row - 1, col);
+	}
+	return nullptr;
+}
+
 TerrainTile* Terrain::TileAt(int row_, int col_)
 {
 	//TODO bounds checking. 

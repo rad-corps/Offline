@@ -81,6 +81,7 @@ EnemyList::EnemyList(Terrain* terrain_)
 	textures.push_back(CreateSprite("./resources/images/enemyBack.png", TILE_SIZE, TILE_SIZE));
 	textures.push_back(CreateSprite("./resources/images/enemySide.png", TILE_SIZE, TILE_SIZE));
 	nodeTexture = CreateSprite("./resources/images/node.png", TILE_SIZE, TILE_SIZE);
+	viewTexture = CreateSprite("./resources/images/enemyView.png", TILE_SIZE, TILE_SIZE);
 	addingNodes = false;
 }
 EnemyList::~EnemyList()
@@ -114,6 +115,10 @@ EnemyList::Draw()
 		{
 			tempTexture = textures[1];
 		}
+
+		TerrainTile* nextTile = terrain->TileAtDirection(terrain->TileAtMouseCoords(enemy.Pos().x, enemy.Pos().y), enemy.direction);
+		MoveSprite(viewTexture, nextTile->Pos().x, nextTile->Pos().y);
+		DrawSprite(viewTexture);
 
 		MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);
 		DrawSprite(tempTexture, flip);

@@ -59,5 +59,6 @@ private:
 	std::vector<SDL_Texture*> textures;
 	//SDL_Texture * texture;
 	SDL_Texture * nodeTexture;
+	SDL_Texture * viewTexture;
 	Terrain* terrain;
 };
