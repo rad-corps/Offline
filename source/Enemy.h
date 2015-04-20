@@ -14,7 +14,7 @@ class Enemy
 {
 public:
 
-	Enemy();
+	Enemy(Terrain* terrain_);
 	~Enemy();
 
 	void Update(float delta_);
@@ -29,8 +29,10 @@ private:
 	SDL_Texture* enemyTexture;
 	
 	Vector2 pos;
-	std::vector<TerrainTile*> path;
-	std::vector<TerrainTile*>::iterator nextNode;
+	std::vector<TerrainTile*> goalNodes;
+	int nextGoalNode;
+	std::vector<TerrainTile*> navigationList;
+	Terrain* terrain;
 	bool loopPath;
 };
 

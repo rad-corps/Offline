@@ -28,7 +28,6 @@ Terrain::Terrain(int w_, int h_)
 		}
 	}
 
-	tileArray[1][1]->type = BUILDING_WALL;
 	drawType = TREE;
 }
 
