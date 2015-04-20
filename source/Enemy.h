@@ -20,7 +20,7 @@ public:
 
 	void Update(float delta_);
 	void SetPos(int x_, int y_);
-	void SetTexture(SDL_Texture* texture_);
+	//void SetTexture(SDL_Texture* texture_);
 	Vector2 Pos();
 	void AddNode(TerrainTile* tile_);
 
@@ -35,6 +35,7 @@ private:
 	std::vector<TerrainTile*> navigationList;
 	Terrain* terrain;
 	bool loopPath;
+	Vector2 direction;
 };
 
 class EnemyList : public InputListener
@@ -55,7 +56,8 @@ public:
 private:
 	bool addingNodes;
 	std::vector<Enemy> enemyList;
-	SDL_Texture * texture;
+	std::vector<SDL_Texture*> textures;
+	//SDL_Texture * texture;
 	SDL_Texture * nodeTexture;
 	Terrain* terrain;
 };

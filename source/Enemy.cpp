@@ -21,11 +21,11 @@ Vector2 Enemy::Pos()
 	return pos;
 }
 
-
-void Enemy::SetTexture(SDL_Texture* texture_)
-{
-	enemyTexture = texture_;
-}
+//
+//void Enemy::SetTexture(SDL_Texture* texture_)
+//{
+//	enemyTexture = texture_;
+//}
 
 void Enemy::Update(float delta_)
 {
@@ -45,7 +45,7 @@ void Enemy::Update(float delta_)
 		else
 		{
 			//TODO FIX - .GetNormal does not work on vector with Magnitude of 0
-			Vector2 direction = (nextNodePos - pos).GetNormal();
+			direction = (nextNodePos - pos).GetNormal();
 			Vector2 velocity = (direction * 50) * delta_;
 			pos += velocity;
 		}
@@ -77,7 +77,9 @@ void Enemy::AddNode(TerrainTile* tile_)
 EnemyList::EnemyList(Terrain* terrain_)
 {
 	terrain = terrain_;
-	texture = CreateSprite("./resources/images/enemy.png", TILE_SIZE, TILE_SIZE);
+	textures.push_back(CreateSprite("./resources/images/enemyFront.png", TILE_SIZE, TILE_SIZE));
+	textures.push_back(CreateSprite("./resources/images/enemyBack.png", TILE_SIZE, TILE_SIZE));
+	textures.push_back(CreateSprite("./resources/images/enemySide.png", TILE_SIZE, TILE_SIZE));
 	nodeTexture = CreateSprite("./resources/images/node.png", TILE_SIZE, TILE_SIZE);
 	addingNodes = false;
 }
@@ -89,12 +91,32 @@ EnemyList::~EnemyList()
 void
 EnemyList::Draw()
 {
-
 	//draw the enemies
 	for (auto& enemy : enemyList)
 	{
-		MoveSprite(texture, enemy.Pos().x, enemy.Pos().y);
-		DrawSprite(texture);	
+		bool flip = false;
+		//which way is the enemy heading? 
+		SDL_Texture * tempTexture;
+		if (enemy.direction.x > 0.6) //heading right
+		{
+			flip = true;
+			tempTexture = textures[2];
+		}
+		else if (enemy.direction.x < -0.6) //heading left
+		{
+			tempTexture = textures[2];
+		}
+		else if (enemy.direction.y > 0.6) //heading down
+		{
+			tempTexture = textures[0];
+		}
+		else if (enemy.direction.y < -0.6) //heading up
+		{
+			tempTexture = textures[1];
+		}
+
+		MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);
+		DrawSprite(tempTexture, flip);
 
 		//draw the nodes
 		for (auto& terrainTile : enemy.goalNodes)
@@ -105,10 +127,8 @@ EnemyList::Draw()
 	}
 }
 
-
 void EnemyList::Update(float delta_)
-{
-	
+{	
 	addingNodes = false; 
 
 	for (auto& enemy : enemyList)
@@ -120,7 +140,7 @@ void EnemyList::Update(float delta_)
 void EnemyList::CreateEnemy(int x_, int y_)
 {
  	Enemy temp(terrain);
- 	temp.SetTexture(texture);
+ 	//temp.SetTexture(texture);
  	temp.SetPos(x_, y_);
  	enemyList.push_back(temp);
 	enemyList[enemyList.size() - 1].AddNode(terrain->TileAtMouseCoords(x_, y_));
