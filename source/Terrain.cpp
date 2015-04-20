@@ -111,6 +111,7 @@ void Terrain::Draw()
 	{
 		for (int col = 0; col < tileArray[0].size(); ++col)
 		{
+			Draw(GRASS, row, col);
 			//get the type
 			Draw(tileArray[row][col]->type, row, col);
 		}
