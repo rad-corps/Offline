@@ -39,6 +39,7 @@ void Enemy::Update(float delta_)
 		//if reached pop it off the top
 		if ((pos - nextNode->Pos()).GetMagnitude() < 1.0f)
 		{
+			pos = nextNode->Pos();
 			navigationList.erase(navigationList.end() - 1);
 		}
 		else
@@ -77,6 +78,7 @@ EnemyList::EnemyList(Terrain* terrain_)
 {
 	terrain = terrain_;
 	texture = CreateSprite("./resources/images/enemy.png", TILE_SIZE, TILE_SIZE);
+	nodeTexture = CreateSprite("./resources/images/node.png", TILE_SIZE, TILE_SIZE);
 	addingNodes = false;
 }
 EnemyList::~EnemyList()
@@ -87,10 +89,18 @@ EnemyList::~EnemyList()
 void
 EnemyList::Draw()
 {
+	//draw the enemies
 	for (auto& enemy : enemyList)
 	{
 		MoveSprite(texture, enemy.Pos().x, enemy.Pos().y);
 		DrawSprite(texture);	
+
+		//draw the nodes
+		for (auto& terrainTile : enemy.goalNodes)
+		{
+			MoveSprite(nodeTexture, terrainTile->Pos().x, terrainTile->Pos().y);
+			DrawSprite(nodeTexture);
+		}
 	}
 }
 
@@ -112,6 +122,7 @@ void EnemyList::CreateEnemy(int x_, int y_)
  	temp.SetTexture(texture);
  	temp.SetPos(x_, y_);
  	enemyList.push_back(temp);
+	enemyList[enemyList.size() - 1].AddNode(terrain->TileAtMouseCoords(x_, y_));
  }
 
  void EnemyList::UserInputGameSetup()

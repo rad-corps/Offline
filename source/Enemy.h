@@ -12,6 +12,7 @@
 
 class Enemy
 {
+	friend class EnemyList;
 public:
 
 	Enemy(Terrain* terrain_);
@@ -55,5 +56,6 @@ private:
 	bool addingNodes;
 	std::vector<Enemy> enemyList;
 	SDL_Texture * texture;
+	SDL_Texture * nodeTexture;
 	Terrain* terrain;
 };

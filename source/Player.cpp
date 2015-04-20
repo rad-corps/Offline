@@ -92,6 +92,7 @@ void Player::Update(float delta_)
 		//if reached pop it off the top
 		if ((pos - nextNode->Pos()).GetMagnitude() < 1.0f)
 		{
+			pos = nextNode->Pos();
 			navigationList.erase(navigationList.end() - 1);
 		}
 		else
