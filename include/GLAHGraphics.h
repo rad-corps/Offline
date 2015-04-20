@@ -77,6 +77,8 @@ void			ReplaceInputListener(InputListener* inputListener_, int index_);
 
 	SDL_Window*		GetWindow();
 
+	void			DrawLine(int xOrigin_, int yOrigin_, int xDest_, int yDest_);
+
 	//NOT YET IMPLEMENTED
 	void			ClearScreen();	
 	unsigned int	DuplicateSprite			( unsigned int spriteID_ );

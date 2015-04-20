@@ -89,6 +89,7 @@ EnemyList::~EnemyList()
 void
 EnemyList::Draw()
 {
+
 	//draw the enemies
 	for (auto& enemy : enemyList)
 	{

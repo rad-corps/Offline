@@ -66,6 +66,11 @@ SDL_Window*		GetWindow()
 	return window;
 }
 
+void DrawLine(int xOrigin_, int yOrigin_, int xDest_, int yDest_)
+{
+	SDL_RenderDrawLine(renderer, xOrigin_, yOrigin_, xDest_, yDest_);
+}
+
 //one at a time. 
 void AddInputListener(InputListener* listener_)
 {
