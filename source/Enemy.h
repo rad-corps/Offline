@@ -36,6 +36,8 @@ private:
 	Terrain* terrain;
 	bool loopPath;
 	Vector2 direction;
+	float animationTimer;
+	int animSwitch;
 };
 
 class EnemyList : public InputListener
@@ -54,6 +56,7 @@ public:
 	virtual void MouseDown(int mouseButton){}
 
 private:
+	void DrawViewFrustrum(Enemy* enemy_);
 	bool addingNodes;
 	std::vector<Enemy> enemyList;
 	std::vector<SDL_Texture*> textures;

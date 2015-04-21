@@ -11,6 +11,8 @@ Enemy::Enemy(Terrain* terrain_)
 {
 	terrain = terrain_;
 	nextGoalNode = 0;
+	animationTimer = 0.0f;
+	animSwitch = 0;
 }
 
 Enemy::~Enemy()
@@ -29,6 +31,13 @@ Vector2 Enemy::Pos()
 
 void Enemy::Update(float delta_)
 {
+	animationTimer += delta_;
+	if ( animationTimer > 0.6f)
+	{
+		animationTimer = 0.0f;
+		animSwitch++;
+	}
+
 	//while the navigationList is not empty. 
 	if (!navigationList.empty())
 	{
@@ -80,12 +89,49 @@ EnemyList::EnemyList(Terrain* terrain_)
 	textures.push_back(CreateSprite("./resources/images/enemyFront.png", TILE_SIZE, TILE_SIZE));
 	textures.push_back(CreateSprite("./resources/images/enemyBack.png", TILE_SIZE, TILE_SIZE));
 	textures.push_back(CreateSprite("./resources/images/enemySide.png", TILE_SIZE, TILE_SIZE));
+	textures.push_back(CreateSprite("./resources/images/armyfront1.png", TILE_SIZE, TILE_SIZE));
+	textures.push_back(CreateSprite("./resources/images/armyfront2.png", TILE_SIZE, TILE_SIZE));
 	nodeTexture = CreateSprite("./resources/images/node.png", TILE_SIZE, TILE_SIZE);
 	viewTexture = CreateSprite("./resources/images/enemyView.png", TILE_SIZE, TILE_SIZE);
+
 	addingNodes = false;
 }
 EnemyList::~EnemyList()
 {
+}
+
+void EnemyList::DrawViewFrustrum(Enemy* enemy_)
+{
+	TerrainTile* prevTile = terrain->TileAtMouseCoords(enemy_->Pos().x, enemy_->Pos().y);
+
+	for (int i = 0; i < 10; ++i )
+	{
+		TerrainTile* nextTile = terrain->TileAtDirection(prevTile, enemy_->direction);
+		prevTile = nextTile;
+
+		//get the tiles 90deg in either direction
+		std::vector<TerrainTile*> fanTiles;
+		for (int j = 0; j < i; ++j)
+		{
+			fanTiles.push_back(terrain->TileAtDirection(prevTile, enemy_->direction.Rotate90(true), j + 1));
+			fanTiles.push_back(terrain->TileAtDirection(prevTile, enemy_->direction.Rotate90(false), j + 1));
+		}
+
+		if ( nextTile != nullptr )
+		{
+			MoveSprite(viewTexture, nextTile->Pos().x, nextTile->Pos().y);
+			DrawSprite(viewTexture);
+
+			for ( auto& terrainTile : fanTiles)
+			{
+				if ( terrainTile != nullptr)
+				{
+					MoveSprite(viewTexture, terrainTile->Pos().x, terrainTile->Pos().y);
+					DrawSprite(viewTexture);
+				}
+			}
+		}
+	}
 }
 
 //EnemyList
@@ -109,19 +155,23 @@ EnemyList::Draw()
 		}
 		else if (enemy.direction.y > 0.6) //heading down
 		{
-			tempTexture = textures[0];
+			if ( enemy.animSwitch % 2 == 0 )
+				tempTexture = textures[3];
+			else
+				tempTexture = textures[4];
 		}
 		else if (enemy.direction.y < -0.6) //heading up
 		{
 			tempTexture = textures[1];
 		}
 
-		TerrainTile* nextTile = terrain->TileAtDirection(terrain->TileAtMouseCoords(enemy.Pos().x, enemy.Pos().y), enemy.direction);
-		MoveSprite(viewTexture, nextTile->Pos().x, nextTile->Pos().y);
-		DrawSprite(viewTexture);
 
+		//draw an enemy
 		MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);
 		DrawSprite(tempTexture, flip);
+
+		//draw the enemies view
+		DrawViewFrustrum(&enemy);
 
 		//draw the nodes
 		for (auto& terrainTile : enemy.goalNodes)

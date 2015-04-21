@@ -118,33 +118,41 @@ void Terrain::Draw()
 	}
 }
 
-TerrainTile* Terrain::TileAtDirection(TerrainTile* origin_, Vector2 dir_)
+TerrainTile* Terrain::TileAtDirection(TerrainTile* origin_, Vector2 dir_, int distance_)
 {
+	if ( origin_ == nullptr)
+		return nullptr;
+
 	int row = origin_->row;
 	int col = origin_->col;
 
 	if (dir_.x > 0.6) //heading right
 	{
-		return TileAt(row, col + 1);
+		return TileAt(row, col + distance_);
 	}
 	else if (dir_.x < -0.6) //heading left
 	{
-		return TileAt(row, col - 1);
+		return TileAt(row, col - distance_);
 	}
 	else if (dir_.y > 0.6) //heading down
 	{
-		return TileAt(row + 1, col);
+		return TileAt(row + distance_, col);
 	}
 	else if (dir_.y < -0.6) //heading up
 	{	
-		return TileAt(row - 1, col);
+		return TileAt(row - distance_, col);
 	}
 	return nullptr;
 }
 
 TerrainTile* Terrain::TileAt(int row_, int col_)
 {
-	//TODO bounds checking. 
+	if ( row_ < 0 || row_ > tileArray.size() - 1)
+		return nullptr;
+
+	if ( col_ < 0 || col_ > tileArray[row_].size() - 1)
+		return nullptr;
+
 	return tileArray[row_][col_];
 }
 

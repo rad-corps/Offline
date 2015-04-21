@@ -73,7 +73,7 @@ public:
 	void Update(float delta_);
 	void Draw();
 	void SetTileDrawType(TERRAIN_TILE_TYPE type_);
-	TerrainTile* TileAtDirection(TerrainTile* origin_, Vector2 dir_);
+	TerrainTile* TileAtDirection(TerrainTile* origin_, Vector2 dir_, int distance_ = 1);
 	TerrainTile* TileAt(int row_, int col_);
 	TerrainTile* TileAtMouseCoords(int x_, int y_);
 	std::vector<TerrainTile*> Edges(TerrainTile* tile_);
