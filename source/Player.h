@@ -18,6 +18,8 @@ public:
 	void UserInput(Terrain* terrain_);
 	void SetPlaying(bool playing_);
 
+	Vector2 Pos();
+
 	//InputListener interface requirement
 	virtual void KeyStroke(SDL_Keycode key_);
 	virtual void MouseClick(int mouseButton);

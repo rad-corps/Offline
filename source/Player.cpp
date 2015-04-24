@@ -16,6 +16,11 @@ Player::~Player()
 {
 }
 
+Vector2 Player::Pos()
+{
+	return pos;
+}
+
 void Player::SetPlaying(bool playing_)
 {
 	playing = playing_;

@@ -13,6 +13,7 @@ Enemy::Enemy(Terrain* terrain_)
 	nextGoalNode = 0;
 	animationTimer = 0.0f;
 	animSwitch = 0;
+	behaviour = EB_PATROL;
 }
 
 Enemy::~Enemy()
@@ -38,36 +39,44 @@ void Enemy::Update(float delta_)
 		animSwitch++;
 	}
 
-	//while the navigationList is not empty. 
-	if (!navigationList.empty())
+	if ( behaviour == EB_PATROL )
 	{
-		//get the next node and move towards it
-		TerrainTile* nextNode = navigationList[navigationList.size() - 1];
-		Vector2 nextNodePos = nextNode->Pos();
 
-		//if reached pop it off the top
-		if ((pos - nextNode->Pos()).GetMagnitude() < 1.0f)
+		//while the navigationList is not empty. 
+		if (!navigationList.empty())
 		{
-			pos = nextNode->Pos();
-			navigationList.erase(navigationList.end() - 1);
+			//get the next node and move towards it
+			TerrainTile* nextNode = navigationList[navigationList.size() - 1];
+			Vector2 nextNodePos = nextNode->Pos();
+
+			//if reached pop it off the top
+			if ((pos - nextNode->Pos()).GetMagnitude() < 1.0f)
+			{
+				pos = nextNode->Pos();
+				navigationList.erase(navigationList.end() - 1);
+			}
+			else
+			{
+				//TODO FIX - .GetNormal does not work on vector with Magnitude of 0
+				direction = (nextNodePos - pos).GetNormal();
+				Vector2 velocity = (direction * 50) * delta_;
+				pos += velocity;
+			}
 		}
 		else
 		{
-			//TODO FIX - .GetNormal does not work on vector with Magnitude of 0
-			direction = (nextNodePos - pos).GetNormal();
-			Vector2 velocity = (direction * 50) * delta_;
-			pos += velocity;
-		}
-	}
-	else
-	{
-		//increment nextGoalNode
-		++nextGoalNode;
-		if (nextGoalNode == goalNodes.size())
-			nextGoalNode = 0;
+			//increment nextGoalNode
+			++nextGoalNode;
+			if (nextGoalNode == goalNodes.size())
+				nextGoalNode = 0;
 
-		//get the navlist
-		navigationList = terrain->ShortestPath(terrain->TileAtMouseCoords(pos.x, pos.y), goalNodes[nextGoalNode]);
+			//get the navlist
+			navigationList = terrain->ShortestPath(terrain->TileAtMouseCoords(pos.x, pos.y), goalNodes[nextGoalNode]);
+		}
+	}//if (behaviour == EB_PATROL)
+	else if ( behaviour == EB_PURSUE)
+	{
+		std::cout << "behaviour == EB_PURSUE" << std::endl;
 	}
 }
 
@@ -83,7 +92,7 @@ void Enemy::AddNode(TerrainTile* tile_)
 }
 
 //EnemyList
-EnemyList::EnemyList(Terrain* terrain_)
+EnemyList::EnemyList(Terrain* terrain_, Player * player_)
 {
 	terrain = terrain_;
 	textures.push_back(CreateSprite("./resources/images/enemyFront.png", TILE_SIZE, TILE_SIZE));
@@ -93,8 +102,8 @@ EnemyList::EnemyList(Terrain* terrain_)
 	textures.push_back(CreateSprite("./resources/images/armyfront2.png", TILE_SIZE, TILE_SIZE));
 	nodeTexture = CreateSprite("./resources/images/node.png", TILE_SIZE, TILE_SIZE);
 	viewTexture = CreateSprite("./resources/images/enemyView.png", TILE_SIZE, TILE_SIZE);
-
 	addingNodes = false;
+	player = player_;
 }
 EnemyList::~EnemyList()
 {
@@ -103,18 +112,26 @@ EnemyList::~EnemyList()
 void EnemyList::DrawViewFrustrum(Enemy* enemy_)
 {
 	TerrainTile* prevTile = terrain->TileAtMouseCoords(enemy_->Pos().x, enemy_->Pos().y);
+	TerrainTile* playerTile = terrain->TileAtMouseCoords(player->Pos().x, player->Pos().y);
 
-	for (int i = 0; i < 10; ++i )
+	for (int dist = 0; dist < 10; ++dist )
 	{
 		TerrainTile* nextTile = terrain->TileAtDirection(prevTile, enemy_->direction);
 		prevTile = nextTile;
 
 		//get the tiles 90deg in either direction
 		std::vector<TerrainTile*> fanTiles;
-		for (int j = 0; j < i; ++j)
+		for (int width = 0; width < dist; ++width)
 		{
-			fanTiles.push_back(terrain->TileAtDirection(prevTile, enemy_->direction.Rotate90(true), j + 1));
-			fanTiles.push_back(terrain->TileAtDirection(prevTile, enemy_->direction.Rotate90(false), j + 1));
+			TerrainTile* tempTile1 = terrain->TileAtDirection(prevTile, enemy_->direction.Rotate90(true), width + 1);
+			TerrainTile* tempTile2 = terrain->TileAtDirection(prevTile, enemy_->direction.Rotate90(false), width + 1);
+			fanTiles.push_back(tempTile1);
+			fanTiles.push_back(tempTile2);
+
+			if ( tempTile1 == playerTile || tempTile2 == playerTile)
+			{
+				enemy_->behaviour = EB_PURSUE;
+			}
 		}
 
 		if ( nextTile != nullptr )
@@ -164,7 +181,6 @@ EnemyList::Draw()
 		{
 			tempTexture = textures[1];
 		}
-
 
 		//draw an enemy
 		MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);

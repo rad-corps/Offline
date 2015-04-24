@@ -34,7 +34,7 @@ GameController::GameController()
 
 	terrain = new Terrain(SCREEN_W / TILE_SIZE, SCREEN_H / TILE_SIZE);
 	player = new Player(terrain);
-	enemyList = new EnemyList(terrain);
+	enemyList = new EnemyList(terrain, player);
 
 	AddInputListener(this);
 	AddInputListener(terrain);

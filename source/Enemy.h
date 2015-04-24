@@ -7,8 +7,13 @@
 #include <vector>
 #include "Terrain.h"
 #include "InputListener.h"
+#include "Player.h"
 
-
+enum EnemyBehaviour
+{
+	EB_PATROL,
+	EB_PURSUE
+};
 
 class Enemy
 {
@@ -38,12 +43,15 @@ private:
 	Vector2 direction;
 	float animationTimer;
 	int animSwitch;
+
+	EnemyBehaviour behaviour;
+
 };
 
 class EnemyList : public InputListener
 {
 public:
-	EnemyList(Terrain* terrain_);
+	EnemyList(Terrain* terrain_, Player* player_);
 	~EnemyList();
 	void Draw();
 	void Update(float delta_);
@@ -64,4 +72,5 @@ private:
 	SDL_Texture * nodeTexture;
 	SDL_Texture * viewTexture;
 	Terrain* terrain;
+	Player* player;
 };
