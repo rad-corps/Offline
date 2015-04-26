@@ -114,7 +114,7 @@ void EnemyList::DrawViewFrustrum(Enemy* enemy_)
 	TerrainTile* prevTile = terrain->TileAtMouseCoords(enemy_->Pos().x, enemy_->Pos().y);
 	TerrainTile* playerTile = terrain->TileAtMouseCoords(player->Pos().x, player->Pos().y);
 
-	for (int dist = 0; dist < 10; ++dist )
+	for (int dist = 0; dist < 6; ++dist )
 	{
 		TerrainTile* nextTile = terrain->TileAtDirection(prevTile, enemy_->direction);
 		prevTile = nextTile;
