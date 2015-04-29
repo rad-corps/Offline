@@ -54,9 +54,9 @@ void Enemy::Update(float delta_)
 			Vector2 nextNodePos = nextNode->Pos();
 
 			//if reached pop it off the top
-			if ((pos - nextNode->Pos()).GetMagnitude() < 1.0f)
+			if ((pos - nextNode->Pos()).GetMagnitude() < 1.f)
 			{
-				pos = nextNode->Pos();
+				//pos = nextNode->Pos();
 				currentTile = *(navigationList.end() - 1);
 				navigationList.erase(navigationList.end() - 1);
 			}
@@ -66,6 +66,7 @@ void Enemy::Update(float delta_)
 				direction = (nextNodePos - pos).GetNormal();
 				Vector2 velocity = (direction * 50) * delta_;
 				velocity *= 1.f/(float)currentTile->Cost();
+				cout << velocity << endl;
 				pos += velocity;
 			}
 		}
@@ -190,8 +191,8 @@ EnemyList::Draw()
 		}
 
 		//draw an enemy
-		MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);
-		DrawSprite(tempTexture, flip);
+		//MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);
+		//DrawSprite(tempTexture, flip);
 
 		//draw the current tile
 		if (enemy.currentTile != nullptr)

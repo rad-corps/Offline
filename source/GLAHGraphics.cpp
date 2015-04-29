@@ -332,12 +332,8 @@ int Initialise(int a_iWidth, int a_iHeight, bool a_bFullscreen, const char* a_pW
 //GLAH::DrawSprite ( unsigned int spriteID_)
 void DrawSprite(SDL_Texture* sprite_, bool xFlip_, float alpha_, SDL_Point* origin_)
 {
-
 	//get information about the sprite
 	GLAHEntity entity = spriteList[sprite_];
-	
-	Vector2 parentPos(0.0f,0.0f);
-	Vector2 offset(0.0f,0.0f);
 		
 	float xSize = entity.size.x * entity.scaleX;
 	float ySize = entity.size.y * entity.scaleY;
