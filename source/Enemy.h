@@ -34,6 +34,7 @@ private:
 	//TODO: Make this static
 	SDL_Texture* enemyTexture;
 	
+	
 	Vector2 pos;
 	std::vector<TerrainTile*> goalNodes;
 	int nextGoalNode;
@@ -72,6 +73,7 @@ private:
 	SDL_Texture * nodeTexture;
 	SDL_Texture * viewTexture;
 	Terrain* terrain;
+	SDL_Texture* currentTileTexture;
 
 	Player* player;
 };

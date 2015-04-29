@@ -2,7 +2,7 @@
 //Author: Adam Hulbert
 //
 
-
+#include "CONSTS.h"
 #include <stdio.h>
 
 #include "GLAHGraphics.h"
@@ -338,48 +338,20 @@ void DrawSprite(SDL_Texture* sprite_, bool xFlip_, float alpha_, SDL_Point* orig
 	
 	Vector2 parentPos(0.0f,0.0f);
 	Vector2 offset(0.0f,0.0f);
-	SDL_Rect src, dst;
-	
-	//get parent position and rotation
-	if ( entity.parentSprite != nullptr ) 
-	{
-		offset = GetGLAHChildCentrePosition(sprite_);
-
-		float xSize = entity.size.x * entity.scaleX;
-		float ySize = entity.size.y * entity.scaleY;
-				
-		//TODO Find all 768 and change to a screen height variable 
-		SDL_Rect src = { 0, 0, static_cast<int>(entity.size.x), static_cast<int>(entity.size.y) };
-		SDL_Rect dst = { static_cast<int>(offset.x - (xSize / 2)), static_cast<int>(768 - offset.y - (ySize / 2)), static_cast<int>(xSize), static_cast<int>(ySize) };
-		//SDL_Rect dst = { offset.x , 768 - offset.y , xSize, ySize };
-
-		//flipping horizontally?
-		SDL_RendererFlip flip = SDL_FLIP_NONE;
-		if ( xFlip_ )
-		{
-			flip = SDL_FLIP_HORIZONTAL;
-		}
-	
-		//SDL_RenderCopyEx( renderer, sprite_, &src, &dst, entity.rotation * 57.2957795f, nullptr, flip );
-		SDL_RenderCopyEx( renderer, sprite_, NULL, &dst, entity.rotation * 57.2957795f, nullptr, flip );
-	}
-	else
-	{
-		float xSize = entity.size.x * entity.scaleX;
-		float ySize = entity.size.y * entity.scaleY;
-		SDL_Rect src = { 0, 0, static_cast<int>(entity.size.x), static_cast<int>(entity.size.y)};
-		//SDL_Rect dst = { entity.position.x - (xSize / 2), 768 - entity.position.y + (ySize / 2), xSize, ySize };
-		SDL_Rect dst = { static_cast<int>(entity.position.x) , static_cast<int>(entity.position.y) , static_cast<int>(xSize), static_cast<int>(ySize) };
-
-		//flipping horizontally?
-		SDL_RendererFlip flip = SDL_FLIP_NONE;
-		if ( xFlip_ )
-		{
-			flip = SDL_FLIP_HORIZONTAL;
-		}
 		
-		SDL_RenderCopyEx( renderer, sprite_, NULL, &dst, entity.rotation * 57.2957795f, origin_, flip );
+	float xSize = entity.size.x * entity.scaleX;
+	float ySize = entity.size.y * entity.scaleY;
+	SDL_Rect src = { 0, 0, static_cast<int>(entity.size.x), static_cast<int>(entity.size.y)};
+	//SDL_Rect dst = { static_cast<int>(entity.position.x) - xSize * 0.5f, static_cast<int>(entity.position.y) + ySize * 0.5f, static_cast<int>(xSize), static_cast<int>(ySize) };
+	SDL_Rect dst = { static_cast<int>(entity.position.x), static_cast<int>(entity.position.y), static_cast<int>(xSize), static_cast<int>(ySize) };
+
+	//flipping horizontally?
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	if ( xFlip_ )
+	{
+		flip = SDL_FLIP_HORIZONTAL;
 	}
+	SDL_RenderCopyEx( renderer, sprite_, NULL, &dst, entity.rotation * 57.2957795f, origin_, flip );	
 }
 
 //GLAH::DrawSprite

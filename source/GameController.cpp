@@ -10,9 +10,7 @@
 #include "CONSTS.h"
 
 using namespace std;
-#define INVADERS_FONT "./fonts/feisarv5.fnt"
-#define SCREEN_W 1024
-#define SCREEN_H 768
+
 
 GameController::GameController()
 {

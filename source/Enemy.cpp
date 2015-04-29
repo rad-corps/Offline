@@ -14,6 +14,8 @@ Enemy::Enemy(Terrain* terrain_)
 	animationTimer = 0.0f;
 	animSwitch = 0;
 	behaviour = EB_PATROL;
+	currentTile = nullptr;
+	
 }
 
 Enemy::~Enemy()
@@ -106,6 +108,7 @@ EnemyList::EnemyList(Terrain* terrain_, Player * player_)
 	textures.push_back(CreateSprite("./resources/images/armyfront2.png", TILE_SIZE, TILE_SIZE));
 	nodeTexture = CreateSprite("./resources/images/node.png", TILE_SIZE, TILE_SIZE);
 	viewTexture = CreateSprite("./resources/images/enemyView.png", TILE_SIZE, TILE_SIZE);
+	currentTileTexture = CreateSprite("./resources/images/current_tile.png", TILE_SIZE, TILE_SIZE);
 	addingNodes = false;
 	player = player_;
 }
@@ -189,6 +192,13 @@ EnemyList::Draw()
 		//draw an enemy
 		MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);
 		DrawSprite(tempTexture, flip);
+
+		//draw the current tile
+		if (enemy.currentTile != nullptr)
+		{
+			MoveSprite(currentTileTexture, enemy.currentTile->Pos().x, enemy.currentTile->Pos().y);
+			DrawSprite(currentTileTexture);
+		}
 
 		//draw the enemies view
 		DrawViewFrustrum(&enemy);
