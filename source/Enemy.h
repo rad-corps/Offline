@@ -43,7 +43,7 @@ private:
 	Vector2 direction;
 	float animationTimer;
 	int animSwitch;
-
+	TerrainTile* currentTile;
 	EnemyBehaviour behaviour;
 
 };
@@ -72,5 +72,6 @@ private:
 	SDL_Texture * nodeTexture;
 	SDL_Texture * viewTexture;
 	Terrain* terrain;
+
 	Player* player;
 };

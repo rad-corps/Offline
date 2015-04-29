@@ -39,6 +39,8 @@ void Enemy::Update(float delta_)
 		animSwitch++;
 	}
 
+	
+
 	if ( behaviour == EB_PATROL )
 	{
 
@@ -53,6 +55,7 @@ void Enemy::Update(float delta_)
 			if ((pos - nextNode->Pos()).GetMagnitude() < 1.0f)
 			{
 				pos = nextNode->Pos();
+				currentTile = *(navigationList.end() - 1);
 				navigationList.erase(navigationList.end() - 1);
 			}
 			else
@@ -60,6 +63,7 @@ void Enemy::Update(float delta_)
 				//TODO FIX - .GetNormal does not work on vector with Magnitude of 0
 				direction = (nextNodePos - pos).GetNormal();
 				Vector2 velocity = (direction * 50) * delta_;
+				velocity *= 1.f/(float)currentTile->Cost();
 				pos += velocity;
 			}
 		}
