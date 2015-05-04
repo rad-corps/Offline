@@ -118,7 +118,7 @@ EnemyList::~EnemyList()
 
 void EnemyList::DrawViewFrustrum(Enemy* enemy_)
 {
-	TerrainTile* prevTile = terrain->TileAtMouseCoords(enemy_->Pos().x, enemy_->Pos().y);
+	TerrainTile* prevTile = terrain->TileAtDirection(enemy_->currentTile, enemy_->direction);
 	TerrainTile* playerTile = terrain->TileAtMouseCoords(player->Pos().x, player->Pos().y);
 
 	for (int dist = 0; dist < 6; ++dist )
@@ -130,8 +130,8 @@ void EnemyList::DrawViewFrustrum(Enemy* enemy_)
 		std::vector<TerrainTile*> fanTiles;
 		for (int width = 0; width < dist; ++width)
 		{
-			TerrainTile* tempTile1 = terrain->TileAtDirection(prevTile, enemy_->direction.Rotate90(true), width + 1);
-			TerrainTile* tempTile2 = terrain->TileAtDirection(prevTile, enemy_->direction.Rotate90(false), width + 1);
+			TerrainTile* tempTile1 = terrain->TileAtDirection(nextTile, enemy_->direction.Rotate90(true), width + 1);
+			TerrainTile* tempTile2 = terrain->TileAtDirection(nextTile, enemy_->direction.Rotate90(false), width + 1);
 			fanTiles.push_back(tempTile1);
 			fanTiles.push_back(tempTile2);
 
