@@ -14,8 +14,7 @@ Enemy::Enemy(Terrain* terrain_)
 	animationTimer = 0.0f;
 	animSwitch = 0;
 	behaviour = EB_PATROL;
-	currentTile = nullptr;
-	
+	currentTile = nullptr;	
 }
 
 Enemy::~Enemy()
@@ -41,7 +40,6 @@ void Enemy::Update(float delta_)
 		animSwitch++;
 	}
 
-	
 
 	if ( behaviour == EB_PATROL )
 	{
@@ -59,6 +57,7 @@ void Enemy::Update(float delta_)
 				//pos = nextNode->Pos();
 				currentTile = *(navigationList.end() - 1);
 				navigationList.erase(navigationList.end() - 1);
+				cout << "next tile: " << currentTile << endl;
 			}
 			else
 			{
@@ -66,7 +65,6 @@ void Enemy::Update(float delta_)
 				direction = (nextNodePos - pos).GetNormal();
 				Vector2 velocity = (direction * 50) * delta_;
 				velocity *= 1.f/(float)currentTile->Cost();
-				cout << velocity << endl;
 				pos += velocity;
 			}
 		}
@@ -78,7 +76,11 @@ void Enemy::Update(float delta_)
 				nextGoalNode = 0;
 
 			//get the navlist
-			navigationList = terrain->ShortestPath(terrain->TileAtMouseCoords(pos.x, pos.y), goalNodes[nextGoalNode]);
+			if ( currentTile == nullptr)
+				navigationList = terrain->ShortestPath(terrain->TileAtMouseCoords(pos.x, pos.y), goalNodes[nextGoalNode]);
+			else
+				navigationList = terrain->ShortestPath(currentTile, goalNodes[nextGoalNode]);
+			
 		}
 	}//if (behaviour == EB_PATROL)
 	else if ( behaviour == EB_PURSUE)
@@ -191,8 +193,8 @@ EnemyList::Draw()
 		}
 
 		//draw an enemy
-		//MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);
-		//DrawSprite(tempTexture, flip);
+		MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);
+		DrawSprite(tempTexture, flip);
 
 		//draw the current tile
 		if (enemy.currentTile != nullptr)

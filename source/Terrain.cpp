@@ -6,6 +6,12 @@
 
 using namespace std;
 
+std::ostream& operator<<(std::ostream& os, const TerrainTile* tile_)
+{
+	os << "col: " << tile_->col << "\t row: " << tile_->row;
+	return os;
+}
+
 Terrain::Terrain(int w_, int h_)
 {
 	//init the textures

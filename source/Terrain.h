@@ -18,6 +18,8 @@ enum TERRAIN_TILE_TYPE
 	WATER
 };
 
+
+
 struct TerrainTile
 {
 	TERRAIN_TILE_TYPE type;
@@ -37,6 +39,7 @@ struct TerrainTile
 			case DOOR:			return 9999999;
 			case WATER:			return 5;
 		}
+		return 0;
 	}
 
 	void Reset()
@@ -60,9 +63,9 @@ struct TerrainTile
 
 		Reset();
 	}
-
-
 };
+
+std::ostream& operator<<(std::ostream& os, const TerrainTile* tile_);
 
 class Terrain : public InputListener
 {
