@@ -111,7 +111,6 @@ void GameController::Run()
 		{
 			enemyList->Update(delta);
 			player->Update(delta);
-			enemyList->Update(delta);
 		}
 
 		//draw calls
