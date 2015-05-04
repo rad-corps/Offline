@@ -104,11 +104,8 @@ void Enemy::AddNode(TerrainTile* tile_)
 EnemyList::EnemyList(Terrain* terrain_, Player * player_)
 {
 	terrain = terrain_;
-	textures.push_back(CreateSprite("./resources/images/enemyFront.png", TILE_SIZE, TILE_SIZE));
-	textures.push_back(CreateSprite("./resources/images/enemyBack.png", TILE_SIZE, TILE_SIZE));
-	textures.push_back(CreateSprite("./resources/images/enemySide.png", TILE_SIZE, TILE_SIZE));
-	textures.push_back(CreateSprite("./resources/images/armyfront1.png", TILE_SIZE, TILE_SIZE));
-	textures.push_back(CreateSprite("./resources/images/armyfront2.png", TILE_SIZE, TILE_SIZE));
+	textures.push_back(CreateSprite("./resources/images/enemy1.png", TILE_SIZE, TILE_SIZE));
+	textures.push_back(CreateSprite("./resources/images/enemy2.png", TILE_SIZE, TILE_SIZE));
 	nodeTexture = CreateSprite("./resources/images/node.png", TILE_SIZE, TILE_SIZE);
 	viewTexture = CreateSprite("./resources/images/enemyView.png", TILE_SIZE, TILE_SIZE);
 	currentTileTexture = CreateSprite("./resources/images/current_tile.png", TILE_SIZE, TILE_SIZE);
@@ -168,40 +165,48 @@ EnemyList::Draw()
 	//draw the enemies
 	for (auto& enemy : enemyList)
 	{
+		SDL_Texture * tempTexture;
+		if (enemy.animSwitch % 2 == 0)
+		{
+			tempTexture = textures[0];
+		}
+		else
+		{
+			tempTexture = textures[1];
+		}
+
+
 		bool flip = false;
 		//which way is the enemy heading? 
-		SDL_Texture * tempTexture;
+		
 		if (enemy.direction.x > 0.6) //heading right
 		{
+			RotateSprite(tempTexture, (3.14 / 2));
 			flip = true;
-			tempTexture = textures[2];
 		}
 		else if (enemy.direction.x < -0.6) //heading left
 		{
-			tempTexture = textures[2];
+			RotateSprite(tempTexture, (3.14 / 2) * 3);
 		}
 		else if (enemy.direction.y > 0.6) //heading down
 		{
-			if ( enemy.animSwitch % 2 == 0 )
-				tempTexture = textures[3];
-			else
-				tempTexture = textures[4];
+			RotateSprite(tempTexture, (3.14 / 2) * 2);
 		}
 		else if (enemy.direction.y < -0.6) //heading up
 		{
-			tempTexture = textures[1];
+			RotateSprite(tempTexture, 0);
 		}
 
 		//draw an enemy
 		MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);
 		DrawSprite(tempTexture, flip);
 
-		//draw the current tile
-		if (enemy.currentTile != nullptr)
-		{
-			MoveSprite(currentTileTexture, enemy.currentTile->Pos().x, enemy.currentTile->Pos().y);
-			DrawSprite(currentTileTexture);
-		}
+		////draw the current tile
+		//if (enemy.currentTile != nullptr)
+		//{
+		//	MoveSprite(currentTileTexture, enemy.currentTile->Pos().x, enemy.currentTile->Pos().y);
+		//	DrawSprite(currentTileTexture);
+		//}
 
 		//draw the enemies view
 		DrawViewFrustrum(&enemy);
