@@ -15,6 +15,7 @@ Enemy::Enemy(Terrain* terrain_)
 	animSwitch = 0;
 	behaviour = EB_PATROL;
 	currentTile = nullptr;	
+	currentTerrainCost = 1;
 }
 
 Enemy::~Enemy()
@@ -51,6 +52,11 @@ void Enemy::Update(float delta_)
 			TerrainTile* nextNode = navigationList[navigationList.size() - 1];
 			Vector2 nextNodePos = nextNode->Pos();
 
+			if ((pos - nextNode->Pos()).GetMagnitude() < TILE_SIZE * 0.5f)
+			{
+				currentTerrainCost = nextNode->Cost();
+			}
+
 			//if reached pop it off the top
 			if ((pos - nextNode->Pos()).GetMagnitude() < 1.f)
 			{
@@ -64,7 +70,8 @@ void Enemy::Update(float delta_)
 				//TODO FIX - .GetNormal does not work on vector with Magnitude of 0
 				direction = (nextNodePos - pos).GetNormal();
 				Vector2 velocity = (direction * 50) * delta_;
-				velocity *= 1.f/(float)currentTile->Cost();
+				//velocity *= 1.f/(float)currentTile->Cost();
+				velocity *= 1.f / (float)currentTerrainCost;				
 				pos += velocity;
 			}
 		}
@@ -106,6 +113,7 @@ EnemyList::EnemyList(Terrain* terrain_, Player * player_)
 	terrain = terrain_;
 	textures.push_back(CreateSprite("./resources/images/enemy1.png", TILE_SIZE, TILE_SIZE));
 	textures.push_back(CreateSprite("./resources/images/enemy2.png", TILE_SIZE, TILE_SIZE));
+	textures.push_back(CreateSprite("./resources/images/enemy_attack.png", TILE_SIZE, TILE_SIZE));
 	nodeTexture = CreateSprite("./resources/images/node.png", TILE_SIZE, TILE_SIZE);
 	viewTexture = CreateSprite("./resources/images/enemyView.png", TILE_SIZE, TILE_SIZE);
 	currentTileTexture = CreateSprite("./resources/images/current_tile.png", TILE_SIZE, TILE_SIZE);
@@ -162,40 +170,53 @@ void EnemyList::DrawViewFrustrum(Enemy* enemy_)
 void
 EnemyList::Draw()
 {
+	bool flip = false;
 	//draw the enemies
 	for (auto& enemy : enemyList)
 	{
 		SDL_Texture * tempTexture;
-		if (enemy.animSwitch % 2 == 0)
+
+		if (enemy.behaviour == EB_PATROL)
 		{
-			tempTexture = textures[0];
+			if (enemy.animSwitch % 2 == 0)
+			{
+				tempTexture = textures[0];
+			}
+			else
+			{
+				tempTexture = textures[1];
+			}
+
+			//which way is the enemy heading? 
+			if (enemy.direction.x > 0.6) //heading right
+			{
+				RotateSprite(tempTexture, (3.14 / 2));
+				flip = true;
+			}
+			else if (enemy.direction.x < -0.6) //heading left
+			{
+				RotateSprite(tempTexture, (3.14 / 2) * 3);
+			}
+			else if (enemy.direction.y > 0.6) //heading down
+			{
+				RotateSprite(tempTexture, (3.14 / 2) * 2);
+			}
+			else if (enemy.direction.y < -0.6) //heading up
+			{
+				RotateSprite(tempTexture, 0);
+			}
 		}
-		else
+		else if (enemy.behaviour == EB_PURSUE)
 		{
-			tempTexture = textures[1];
+			//get the angle to rotate the enemy at			
+			tempTexture = textures[2];
+			Vector2 angle = enemy.Pos() - player->Pos();
+			RotateSprite(tempTexture, angle.GetAngle()+ (3.14f * 1.5f));			
 		}
 
 
-		bool flip = false;
-		//which way is the enemy heading? 
 		
-		if (enemy.direction.x > 0.6) //heading right
-		{
-			RotateSprite(tempTexture, (3.14 / 2));
-			flip = true;
-		}
-		else if (enemy.direction.x < -0.6) //heading left
-		{
-			RotateSprite(tempTexture, (3.14 / 2) * 3);
-		}
-		else if (enemy.direction.y > 0.6) //heading down
-		{
-			RotateSprite(tempTexture, (3.14 / 2) * 2);
-		}
-		else if (enemy.direction.y < -0.6) //heading up
-		{
-			RotateSprite(tempTexture, 0);
-		}
+		
 
 		//draw an enemy
 		MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);

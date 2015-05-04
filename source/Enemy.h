@@ -44,6 +44,7 @@ private:
 	Vector2 direction;
 	float animationTimer;
 	int animSwitch;
+	int currentTerrainCost;
 	TerrainTile* currentTile;
 	EnemyBehaviour behaviour;
 
