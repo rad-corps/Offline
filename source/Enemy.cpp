@@ -4,6 +4,7 @@
 
 #include "Enemy.h"
 #include <iostream>
+#include <cmath> //fabs
 
 using namespace std;
 
@@ -140,22 +141,7 @@ void EnemyList::DrawViewFrustrum(Enemy* enemy_)
 	DrawLine(posX, posY, posX + angle1.x, posY + angle1.y);
 	DrawLine(posX, posY, posX + angle2.x, posY + angle2.y);
 
-	//bool Monster::CanSeePlayer()
-	//{
-	//	//are we within the enemy seeing distance? 
-	//	float distanceToPlayer = (target->Pos() - pos).GetMagnitude();
-	//	if (distanceToPlayer > FileSettings::GetFloat("SWARM_PLAYER_DISTANCE"))
-	//		return false;
 
-	//	//is the player within our cone? 
-	//	Vector2 directionToPlayer = (target->Pos() - pos).GetNormal();
-	//	Vector2 enemyFacing = direction.GetNormal();
-	//	float difference = enemyFacing.AngleBetweenVectors(directionToPlayer);
-	//	if (difference > FileSettings::GetFloat("ENEMY_VIEW_FRUSTRUM"))
-	//		return false;
-
-	//	return true;
-	//}
 
 	float distanceToPlayer = (player->Pos() - enemy_->Pos()).GetMagnitude();
 	Vector2 directionToPlayer = (player->Pos() - enemy_->Pos()).GetNormal();
