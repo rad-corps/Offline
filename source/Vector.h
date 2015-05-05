@@ -70,6 +70,7 @@ public:
 	
 
 	//Angle Helpers
+	void AddAngle(float angle_);
 	void SetAngle(float angle);
 	float GetAngle();
 	float GetAngleYInverse();

@@ -57,6 +57,11 @@ void Vector2::SetAngle(float angle)//angle in Radians (between -pi and pi)
 	this->y = sin(angle) * length;
 }
 
+void Vector2::AddAngle(float angle_)
+{
+	SetAngle(GetAngle() + angle_);
+}
+
 //returns radians (between -pi and pi)
 float Vector2::GetAngle()
 {

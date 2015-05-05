@@ -126,44 +126,87 @@ EnemyList::~EnemyList()
 
 void EnemyList::DrawViewFrustrum(Enemy* enemy_)
 {
-	TerrainTile* prevTile = terrain->TileAtDirection(enemy_->currentTile, enemy_->direction);
-	TerrainTile* playerTile = terrain->TileAtMouseCoords(player->Pos().x, player->Pos().y);
+	//draw lines
+	int posX = enemy_->Pos().x;
+	int posY = enemy_->Pos().y;
+	Vector2 angle = enemy_->direction;
+	angle.SetMagnitude(400);
+	Vector2 angle1 = angle;
+	Vector2 angle2 = angle;
+	angle1.AddAngle(-1 * (PI / 4));
+	angle2.AddAngle(PI / 4);
 
-	for (int dist = 0; dist < 6; ++dist )
+	angle.SetMagnitude(100);
+	DrawLine(posX, posY, posX + angle1.x, posY + angle1.y);
+	DrawLine(posX, posY, posX + angle2.x, posY + angle2.y);
+
+	//bool Monster::CanSeePlayer()
+	//{
+	//	//are we within the enemy seeing distance? 
+	//	float distanceToPlayer = (target->Pos() - pos).GetMagnitude();
+	//	if (distanceToPlayer > FileSettings::GetFloat("SWARM_PLAYER_DISTANCE"))
+	//		return false;
+
+	//	//is the player within our cone? 
+	//	Vector2 directionToPlayer = (target->Pos() - pos).GetNormal();
+	//	Vector2 enemyFacing = direction.GetNormal();
+	//	float difference = enemyFacing.AngleBetweenVectors(directionToPlayer);
+	//	if (difference > FileSettings::GetFloat("ENEMY_VIEW_FRUSTRUM"))
+	//		return false;
+
+	//	return true;
+	//}
+
+	float distanceToPlayer = (player->Pos() - enemy_->Pos()).GetMagnitude();
+	Vector2 directionToPlayer = (player->Pos() - enemy_->Pos()).GetNormal();
+	float difference = fabs(enemy_->direction.AngleBetweenVectors(directionToPlayer));
+	//cout << "angle to player: " << difference << endl;
+
+	if (difference < 0.65f && distanceToPlayer < 300.f)
 	{
-		TerrainTile* nextTile = terrain->TileAtDirection(prevTile, enemy_->direction);
-		prevTile = nextTile;
-
-		//get the tiles 90deg in either direction
-		std::vector<TerrainTile*> fanTiles;
-		for (int width = 0; width < dist; ++width)
-		{
-			TerrainTile* tempTile1 = terrain->TileAtDirection(nextTile, enemy_->direction.Rotate90(true), width + 1);
-			TerrainTile* tempTile2 = terrain->TileAtDirection(nextTile, enemy_->direction.Rotate90(false), width + 1);
-			fanTiles.push_back(tempTile1);
-			fanTiles.push_back(tempTile2);
-
-			if ( tempTile1 == playerTile || tempTile2 == playerTile)
-			{
-				enemy_->behaviour = EB_PURSUE;
-			}
-		}
-
-		if ( nextTile != nullptr )
-		{
-			MoveSprite(viewTexture, nextTile->Pos().x, nextTile->Pos().y);
-			DrawSprite(viewTexture);
-
-			for ( auto& terrainTile : fanTiles)
-			{
-				if ( terrainTile != nullptr)
-				{
-					MoveSprite(viewTexture, terrainTile->Pos().x, terrainTile->Pos().y);
-					DrawSprite(viewTexture);
-				}
-			}
-		}
+		cout << "CAN SEE PLAYER" << endl;
 	}
+
+
+	////old frustrum
+	//TerrainTile* prevTile = terrain->TileAtDirection(enemy_->currentTile, enemy_->direction);
+	//TerrainTile* playerTile = terrain->TileAtMouseCoords(player->Pos().x, player->Pos().y);
+
+	//for (int dist = 0; dist < 6; ++dist )
+	//{
+	//	TerrainTile* nextTile = terrain->TileAtDirection(prevTile, enemy_->direction);
+	//	prevTile = nextTile;
+
+	//	//get the tiles 90deg in either direction
+	//	std::vector<TerrainTile*> fanTiles;
+	//	for (int width = 0; width < dist; ++width)
+	//	{
+	//		TerrainTile* tempTile1 = terrain->TileAtDirection(nextTile, enemy_->direction.Rotate90(true), width + 1);
+	//		TerrainTile* tempTile2 = terrain->TileAtDirection(nextTile, enemy_->direction.Rotate90(false), width + 1);
+	//		fanTiles.push_back(tempTile1);
+	//		fanTiles.push_back(tempTile2);
+
+	//		if ( tempTile1 == playerTile || tempTile2 == playerTile)
+	//		{
+	//			enemy_->behaviour = EB_PURSUE;
+	//		}
+	//	}
+
+	//	if ( nextTile != nullptr )
+	//	{
+	//		MoveSprite(viewTexture, nextTile->Pos().x, nextTile->Pos().y);
+	//		DrawSprite(viewTexture);
+
+	//		for ( auto& terrainTile : fanTiles)
+	//		{
+	//			if ( terrainTile != nullptr)
+	//			{
+	//				MoveSprite(viewTexture, terrainTile->Pos().x, terrainTile->Pos().y);
+	//				DrawSprite(viewTexture);
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 //EnemyList
@@ -190,28 +233,28 @@ EnemyList::Draw()
 			//which way is the enemy heading? 
 			if (enemy.direction.x > 0.6) //heading right
 			{
-				RotateSprite(tempTexture, (3.14 / 2));
-				flip = true;
+				RotateSprite(tempTexture, 0);
 			}
 			else if (enemy.direction.x < -0.6) //heading left
 			{
-				RotateSprite(tempTexture, (3.14 / 2) * 3);
+				RotateSprite(tempTexture, PI);
 			}
 			else if (enemy.direction.y > 0.6) //heading down
 			{
-				RotateSprite(tempTexture, (3.14 / 2) * 2);
+				RotateSprite(tempTexture, PI / 2);
 			}
 			else if (enemy.direction.y < -0.6) //heading up
 			{
-				RotateSprite(tempTexture, 0);
+				RotateSprite(tempTexture, -(PI / 2));
 			}
 		}
 		else if (enemy.behaviour == EB_PURSUE)
 		{
 			//get the angle to rotate the enemy at			
 			tempTexture = textures[2];
-			Vector2 angle = enemy.Pos() - player->Pos();
-			RotateSprite(tempTexture, angle.GetAngle()+ (3.14f * 1.5f));			
+			enemy.direction = enemy.Pos() - player->Pos();
+			enemy.direction.AddAngle(3.14f);
+			RotateSprite(tempTexture, enemy.direction.GetAngle());
 		}
 
 
