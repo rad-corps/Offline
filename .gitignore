@@ -6,7 +6,9 @@
 *.user
 *.sln.docstates
 
-#mac specific output
+
+#mac and linux specific output
+*.a
 *.out
 *.app
 
