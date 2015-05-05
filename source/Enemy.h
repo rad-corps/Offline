@@ -23,7 +23,7 @@ public:
 	Enemy(Terrain* terrain_);
 	~Enemy();
 
-	void Update(float delta_);
+	void Update(float delta_, Player* player_);
 	void SetPos(int x_, int y_);
 	//void SetTexture(SDL_Texture* texture_);
 	Vector2 Pos();
@@ -39,6 +39,7 @@ private:
 	std::vector<TerrainTile*> goalNodes;
 	int nextGoalNode;
 	std::vector<TerrainTile*> navigationList;
+	std::vector<TerrainTile*> viewableTiles;
 	Terrain* terrain;
 	bool loopPath;
 	Vector2 direction;

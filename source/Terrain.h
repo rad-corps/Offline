@@ -87,6 +87,8 @@ public:
 	virtual void MouseClick(int mouseButton);
 	virtual void MouseDown(int mouseButton);
 
+	int Rows();
+	int Cols();
 private:
 	int Heuristic(TerrainTile* origin_, TerrainTile* dest_);
 	void Draw(TERRAIN_TILE_TYPE type_, int row_, int col_);
@@ -103,5 +105,8 @@ private:
 
 	TERRAIN_TILE_TYPE drawType;
 	//bool findingPath; //do not perform a search while one is in progress. 
+
+	int rows;
+	int cols;
 };
 

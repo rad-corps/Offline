@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include <iostream>
 #include <cmath> //fabs
+#include <algorithm>//std::find
 
 using namespace std;
 
@@ -33,13 +34,47 @@ Vector2 Enemy::Pos()
 //	enemyTexture = texture_;
 //}
 
-void Enemy::Update(float delta_)
+void Enemy::Update(float delta_, Player* player_)
 {
 	animationTimer += delta_;
 	if ( animationTimer > 0.6f)
 	{
 		animationTimer = 0.0f;
 		animSwitch++;
+	}
+
+
+
+	//update viewable tiles
+	viewableTiles.clear();
+	for (int row = 0; row < terrain->Rows(); ++row)
+	{
+		for (int col = 0; col < terrain->Cols(); ++col)
+		{
+			//is tile within viewable distance?????
+			//get the tile pos
+			Vector2 tilePos = terrain->TileAt(row, col)->Pos();
+			Vector2 directionToTile = (tilePos - Pos()).GetNormal();
+			float distanceToTile = (tilePos - Pos()).GetMagnitude();
+			float angleToTile = fabs(direction.AngleBetweenVectors(directionToTile));
+
+			//compare the distance and angle
+			if (distanceToTile < 400.f && angleToTile < 0.65f)
+			{
+				viewableTiles.push_back(terrain->TileAt(row, col));
+			}
+		}
+	}
+
+	//can enemy see player? 
+	TerrainTile* playerTile = terrain->TileAtMouseCoords(player_->Pos().x, player_->Pos().y);
+	if (std::find(viewableTiles.begin(), viewableTiles.end(), playerTile) == viewableTiles.end())
+	{
+		behaviour = EB_PATROL;
+	}
+	else
+	{
+		behaviour = EB_PURSUE;
 	}
 
 
@@ -127,82 +162,27 @@ EnemyList::~EnemyList()
 
 void EnemyList::DrawViewFrustrum(Enemy* enemy_)
 {
-	//draw lines
-	int posX = enemy_->Pos().x;
-	int posY = enemy_->Pos().y;
-	Vector2 angle = enemy_->direction;
-	angle.SetMagnitude(400);
-	Vector2 angle1 = angle;
-	Vector2 angle2 = angle;
-	angle1.AddAngle(-1 * (PI / 4));
-	angle2.AddAngle(PI / 4);
-
-	angle.SetMagnitude(100);
-	DrawLine(posX, posY, posX + angle1.x, posY + angle1.y);
-	DrawLine(posX, posY, posX + angle2.x, posY + angle2.y);
-
-
-
-	float distanceToPlayer = (player->Pos() - enemy_->Pos()).GetMagnitude();
-	Vector2 directionToPlayer = (player->Pos() - enemy_->Pos()).GetNormal();
-	float difference = fabs(enemy_->direction.AngleBetweenVectors(directionToPlayer));
-	//cout << "angle to player: " << difference << endl;
-
-	if (difference < 0.65f && distanceToPlayer < 300.f)
+	//display viewable tiles
+	for (auto & viewableTile : enemy_->viewableTiles)
 	{
-		cout << "CAN SEE PLAYER" << endl;
+		MoveSprite(viewTexture, viewableTile->Pos().x, viewableTile->Pos().y);
+		DrawSprite(viewTexture);
 	}
-
-
-	////old frustrum
-	//TerrainTile* prevTile = terrain->TileAtDirection(enemy_->currentTile, enemy_->direction);
-	//TerrainTile* playerTile = terrain->TileAtMouseCoords(player->Pos().x, player->Pos().y);
-
-	//for (int dist = 0; dist < 6; ++dist )
-	//{
-	//	TerrainTile* nextTile = terrain->TileAtDirection(prevTile, enemy_->direction);
-	//	prevTile = nextTile;
-
-	//	//get the tiles 90deg in either direction
-	//	std::vector<TerrainTile*> fanTiles;
-	//	for (int width = 0; width < dist; ++width)
-	//	{
-	//		TerrainTile* tempTile1 = terrain->TileAtDirection(nextTile, enemy_->direction.Rotate90(true), width + 1);
-	//		TerrainTile* tempTile2 = terrain->TileAtDirection(nextTile, enemy_->direction.Rotate90(false), width + 1);
-	//		fanTiles.push_back(tempTile1);
-	//		fanTiles.push_back(tempTile2);
-
-	//		if ( tempTile1 == playerTile || tempTile2 == playerTile)
-	//		{
-	//			enemy_->behaviour = EB_PURSUE;
-	//		}
-	//	}
-
-	//	if ( nextTile != nullptr )
-	//	{
-	//		MoveSprite(viewTexture, nextTile->Pos().x, nextTile->Pos().y);
-	//		DrawSprite(viewTexture);
-
-	//		for ( auto& terrainTile : fanTiles)
-	//		{
-	//			if ( terrainTile != nullptr)
-	//			{
-	//				MoveSprite(viewTexture, terrainTile->Pos().x, terrainTile->Pos().y);
-	//				DrawSprite(viewTexture);
-	//			}
-	//		}
-	//	}
-	//}
 }
 
 //EnemyList
 void
 EnemyList::Draw()
 {
+	
+
 	bool flip = false;
 	//draw the enemies
 	for (auto& enemy : enemyList)
 	{
+		//draw the enemies view
+		DrawViewFrustrum(&enemy);
+
 		SDL_Texture * tempTexture;
 
 		if (enemy.behaviour == EB_PATROL)
@@ -258,8 +238,7 @@ EnemyList::Draw()
 		//	DrawSprite(currentTileTexture);
 		//}
 
-		//draw the enemies view
-		DrawViewFrustrum(&enemy);
+		
 
 		//draw the nodes
 		for (auto& terrainTile : enemy.goalNodes)
@@ -276,7 +255,7 @@ void EnemyList::Update(float delta_)
 
 	for (auto& enemy : enemyList)
 	{
-		enemy.Update(delta_);
+		enemy.Update(delta_, player);
 	}
 }
 

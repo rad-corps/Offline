@@ -22,7 +22,6 @@ Terrain::Terrain(int w_, int h_)
 	textureWater = CreateSprite("./resources/images/terrain_water.png", TILE_SIZE, TILE_SIZE);
 	textureDoor = CreateSprite("./resources/images/terrain_door.png", TILE_SIZE, TILE_SIZE);
 
-
 	for (int row = 0; row < h_; ++row)
 	{
 		vector<TerrainTile*> v;
@@ -34,6 +33,9 @@ Terrain::Terrain(int w_, int h_)
 		}
 	}
 
+	rows = h_;
+	cols = w_;
+
 	drawType = TREE;
 }
 
@@ -41,6 +43,17 @@ Terrain::~Terrain()
 {
 }
 
+int 
+Terrain::Rows()
+{
+	return rows;
+}
+
+int
+Terrain::Cols()
+{
+	return cols;
+}
 
 void Terrain::KeyStroke(SDL_Keycode key_) 
 {
