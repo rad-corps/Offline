@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\SetupGame.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\GameController.cpp" />
@@ -94,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CONSTS.h" />
+    <ClInclude Include="source\SetupGame.h" />
     <ClInclude Include="source\Enemy.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\GameController.h" />

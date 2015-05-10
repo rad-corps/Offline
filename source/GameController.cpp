@@ -1,6 +1,6 @@
 #include "GameController.h"
 #include "DatabaseManager.h"
-#include <time.h>
+#include "SetupGame.h"
 #include <iostream>
 #include <string>
 #include <iostream>
@@ -14,9 +14,6 @@ using namespace std;
 
 GameController::GameController()
 {
-	//randomize seed
-	srand((unsigned int)time(NULL));
-
 	//instructions
 	cout << "T: Switch To Terrain Editing" << endl;
 	cout << "P: Place Player" << endl;
@@ -24,12 +21,8 @@ GameController::GameController()
 	cout << "Enter: Start Game" << endl;
 	cout << "Escape: Editing Mode" << endl;
 
-	Initialise(SCREEN_W, SCREEN_H, false, "Offline");
-	AddFont("./fonts/feisarv5.fnt");
-
 	state = GS_LEVEL_SETUP;	
 	
-
 	terrain = new Terrain(SCREEN_W / TILE_SIZE, SCREEN_H / TILE_SIZE);
 	player = new Player(terrain);
 	enemyList = new EnemyList(terrain, player);
@@ -38,15 +31,34 @@ GameController::GameController()
 	AddInputListener(terrain);
 }
 
+GameController::GameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_)
+{
+	terrain = terrain_;
+	player = player_;
+	enemyList = enemyList_;
+
+	state = GS_PLAY;
+	AddInputListener(this);
+}
 
 GameController::~GameController()
 {
+	delete terrain;
+	delete player;
+	delete enemyList;
 }
+
+
 
 void GameController::KeyStroke(SDL_Keycode key_)
 {
 	if (state == GS_LEVEL_SETUP)
 	{
+		//save the terrain, player and enemies
+		if (key_ == SDLK_s)
+		{
+			SetupGame::SaveLevel(terrain, player, enemyList);
+		}
 		if (key_ == SDLK_t)
 		{
 			ReplaceInputListener(terrain, 1);

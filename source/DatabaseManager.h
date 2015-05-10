@@ -34,8 +34,8 @@ public:
 	//colNames  - comma seperated string the column names to insert to
 	//values	- comma seperated values to insert
 	//errorMsg	- pointer to errorMsg to fill on error
-	//returns true if no error
-	bool Insert(string dbFile, string table, string colNames, string values, char* errorMsg); 
+	//returns last rowID (-1 if error)
+	int Insert(string dbFile, string table, vector<string> colNames, vector<string> values, char* errorMsg); 
 	
 	//DatabaseManager::Select
 	//table		- the table to select from	

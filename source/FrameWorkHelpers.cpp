@@ -90,3 +90,10 @@ float Lerp(float min, float max, float norm) //num between 0 and 1
 {
 	return (max - min) * norm - min;
 }
+
+std::string ToString(int num_)
+{
+	stringstream strstream;
+	strstream << num_;
+	return strstream.str();
+}

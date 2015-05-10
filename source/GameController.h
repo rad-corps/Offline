@@ -22,6 +22,7 @@ class GameController : public InputListener
 {
 public:
 	GameController();
+	GameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_);
 	~GameController();
 
 	void Run();

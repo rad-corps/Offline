@@ -68,7 +68,7 @@ DatabaseManager::~DatabaseManager(){}
 //values	- comma seperated values to insert
 //errorMsg	- pointer to errorMsg to fill on error
 //returns true if no error
-bool DatabaseManager::Insert(string dbFile, string table, string colNames, string values, char* errorMsg)
+int DatabaseManager::Insert(string dbFile, string table, vector<string> colNames, vector<string> values, char* errorMsg)
 {
 	//reset the score info struct
 	//info = EmptyScoreInfo; 
@@ -76,16 +76,38 @@ bool DatabaseManager::Insert(string dbFile, string table, string colNames, strin
 
 	sqlite3* db = nullptr; //this is the database object
 	sqlite3_open(dbFile.c_str(), &db);
-
-	string sql = "INSERT INTO " + table + 
-		"(" + colNames + ")"
-		" VALUES(" + values + ");";
+	string sql;
+	if (colNames.size() > 0)
+	{
+		sql = "INSERT INTO " + table + "("; 
+		for (int i = 0; i < colNames.size(); ++i)
+		{
+			sql += colNames[i];
+			if (i != colNames.size() - 1)
+				sql += ",";
+		}
+		sql += ") VALUES(";
+		for (int i = 0; i < values.size(); ++i)
+		{
+			sql += values[i];
+			if (i != values.size() - 1)
+				sql += ",";
+		}
+		sql+= ");";
+	}
+	else
+	{
+		sql = "INSERT INTO " + table + " DEFAULT VALUES;";
+	}
+	
 
 	sqlite3_exec(db, sql.c_str(), this->s_Callback, this, &errorMsg);
-
+	int rowID = sqlite3_last_insert_rowid(db);
+	sqlite3_close(db);
 	assert (errorMsg == NULL && "Something went wrong trying to insert a record to database");	
-	return true;
+	return rowID;
 }
+
 	
 //DatabaseManager::Select
 //table		- the table to select from	
