@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\GLText.cpp" />
     <ClCompile Include="source\SetupGame.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
     <ClCompile Include="source\Player.cpp" />
@@ -90,17 +91,20 @@
     <ClCompile Include="source\GLAHGraphics.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\sqlite3.c" />
+    <ClCompile Include="source\UVTranslator.cpp" />
     <ClCompile Include="source\Vector.cpp" />
     <ClCompile Include="source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CONSTS.h" />
+    <ClInclude Include="source\GLText.h" />
     <ClInclude Include="source\SetupGame.h" />
     <ClInclude Include="source\Enemy.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\GameController.h" />
     <ClInclude Include="source\DatabaseManager.h" />
     <ClInclude Include="source\FrameworkHelpers.h" />
+    <ClInclude Include="source\UVTranslator.h" />
     <ClInclude Include="source\Vector.h" />
     <ClInclude Include="source\Terrain.h" />
   </ItemGroup>

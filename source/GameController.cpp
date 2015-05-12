@@ -29,6 +29,9 @@ GameController::GameController()
 
 	AddInputListener(this);
 	AddInputListener(terrain);
+
+	sampleText.SetText("test text");
+	sampleText.SetPos(Vector2(100, 100));
 }
 
 GameController::GameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_)
@@ -130,6 +133,8 @@ void GameController::Run()
 		terrain->Draw();
 		player->Draw();
 		enemyList->Draw();
+		sampleText.Draw();
+
 
 	} while (!FrameworkUpdate());
 }

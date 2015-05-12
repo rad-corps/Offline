@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <map>
 #include <math.h>
+#include <array>
 
 using namespace std::chrono; 
 
@@ -138,27 +139,17 @@ SDL_Texture* CreateSprite	( const char* textureName_,
 
 	//add to the spriteList (map) using the texture_handle as the key
 	spriteList[newTexture] = glahEntity;
+	
+	//set the UV's to max incase they are not set by user
+	std::array<float, 4> tempArray;
+	tempArray[0] = 0;
+	tempArray[1] = 0;
+	tempArray[2] = glahEntity.size.x;
+	tempArray[3] = glahEntity.size.y;
+	SetSpriteUVCoordinates(newTexture, tempArray.data());
 
     return newTexture;
 }
-
-//returns the transform matrix based on the sprite
-//Matrix3x3		
-//CreateSpriteTransformation( unsigned int spriteID_ )
-//{
-//	Matrix3x3 translationMat = Matrix3x3::CreateTranslationMatrix(spriteList[spriteID_].position);
-//	Matrix3x3 rotationMat = Matrix3x3::CreateRotationMatrix(spriteList[spriteID_].rotation);
-//	Matrix3x3 scaleMatrix = Matrix3x3::CreateScaleMatrix(spriteList[spriteID_].scaleX, spriteList[spriteID_].scaleY);
-//	return scaleMatrix * rotationMat * translationMat;
-//}
-
-//modify the scale of the sprite
-//void			
-//ScaleSprite( unsigned int spriteID_, float scalar_ )
-//{
-//	spriteList[spriteID_].scaleX = scalar_;
-//	spriteList[spriteID_].scaleY = scalar_;
-//}
 
 void			
 ScaleSprite( SDL_Texture* sprite_, float scalarX_, float scalarY_ )
@@ -337,8 +328,9 @@ void DrawSprite(SDL_Texture* sprite_, bool xFlip_, float alpha_, SDL_Point* orig
 		
 	float xSize = entity.size.x * entity.scaleX;
 	float ySize = entity.size.y * entity.scaleY;
-	SDL_Rect src = { 0, 0, static_cast<int>(entity.size.x), static_cast<int>(entity.size.y)};
-	//SDL_Rect dst = { static_cast<int>(entity.position.x) - xSize * 0.5f, static_cast<int>(entity.position.y) + ySize * 0.5f, static_cast<int>(xSize), static_cast<int>(ySize) };
+	//SDL_Rect src = { 0, 0, static_cast<int>(entity.size.x), static_cast<int>(entity.size.y)};
+	SDL_Rect src = { (int)entity.UV[0], (int)entity.UV[1], (int)entity.UV[2], (int)entity.UV[3] };
+
 	SDL_Rect dst = { static_cast<int>(entity.position.x), static_cast<int>(entity.position.y), static_cast<int>(xSize), static_cast<int>(ySize) };
 
 	//flipping horizontally?
@@ -347,7 +339,9 @@ void DrawSprite(SDL_Texture* sprite_, bool xFlip_, float alpha_, SDL_Point* orig
 	{
 		flip = SDL_FLIP_HORIZONTAL;
 	}
-	SDL_RenderCopyEx( renderer, sprite_, NULL, &dst, entity.rotation * 57.2957795f, origin_, flip );	
+	//SDL_RenderCopyEx( renderer, sprite_, NULL, &dst, entity.rotation * 57.2957795f, origin_, flip );	
+	SDL_RenderCopyEx(renderer, sprite_, &src, &dst, entity.rotation * 57.2957795f, origin_, flip);
+	
 }
 
 //GLAH::DrawSprite
@@ -420,7 +414,7 @@ Vector2			GetGLAHChildCentrePosition	(SDL_Texture* spriteID_)
 
 void SetSpriteUVCoordinates	( SDL_Texture* sprite_, float* UVVec4_ )
 {
-	for ( int i = 0; i < 4; ++i )
+ 	for ( int i = 0; i < 4; ++i )
 	{
 		spriteList[sprite_].UV[i] = UVVec4_[i];
 	}

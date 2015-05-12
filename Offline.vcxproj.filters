@@ -48,6 +48,12 @@
     <ClCompile Include="source\SetupGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\GLText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UVTranslator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\DatabaseManager.h">
@@ -75,6 +81,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\SetupGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GLText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\UVTranslator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
