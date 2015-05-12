@@ -23,6 +23,16 @@ Enemy::Enemy(Terrain* terrain_)
 Enemy::~Enemy()
 {}
 
+void Enemy::AddGoalNode(TerrainTile* goalNode_)
+{
+	goalNodes.push_back(goalNode_);
+}
+
+std::vector<TerrainTile*> Enemy::GetGoalNodes()
+{
+	return goalNodes;
+}
+
 Vector2 Enemy::Pos()
 {
 	return pos;
@@ -158,6 +168,17 @@ EnemyList::EnemyList(Terrain* terrain_, Player * player_)
 }
 EnemyList::~EnemyList()
 {
+}
+
+void EnemyList::AddEnemy(Enemy enemy_)
+{
+	enemyList.push_back(enemy_);
+}
+
+std::vector<Enemy>
+EnemyList::GetEnemyList()
+{
+	return enemyList;
 }
 
 void EnemyList::DrawViewFrustrum(Enemy* enemy_)

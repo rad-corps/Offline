@@ -28,6 +28,10 @@ public:
 	//void SetTexture(SDL_Texture* texture_);
 	Vector2 Pos();
 	void AddNode(TerrainTile* tile_);
+	
+	//SetupGame Interface
+	std::vector<TerrainTile*> GetGoalNodes();
+	void AddGoalNode(TerrainTile* goalNode_);
 
 private:	
 	
@@ -65,6 +69,11 @@ public:
 	virtual void KeyStroke(SDL_Keycode key_);
 	virtual void MouseClick(int mouseButton);
 	virtual void MouseDown(int mouseButton){}
+
+	//interface for SetupGame
+	std::vector<Enemy> GetEnemyList();
+	void AddEnemy(Enemy enemy_);
+
 
 private:
 	void DrawViewFrustrum(Enemy* enemy_);

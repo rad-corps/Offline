@@ -10,7 +10,9 @@
 #include <assert.h>
 #include <cstdlib>
 #include <sstream>
-//#include <iostream>
+#include <iostream>
+
+using namespace std;
 
 int DatabaseManager::s_Callback(void* dmInstance, int numArgs, char **data, char **columnName)
 {	
@@ -104,7 +106,11 @@ int DatabaseManager::Insert(string dbFile, string table, vector<string> colNames
 	sqlite3_exec(db, sql.c_str(), this->s_Callback, this, &errorMsg);
 	int rowID = sqlite3_last_insert_rowid(db);
 	sqlite3_close(db);
-	assert (errorMsg == NULL && "Something went wrong trying to insert a record to database");	
+	if (errorMsg != NULL)
+	{
+		cout << "Database Insert Error, SQL :" << sql << endl;
+		cout << "SQLite Error: " << errorMsg << endl;
+	}
 	return rowID;
 }
 
