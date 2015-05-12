@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "InputListener.h"
 #include "GLText.h"
+#include "ProgramState.h"
 
 enum USER_INPUT_SWITCH
 {
@@ -19,19 +20,21 @@ enum GAME_STATE
 	GS_PLAY
 };
 
-class GameController : public InputListener
+class PSGameController : public InputListener, public ProgramState
 {
 public:
 	//used when in level creation mode
-	GameController();
+	PSGameController();
 
 	//used when in level load mode
-	GameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_);
+	PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_);
 	
 	//destructor
-	~GameController();
+	virtual ~PSGameController();
 
-	void Run();
+	virtual ProgramState* Update(float delta);
+	virtual void Draw();
+
 
 	//InputListener interface requirements
 	void KeyStroke(SDL_Keycode key_);

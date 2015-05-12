@@ -1,4 +1,4 @@
-#include "GameController.h"
+#include "PSGameController.h"
 #include "DatabaseManager.h"
 #include "SetupGame.h"
 #include <iostream>
@@ -12,7 +12,7 @@
 using namespace std;
 
 
-GameController::GameController()
+PSGameController::PSGameController()
 {
 	//instructions
 	cout << "T: Switch To Terrain Editing" << endl;
@@ -34,7 +34,7 @@ GameController::GameController()
 	sampleText.SetPos(Vector2(100, 100));
 }
 
-GameController::GameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_)
+PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_)
 {
 	terrain = terrain_;
 	player = player_;
@@ -45,7 +45,7 @@ GameController::GameController(Player* player_, Terrain* terrain_, EnemyList* en
 	AddInputListener(player);
 }
 
-GameController::~GameController()
+PSGameController::~PSGameController()
 {
 	delete terrain;
 	delete player;
@@ -54,7 +54,7 @@ GameController::~GameController()
 
 
 
-void GameController::KeyStroke(SDL_Keycode key_)
+void PSGameController::KeyStroke(SDL_Keycode key_)
 {
 	if (state == GS_LEVEL_SETUP)
 	{
@@ -111,30 +111,25 @@ void GameController::KeyStroke(SDL_Keycode key_)
 	}
 }
 
-void GameController::MouseClick(int mouseButton)
+void PSGameController::MouseClick(int mouseButton)
 {}
 
-void GameController::Run()
+ProgramState* PSGameController::Update(float delta_)
 {
-	float delta;
-	//SDL_Texture* playerTexture = CreateSprite("./resources/images/player.png", 16, 16);
-	do
+	if (state == GS_PLAY)
 	{
-		delta = GetDeltaTime();
+		enemyList->Update(delta_);
+		player->Update(delta_);
+	}
 
-		//enemy updates
-		if (state == GS_PLAY)
-		{
-			enemyList->Update(delta);
-			player->Update(delta);
-		}
+	return nullptr;
+}
 
-		//draw calls
-		terrain->Draw();
-		player->Draw();
-		enemyList->Draw();
-		sampleText.Draw();
-
-
-	} while (!FrameworkUpdate());
+void PSGameController::Draw()
+{
+	//draw calls
+	terrain->Draw();
+	player->Draw();
+	enemyList->Draw();
+	sampleText.Draw();
 }

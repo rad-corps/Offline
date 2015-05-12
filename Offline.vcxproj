@@ -81,11 +81,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\PSMainMenu.cpp" />
+    <ClCompile Include="source\OuterLoop.cpp" />
     <ClCompile Include="source\GLText.cpp" />
     <ClCompile Include="source\SetupGame.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
     <ClCompile Include="source\Player.cpp" />
-    <ClCompile Include="source\GameController.cpp" />
+    <ClCompile Include="source\PSGameController.cpp" />
     <ClCompile Include="source\DatabaseManager.cpp" />
     <ClCompile Include="source\FrameWorkHelpers.cpp" />
     <ClCompile Include="source\GLAHGraphics.cpp" />
@@ -97,11 +99,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CONSTS.h" />
+    <ClInclude Include="source\PSMainMenu.h" />
+    <ClInclude Include="source\OuterLoop.h" />
+    <ClInclude Include="source\ProgramState.h" />
     <ClInclude Include="source\GLText.h" />
     <ClInclude Include="source\SetupGame.h" />
     <ClInclude Include="source\Enemy.h" />
     <ClInclude Include="source\Player.h" />
-    <ClInclude Include="source\GameController.h" />
+    <ClInclude Include="source\PSGameController.h" />
     <ClInclude Include="source\DatabaseManager.h" />
     <ClInclude Include="source\FrameworkHelpers.h" />
     <ClInclude Include="source\UVTranslator.h" />
