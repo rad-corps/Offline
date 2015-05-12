@@ -27,8 +27,8 @@ PSGameController::PSGameController()
 	player = new Player(terrain);
 	enemyList = new EnemyList(terrain, player);
 
-	sampleText.SetText("test text");
-	sampleText.SetPos(Vector2(100, 100));
+	//sampleText.SetText("test text");
+	//sampleText.SetPos(Vector2(100, 100));
 	initialised = false;
 
 }
@@ -138,5 +138,5 @@ void PSGameController::Draw()
 	terrain->Draw();
 	player->Draw();
 	enemyList->Draw();
-	sampleText.Draw();
+	//sampleText.Draw();
 }

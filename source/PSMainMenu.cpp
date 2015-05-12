@@ -1,5 +1,6 @@
 #include "PSMainMenu.h"
 #include "PSGameController.h"
+#include "PSLevelSelect.h"
 #include <iostream>
 #include "CONSTS.h"
 
@@ -61,7 +62,7 @@ void PSMainMenu::MouseClick(int mouseButton)
 	{
 		cout << "startGameText.Collision" << endl;
 		NullifyInputListeners();
-		newState = new PSGameController();
+		newState = new PSLevelSelect();
 	}
 	if (createLevelText.Collision(mouseX, mouseY))
 	{

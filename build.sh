@@ -6,8 +6,14 @@ g++ -std=c++11 \
 ./source/Vector.cpp \
 ./source/Terrain.cpp \
 ./source/Player.cpp \
-./source/GameController.cpp \
 ./source/Enemy.cpp \
+./source/PSGameController.cpp \
+./source/PSMainMenu.cpp \
+./source/PSLevelSelect.cpp \
+./source/OuterLoop.cpp \
+./source/SetupGame.cpp \
+./source/UVTranslator.cpp \
+./source/GLText.cpp \
 -I./include \
 -lSDL2 \
 -lSDL2_image \
