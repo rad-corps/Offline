@@ -21,6 +21,12 @@ Vector2 Player::Pos()
 	return pos;
 }
 
+void Player::SetStartingPos(int row_, int col_)
+{
+	pos.y = row_ * TILE_SIZE;
+	pos.x = col_ * TILE_SIZE;
+}
+
 void Player::SetPlaying(bool playing_)
 {
 	playing = playing_;

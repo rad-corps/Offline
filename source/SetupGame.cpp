@@ -15,16 +15,39 @@ SetupGame::~SetupGame()
 {
 }
 
-void SetupGame::CreateGameObjects(int levelID_, Terrain* &terrainOut_, Player* &playerOut_, EnemyList* &enemyListOut_)
+void SetupGame::LoadGameObjects(int levelID_, Terrain* &terrainOut_, Player* &playerOut_, EnemyList* &enemyListOut_)
 {
-	DatabaseManager dm;
-	char * error = nullptr;
-	string whereStmt = "level_id = " + ToString(levelID_);
-	dm.Select(DB_STR, "tbl_tile", "*", whereStmt, "", error);
-	
+	//create the shell game objects on the heap. then we fill
 	terrainOut_ = new Terrain(SCREEN_W / TILE_SIZE, SCREEN_H / TILE_SIZE);
 	playerOut_ = new Player(terrainOut_);
 	enemyListOut_ = new EnemyList(terrainOut_, playerOut_);
+
+	DatabaseManager dm;
+	char * error = nullptr;
+	
+	//get the tbl_level data
+	string whereStmt = "ID = " + ToString(levelID_);
+	dm.Select(DB_STR, "tbl_level", "*", whereStmt, "", error);
+
+	//should only ever be one row
+	if (dm.Rows() != 1)
+	{
+		cout << "something went wrong selecting tbl_level. WHERE = " << whereStmt;
+		return;
+	}
+	else
+	{
+		int playerRow = dm.GetValueInt(0, "player_row");
+		int playerCol = dm.GetValueInt(0, "player_col");
+		playerOut_->SetStartingPos(playerRow, playerCol);
+	}
+
+
+	//get the tbl_tile data
+	whereStmt = "level_id = " + ToString(levelID_);
+	dm.Select(DB_STR, "tbl_tile", "*", whereStmt, "", error);
+	
+
 
 	//get the info out of the db and plonk it into terrainOut_
 	for (int dbRow = 0; dbRow < dm.Rows(); ++dbRow)
@@ -50,9 +73,15 @@ void SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyLi
 	DatabaseManager dm;
 	char * error = nullptr;
 
+	//get player row and col
+	TerrainTile* playerTile = terrain_->TileAtMouseCoords(player_->Pos());
+	string playerCol = ToString(playerTile->col);
+	string playerRow = ToString(playerTile->row);
+	 
 	//insert the level record and retreive the ID
-	vector<string> emptyVec;
-	int levelID = dm.Insert(DB_STR, "tbl_level", emptyVec, emptyVec, error);
+	vector<string> lvlColNames{ "player_row", "player_col" };
+	vector<string> lvlValues{ playerRow, playerCol };
+	int levelID = dm.Insert(DB_STR, "tbl_level", lvlColNames, lvlValues, error);
 	
 	//create all the terrain tiles
 	for (int col = 0; col < terrain_->Cols(); ++col)

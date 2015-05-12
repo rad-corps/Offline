@@ -17,6 +17,7 @@ public:
 	void UserInputGameSetup();
 	void UserInput(Terrain* terrain_);
 	void SetPlaying(bool playing_);
+	void SetStartingPos(int row_, int col_);
 
 	Vector2 Pos();
 

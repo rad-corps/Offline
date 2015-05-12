@@ -39,7 +39,7 @@ int main( int argc, char* argv[] )
 	if (argc > 1)
 	{
 		int levelID = atoi(argv[1]);
-		SetupGame::CreateGameObjects(levelID, terrain, player, enemyList);
+		SetupGame::LoadGameObjects(levelID, terrain, player, enemyList);
 		gc = new GameController(player, terrain, enemyList);
 	}
 	else //straight to create level

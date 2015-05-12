@@ -182,6 +182,13 @@ TerrainTile* Terrain::TileAtMouseCoords(int x_, int y_)
 	return TileAt(y_, x_);
 }
 
+TerrainTile* Terrain::TileAtMouseCoords(Vector2 pos_)
+{
+	int x = pos_.x;
+	int y = pos_.y;
+	return TileAtMouseCoords(x, y);
+}
+
 void Terrain::SetTerrain(std::vector<TerrainTile*> tiles_, TERRAIN_TILE_TYPE type_)
 {
 	for (auto& tile : tiles_)

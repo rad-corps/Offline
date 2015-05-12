@@ -78,7 +78,9 @@ public:
 	void SetTileDrawType(TERRAIN_TILE_TYPE type_);
 	TerrainTile* TileAtDirection(TerrainTile* origin_, Vector2 dir_, int distance_ = 1);
 	TerrainTile* TileAt(int row_, int col_);
+	
 	TerrainTile* TileAtMouseCoords(int x_, int y_);
+	TerrainTile* TileAtMouseCoords(Vector2 pos_);
 	std::vector<TerrainTile*> Edges(TerrainTile* tile_);
 	std::vector<TerrainTile*> ShortestPath(TerrainTile* origin_, TerrainTile* dest_);
 
