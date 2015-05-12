@@ -39,6 +39,7 @@ GameController::GameController(Player* player_, Terrain* terrain_, EnemyList* en
 
 	state = GS_PLAY;
 	AddInputListener(this);
+	AddInputListener(player);
 }
 
 GameController::~GameController()
