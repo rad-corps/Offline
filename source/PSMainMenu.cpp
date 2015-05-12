@@ -1,5 +1,7 @@
 #include "PSMainMenu.h"
+#include "PSGameController.h"
 #include <iostream>
+#include "CONSTS.h"
 
 using namespace std;
 
@@ -7,11 +9,14 @@ using namespace std;
 PSMainMenu::PSMainMenu()
 {
 	startGameText.SetText("Start Game");
-	startGameText.SetPos(Vector2(100,100));
+	startGameText.SetPos(Vector2(SCREEN_W/2, 100));
+	startGameText.SetAlignment(ALIGN_CENTRE);
 	createLevelText.SetText("Create New Level");
-	createLevelText.SetPos(Vector2(100, 200));
+	createLevelText.SetPos(Vector2(SCREEN_W/2, 140));
+	createLevelText.SetAlignment(ALIGN_CENTRE);
 
 	AddInputListener(this);
+	newState = nullptr;
 }
 
 
@@ -22,7 +27,7 @@ PSMainMenu::~PSMainMenu()
 
 ProgramState* PSMainMenu::Update(float delta)
 {
-	return nullptr;
+	return newState;
 }
 
 void PSMainMenu::Draw()
@@ -46,5 +51,26 @@ void PSMainMenu::KeyStroke(SDL_Keycode key_)
 		cout << "enter pressed in menu" << endl;
 	}
 }
-void PSMainMenu::MouseClick(int mouseButton){}
-void PSMainMenu::MouseDown(int mouseButton){}
+void PSMainMenu::MouseClick(int mouseButton)
+{
+	int mouseX, mouseY;
+	GetMouseLocation(mouseX, mouseY);
+
+	//did the mouse intersect a button? 
+	if (startGameText.Collision(mouseX, mouseY))
+	{
+		cout << "startGameText.Collision" << endl;
+		NullifyInputListeners();
+		newState = new PSGameController();
+	}
+	if (createLevelText.Collision(mouseX, mouseY))
+	{
+		cout << "createLevelText.Collision" << endl;
+		NullifyInputListeners();
+		newState = new PSGameController();
+	}
+}
+void PSMainMenu::MouseDown(int mouseButton)
+{
+	//cout << "MouseDown" << endl;
+}

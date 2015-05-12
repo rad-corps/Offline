@@ -42,6 +42,7 @@ public:
 	void MouseDown(int mouseButton_){}
 
 private:
+	void Init();
 	//USER_INPUT_SWITCH inputSwitch;
 	GAME_STATE state;
 	
@@ -50,6 +51,9 @@ private:
 	Player* player;
 	Terrain* terrain;
 	EnemyList* enemyList;
+
+	//can not initialise inputListeners in the constructor as it will have side effects from where the constructor is called. 
+	bool initialised;
 
 };
 

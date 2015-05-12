@@ -98,11 +98,14 @@
     <ClCompile Include="source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CONSTS.h" />
+    <ClInclude Include="source\CONSTS.h" />
+    <ClInclude Include="source\GLAHGraphics.h" />
+    <ClInclude Include="source\InputListener.h" />
     <ClInclude Include="source\PSMainMenu.h" />
     <ClInclude Include="source\OuterLoop.h" />
     <ClInclude Include="source\ProgramState.h" />
     <ClInclude Include="source\GLText.h" />
+    <ClInclude Include="source\Rect.h" />
     <ClInclude Include="source\SetupGame.h" />
     <ClInclude Include="source\Enemy.h" />
     <ClInclude Include="source\Player.h" />

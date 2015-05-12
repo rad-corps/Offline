@@ -80,9 +80,6 @@
     <ClInclude Include="source\Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CONSTS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\SetupGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -102,6 +99,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\PSMainMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Rect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CONSTS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GLAHGraphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\InputListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

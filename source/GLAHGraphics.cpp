@@ -69,7 +69,9 @@ SDL_Window*		GetWindow()
 
 void DrawLine(int xOrigin_, int yOrigin_, int xDest_, int yDest_)
 {
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderDrawLine(renderer, xOrigin_, yOrigin_, xDest_, yDest_);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
 //one at a time. 
@@ -82,6 +84,17 @@ void AddInputListener(InputListener* listener_)
 void ReplaceInputListener(InputListener* inputListener_, int index_)
 {
 	inputListeners[index_] = inputListener_;
+}
+
+void			NullifyInputListeners()
+{
+	for (auto & listener : inputListeners)
+		listener = nullptr;
+}
+
+void			ClearInputListeners()
+{
+	inputListeners.clear();
 }
 
 //unsigned int	GLAHGraphics::CreateSprite	
@@ -247,7 +260,8 @@ bool FrameworkUpdate()
 	{
 		for (auto &listener : inputListeners)
 		{
-			listener->MouseDown(1);
+			if ( listener != nullptr )
+				listener->MouseDown(1);
 		}
 	}
 
@@ -255,7 +269,8 @@ bool FrameworkUpdate()
 	{
 		for (auto &listener : inputListeners)
 		{
-			listener->MouseDown(3);
+			if (listener != nullptr)
+				listener->MouseDown(3);
 		}
 	}
 
@@ -300,7 +315,7 @@ int Initialise(int a_iWidth, int a_iHeight, bool a_bFullscreen, const char* a_pW
 			else
             {
                 //Initialize renderer color
-                SDL_SetRenderDrawColor( renderer, 100, 100, 100, 0xFF );
+                SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
 
                 //Initialize PNG loading
                 int imgFlags = IMG_INIT_PNG;

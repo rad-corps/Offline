@@ -6,7 +6,7 @@
 using namespace std;
 
 GLText::GLText(){
-	alignment = TEXT_ALIGNMENT::ALIGN_LEFT;
+	alignment = TEXT_ALIGNMENT::ALIGN_CENTRE;
 	fontTexture = CreateSprite("./resources/images/courier.png", 16, 16);
 }
 GLText::~GLText(void){}
@@ -15,11 +15,26 @@ void GLText::Update(float delta_){}
 void GLText::SetPos(Vector2 pos_)
 {
 	pos = pos_;
+	
+}
+
+bool GLText::Collision(int x_, int y_)
+{
+	if (collider.Right() < x_
+		|| x_ < collider.Left()
+		|| collider.Bottom() > y_
+		|| collider.Top() < y_)
+		return false;
+	return true;
 }
 
 void GLText::SetAlignment(TEXT_ALIGNMENT alignment_)
 {
 	alignment = alignment_;
+	if (alignment_ != ALIGN_CENTRE)
+	{
+		cout << "GLText::SetAlignment: Only ALIGN_CENTRE is supported" << endl;
+	}
 }
 
 std::string GLText::GetText()
@@ -72,6 +87,14 @@ void GLText::Draw()
 	
 	if ( alignment == TEXT_ALIGNMENT::ALIGN_CENTRE )
 	{
+		Vector2 colliderCentre = pos;
+		colliderCentre.y += 8;
+		colliderCentre.x += 8;
+		collider = Rect(colliderCentre, (uvs.size() * 16) + 16, 16 + 16);
+		DrawLine(collider.Left(), collider.Top(), collider.Right(), collider.Top());
+		DrawLine(collider.Left(), collider.Top(), collider.Left(), collider.Bottom());
+		DrawLine(collider.Left(), collider.Bottom(), collider.Right(), collider.Bottom());
+		DrawLine(collider.Right(), collider.Bottom(), collider.Right(), collider.Top());
 		//use a float to find the middle character because it can be halfway for even numbers
 		float middle_char = (uvs.size() - 1) / 2.f;
 		for ( int i = 0; i < uvs.size(); ++i )

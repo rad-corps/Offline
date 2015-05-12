@@ -15,6 +15,8 @@ using namespace std;
 	//input handling
 void			AddInputListener(InputListener* inputListener_);
 void			ReplaceInputListener(InputListener* inputListener_, int index_);
+void			NullifyInputListeners();
+void			ClearInputListeners();
 
  bool			IsKeyDown( SDL_Keycode a_iKey );
 

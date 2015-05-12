@@ -23,5 +23,6 @@ public:
 private:
 	GLText startGameText;
 	GLText createLevelText;
+	ProgramState* newState;
 };
 

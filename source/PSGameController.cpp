@@ -27,11 +27,10 @@ PSGameController::PSGameController()
 	player = new Player(terrain);
 	enemyList = new EnemyList(terrain, player);
 
-	AddInputListener(this);
-	AddInputListener(terrain);
-
 	sampleText.SetText("test text");
 	sampleText.SetPos(Vector2(100, 100));
+	initialised = false;
+
 }
 
 PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_)
@@ -39,10 +38,8 @@ PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList
 	terrain = terrain_;
 	player = player_;
 	enemyList = enemyList_;
-
 	state = GS_PLAY;
-	AddInputListener(this);
-	AddInputListener(player);
+	initialised = false;
 }
 
 PSGameController::~PSGameController()
@@ -52,7 +49,14 @@ PSGameController::~PSGameController()
 	delete enemyList;
 }
 
-
+void
+PSGameController::Init()
+{
+	ClearInputListeners();
+	AddInputListener(this);
+	AddInputListener(player);
+	initialised = true;
+}
 
 void PSGameController::KeyStroke(SDL_Keycode key_)
 {
@@ -116,6 +120,9 @@ void PSGameController::MouseClick(int mouseButton)
 
 ProgramState* PSGameController::Update(float delta_)
 {
+	if (!initialised)
+		Init();
+
 	if (state == GS_PLAY)
 	{
 		enemyList->Update(delta_);
