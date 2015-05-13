@@ -94,7 +94,18 @@ void			NullifyInputListeners()
 
 void			ClearInputListeners()
 {
-	inputListeners.clear();
+	bool clearListeners = true;
+
+	for ( auto& listener : inputListeners)
+	{
+		if (listener != nullptr)
+		{
+			clearListeners = false;
+		}
+	}
+
+	if (clearListeners)
+		inputListeners.clear();
 }
 
 //unsigned int	GLAHGraphics::CreateSprite	
@@ -273,6 +284,8 @@ bool FrameworkUpdate()
 				listener->MouseDown(3);
 		}
 	}
+
+	ClearInputListeners();
 
     //Clear screen
     SDL_RenderClear( renderer );
