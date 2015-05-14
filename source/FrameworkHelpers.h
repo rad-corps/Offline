@@ -24,3 +24,4 @@ float Lerp(float startRange, float endRange, float num); //num between 0 and 1
 void DrawRightAlignedString(const char* text, int xPos, int yPos, int numChars, float fSize, SColour colour);
 
 std::string ToString(int num_);
+int ToInt(std::string num_);

@@ -92,7 +92,7 @@ void SetupGame::DBTest1()
 	dm.Insert(DB_STR, "tbl_level", emptyVec, emptyVec, error);
 }
 
-void SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyList_)
+bool SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyList_)
 {
 	//setup the DatabaseManager object
 	DatabaseManager dm;
@@ -107,6 +107,13 @@ void SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyLi
 	vector<string> lvlColNames{ "player_row", "player_col" };
 	vector<string> lvlValues{ playerRow, playerCol };
 	int levelID = dm.Insert(DB_STR, "tbl_level", lvlColNames, lvlValues, error);
+
+	if (error != nullptr)
+	{
+		cout << "could not save level, bailing" << endl;
+		return false;
+	}
+
 	string levelIDStr = ToString(levelID);
 	//create all the terrain tiles
 	for (int col = 0; col < terrain_->Cols(); ++col)
@@ -160,6 +167,7 @@ void SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyLi
 			dm.Insert(DB_STR, "tbl_enemy_node", enemyNodeCols, enemyNodeValues, error);
 		}
 	}
+	return true;
 }
 
 

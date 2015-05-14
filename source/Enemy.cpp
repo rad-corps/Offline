@@ -109,7 +109,7 @@ void Enemy::Update(float delta_, Player* player_)
 				//pos = nextNode->Pos();
 				currentTile = *(navigationList.end() - 1);
 				navigationList.erase(navigationList.end() - 1);
-				cout << "next tile: " << currentTile << endl;
+				//cout << "next tile: " << currentTile << endl;
 			}
 			else
 			{
@@ -138,7 +138,7 @@ void Enemy::Update(float delta_, Player* player_)
 	}//if (behaviour == EB_PATROL)
 	else if ( behaviour == EB_PURSUE)
 	{
-		std::cout << "behaviour == EB_PURSUE" << std::endl;
+		//std::cout << "behaviour == EB_PURSUE" << std::endl;
 	}
 }
 

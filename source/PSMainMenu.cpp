@@ -59,15 +59,11 @@ void PSMainMenu::MouseClick(int mouseButton)
 
 	//did the mouse intersect a button? 
 	if (startGameText.Collision(mouseX, mouseY))
-	{
-		cout << "startGameText.Collision" << endl;
-		NullifyInputListeners();
+	{		
 		newState = new PSLevelSelect();
 	}
 	if (createLevelText.Collision(mouseX, mouseY))
 	{
-		cout << "createLevelText.Collision" << endl;
-		NullifyInputListeners();
 		newState = new PSGameController();
 	}
 }

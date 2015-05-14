@@ -28,6 +28,7 @@ public:
 
 	//used when in level load mode
 	PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_);
+	PSGameController(int levelID_);
 	
 	//destructor
 	virtual ~PSGameController();

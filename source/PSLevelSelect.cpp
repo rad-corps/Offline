@@ -6,11 +6,13 @@
 #include "CONSTS.h"
 #include <string>
 #include "FrameworkHelpers.h"
+#include "PSGameController.h"
 
 using namespace std;
 
 PSLevelSelect::PSLevelSelect()
 {
+	newState = nullptr;
 	initialised = false;
  // 	testText.SetText("Level Select");
 	// testText.SetPos(Vector2(100,100));
@@ -46,7 +48,7 @@ PSLevelSelect::Update(float delta_)
 		initialised = true;
 	}
 
-	return nullptr;
+	return newState;
 }
 
 void
@@ -71,7 +73,7 @@ void PSLevelSelect::MouseClick(int mouseButton)//SDL_BUTTON_LEFT 1, SDL_BUTTON_M
 	{
 		if ( text.Collision(mouseX, mouseY) )
 		{
-			cout << "Clicked: " << text.GetText() << endl;
+			newState = new PSGameController(ToInt(text.GetText()));
 		}
 	}
 }

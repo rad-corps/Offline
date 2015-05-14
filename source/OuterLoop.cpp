@@ -57,6 +57,7 @@ void OuterLoop::Go()
 		//change state if required
 		if (newState != nullptr)
 		{
+			NullifyInputListeners();
 			delete currentProgramState;
 			currentProgramState = newState;
 		}

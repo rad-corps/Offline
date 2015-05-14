@@ -97,3 +97,8 @@ std::string ToString(int num_)
 	strstream << num_;
 	return strstream.str();
 }
+
+int ToInt(std::string num_)
+{
+	return atoi(num_.c_str());
+}

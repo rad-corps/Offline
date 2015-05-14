@@ -42,6 +42,13 @@ PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList
 	initialised = false;
 }
 
+PSGameController::PSGameController(int levelID_)
+{
+	SetupGame::LoadGameObjects(levelID_, terrain, player, enemyList);
+	state = GS_PLAY;
+	initialised = false;
+}
+
 PSGameController::~PSGameController()
 {
 	delete terrain;
@@ -65,7 +72,16 @@ void PSGameController::KeyStroke(SDL_Keycode key_)
 		//save the terrain, player and enemies
 		if (key_ == SDLK_s)
 		{
-			SetupGame::SaveLevel(terrain, player, enemyList);
+			cout << "Saving Level" << endl;
+			if (SetupGame::SaveLevel(terrain, player, enemyList))
+			{
+				cout << "Level save successful" << endl;
+			}
+			else
+			{
+				cout << "Something went wrong saving level" << endl;
+			}
+
 		}
 		if (key_ == SDLK_t)
 		{

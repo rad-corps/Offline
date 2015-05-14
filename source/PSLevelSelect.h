@@ -25,5 +25,6 @@ private:
 	GLText testText;
 	std::vector<GLText> levelText;
 	bool initialised;
+	ProgramState* newState;
 
 };
