@@ -92,7 +92,7 @@ void SetupGame::DBTest1()
 	dm.Insert(DB_STR, "tbl_level", emptyVec, emptyVec, error);
 }
 
-bool SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyList_)
+bool SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyList_, std::string levelName_)
 {
 	//setup the DatabaseManager object
 	DatabaseManager dm;
@@ -104,8 +104,8 @@ bool SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyLi
 	string playerRow = ToString(playerTile->row);
 	 
 	//insert the level record and retreive the ID
-	vector<string> lvlColNames{ "player_row", "player_col" };
-	vector<string> lvlValues{ playerRow, playerCol };
+	vector<string> lvlColNames{ "player_row", "player_col", "level_name" };
+	vector<string> lvlValues{ playerRow, playerCol, "'" + levelName_ + "'" };
 	int levelID = dm.Insert(DB_STR, "tbl_level", lvlColNames, lvlValues, error);
 
 	if (error != nullptr)

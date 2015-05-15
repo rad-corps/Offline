@@ -30,7 +30,9 @@ PSGameController::PSGameController()
 	//sampleText.SetText("test text");
 	//sampleText.SetPos(Vector2(100, 100));
 	initialised = false;
-
+	promptText.SetPos(Vector2(50, 50));
+	promptText.SetAlignment(ALIGN_LEFT);
+	enteringLevelName = false;
 }
 
 PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_)
@@ -67,21 +69,42 @@ PSGameController::Init()
 
 void PSGameController::KeyStroke(SDL_Keycode key_)
 {
+
+
 	if (state == GS_LEVEL_SETUP)
 	{
-		//save the terrain, player and enemies
-		if (key_ == SDLK_s)
+		if (enteringLevelName)
 		{
-			cout << "Saving Level" << endl;
-			if (SetupGame::SaveLevel(terrain, player, enemyList))
+			if (key_ == SDLK_RETURN)
 			{
-				cout << "Level save successful" << endl;
+				enteringLevelName = false;
+				cout << "Saving Level" << endl;
+				if (SetupGame::SaveLevel(terrain, player, enemyList, levelName))
+				{
+					cout << "Level save successful" << endl;
+				}
+				else
+				{
+					cout << "Something went wrong saving level" << endl;
+				}
 			}
 			else
 			{
-				cout << "Something went wrong saving level" << endl;
-			}
+				//capture keypresses
+				levelName += char(key_);
+				cout << levelName << endl;
 
+				promptText.SetText("Enter Level Name: " + levelName);
+			}
+			return;
+		}
+		
+
+		//save the terrain, player and enemies
+		if (key_ == SDLK_s)
+		{
+			promptText.SetText("Enter Level Name: ");
+			enteringLevelName = true;
 		}
 		if (key_ == SDLK_t)
 		{
@@ -155,4 +178,5 @@ void PSGameController::Draw()
 	player->Draw();
 	enemyList->Draw();
 	//sampleText.Draw();
+	promptText.Draw();
 }

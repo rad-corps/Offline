@@ -30,7 +30,8 @@ PSLevelSelect::PSLevelSelect()
 		GLText tempText;
 		tempText.SetPos(Vector2(SCREEN_W/2, yPos));
 		yPos += 50;
-		tempText.SetText(dm.GetValueString(i, "ID"));
+		tempText.SetText(dm.GetValueString(i, "level_name"));
+		tempText.SetData(dm.GetValueString(i, "ID"));
 		levelText.push_back(tempText);
 	}
 
@@ -73,7 +74,7 @@ void PSLevelSelect::MouseClick(int mouseButton)//SDL_BUTTON_LEFT 1, SDL_BUTTON_M
 	{
 		if ( text.Collision(mouseX, mouseY) )
 		{
-			newState = new PSGameController(ToInt(text.GetText()));
+			newState = new PSGameController(ToInt(text.GetData()));
 		}
 	}
 }

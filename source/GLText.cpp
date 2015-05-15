@@ -37,10 +37,22 @@ void GLText::SetAlignment(TEXT_ALIGNMENT alignment_)
 	}
 }
 
+void GLText::SetData(std::string text_)
+{
+	data = text_;
+}
+
 std::string GLText::GetText()
 {
 	return text;
 }
+
+std::string GLText::GetData()
+{
+	return data;
+}
+
+
 
 void GLText::SetText(string text_)
 {

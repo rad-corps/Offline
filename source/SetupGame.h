@@ -15,7 +15,7 @@ public:
 	//pass nullptrs to this function and they will be created ready for use by the GameController
 	static void LoadGameObjects(int levelID_, Terrain* &terrainOut_, Player* &playerOut_, EnemyList* &enemyListOut_);
 	static void DBTest1();
-	static bool SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyList_);
+	static bool SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyList_, std::string levelName_);
 
 };
 

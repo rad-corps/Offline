@@ -48,6 +48,10 @@ private:
 	GAME_STATE state;
 	
 	GLText sampleText;
+	GLText promptText;
+
+	bool enteringLevelName;
+	std::string levelName;
 	
 	Player* player;
 	Terrain* terrain;
