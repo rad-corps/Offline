@@ -85,6 +85,10 @@ void GLText::SetText(string text_)
 
 void GLText::Draw()
 {
+	//bail if no text
+	if (text.length() < 1)
+		return;
+
 	//for each std::array in uvs
 
 	if ( alignment == TEXT_ALIGNMENT::ALIGN_LEFT )

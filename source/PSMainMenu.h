@@ -21,8 +21,11 @@ public:
 	virtual void MouseDown(int mouseButton);
 
 private:
+	void Init();
 	GLText startGameText;
 	GLText createLevelText;
 	ProgramState* newState;
+
+	bool initialised;
 };
 

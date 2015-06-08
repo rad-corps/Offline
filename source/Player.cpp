@@ -91,7 +91,7 @@ void Player::Draw()
 	DrawSprite(playerTexture);
 }
 
-void Player::Update(float delta_)
+PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_)
 {
 	////while the navigationList is not empty. 
 	//if (!navigationList.empty())
@@ -115,6 +115,11 @@ void Player::Update(float delta_)
 	//	}
 	//}
 
+	if (terrain->TileAtMouseCoords(pos) == terrain->TileAtMouseCoords(goal_->Pos()))
+	{
+		return PUS_WON;
+	}
+
 	if (IsKeyDown(SDLK_UP) || IsKeyDown(SDLK_w))
 	{		
 		pos.y -= 100 * delta_;
@@ -131,4 +136,5 @@ void Player::Update(float delta_)
 	{
 		pos.x -= 100 * delta_;
 	}
+	return PUS_NORMAL;
 }

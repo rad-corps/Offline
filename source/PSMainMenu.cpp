@@ -15,9 +15,9 @@ PSMainMenu::PSMainMenu()
 	createLevelText.SetText("Create New Level");
 	createLevelText.SetPos(Vector2(SCREEN_W/2, 140));
 	createLevelText.SetAlignment(ALIGN_CENTRE);
-
-	AddInputListener(this);
+	
 	newState = nullptr;
+	initialised = false;
 }
 
 
@@ -25,9 +25,18 @@ PSMainMenu::~PSMainMenu()
 {
 }
 
+void PSMainMenu::Init()
+{
+	AddInputListener(this);	
+	initialised = true;
+}
+
 
 ProgramState* PSMainMenu::Update(float delta)
 {
+	if (!initialised)
+		Init();
+
 	return newState;
 }
 

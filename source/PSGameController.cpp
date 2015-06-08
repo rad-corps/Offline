@@ -1,4 +1,5 @@
 #include "PSGameController.h"
+#include "PSMainMenu.h"
 #include "DatabaseManager.h"
 #include "SetupGame.h"
 #include <iostream>
@@ -35,9 +36,15 @@ PSGameController::PSGameController()
 	//sampleText.SetText("test text");
 	//sampleText.SetPos(Vector2(100, 100));
 	initialised = false;
-	promptText.SetPos(Vector2(50, 50));
-	promptText.SetAlignment(ALIGN_LEFT);
+	promptText.SetPos(Vector2(SCREEN_W*0.5, SCREEN_H*0.5));
+	promptText.SetAlignment(ALIGN_CENTRE);
+
+	gameText.SetPos(Vector2(SCREEN_W*0.5, 100));
+	gameText.SetAlignment(ALIGN_CENTRE);
+
 	enteringLevelName = false;
+
+	gameFinishTimer = 0.0f; 
 }
 
 PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_, Goal* goal_)
@@ -50,6 +57,14 @@ PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList
 	state = GS_PLAY;
 	initialised = false;
 	enteringLevelName = false;
+
+	promptText.SetPos(Vector2(SCREEN_W*0.5, SCREEN_H*0.5));
+	promptText.SetAlignment(ALIGN_CENTRE);
+
+	gameText.SetPos(Vector2(SCREEN_W*0.5, 100));
+	gameText.SetAlignment(ALIGN_CENTRE);
+
+	gameFinishTimer = 0.0f;
 }
 
 PSGameController::PSGameController(int levelID_)
@@ -59,6 +74,14 @@ PSGameController::PSGameController(int levelID_)
 	player->SetPlaying(true);
 	initialised = false;
 	enteringLevelName = false;
+
+	promptText.SetPos(Vector2(SCREEN_W*0.5, SCREEN_H*0.5));
+	promptText.SetAlignment(ALIGN_CENTRE);
+
+	gameText.SetPos(Vector2(SCREEN_W*0.5, 100));
+	gameText.SetAlignment(ALIGN_CENTRE);
+
+	gameFinishTimer = 0.0f;
 }
 
 PSGameController::~PSGameController()
@@ -177,10 +200,35 @@ ProgramState* PSGameController::Update(float delta_)
 	if (!initialised)
 		Init();
 
+	//dont update game objects after game completion
+	if (pus == PUS_WON || pus == PUS_DIED)
+	{		
+		gameFinishTimer += delta_;
+		if (gameFinishTimer > 3.0f)
+		{
+			//must cleanup before destructor using this pattern. 
+			NullifyInputListeners();
+			ClearInputListeners();
+
+			return new PSMainMenu();
+		}
+		return nullptr;
+	}
+
+
 	if (state == GS_PLAY)
 	{
 		enemyList->Update(delta_);
-		player->Update(delta_);
+		pus = player->Update(delta_, goal);
+		if (pus == PUS_WON) //player won the game, start a timer, display success screen, back to menu
+		{
+			gameText.SetText("Player Success");			
+		}
+		else if (pus == PUS_DIED) //player lost game, start a timer, display failure, back to menu
+		{
+			gameText.SetText("Player Failure");
+		}
+			
 	}
 	return nullptr;
 }
@@ -194,4 +242,5 @@ void PSGameController::Draw()
 	enemyList->Draw();
 	//sampleText.Draw();
 	promptText.Draw();
+	gameText.Draw();
 }

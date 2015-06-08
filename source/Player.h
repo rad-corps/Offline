@@ -5,6 +5,14 @@
 #include "Terrain.h"
 #include <vector>
 #include "InputListener.h"
+#include "Goal.h"
+
+enum PLAYER_UPDATE_STATE
+{
+	PUS_NORMAL,
+	PUS_DIED,
+	PUS_WON
+};
 
 class Player : public InputListener
 {
@@ -12,7 +20,7 @@ public:
 	Player(Terrain* terrain_);
 	~Player();
 
-	void Update(float delta_);
+	PLAYER_UPDATE_STATE Update(float delta_, Goal* goal_);
 	void Draw();
 	void UserInputGameSetup();
 	void UserInput(Terrain* terrain_);

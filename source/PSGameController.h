@@ -50,17 +50,20 @@ private:
 	
 	GLText sampleText;
 	GLText promptText;
+	GLText gameText;
 
 	bool enteringLevelName;
 	std::string levelName;
 	
 	Goal* goal;
 	Player* player;
+	PLAYER_UPDATE_STATE pus;
 	Terrain* terrain;
 	EnemyList* enemyList;
 
 	//can not initialise inputListeners in the constructor as it will have side effects from where the constructor is called. 
 	bool initialised;
+	float gameFinishTimer;
 
 };
 
