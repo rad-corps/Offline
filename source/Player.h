@@ -37,7 +37,7 @@ public:
 private:
 	Vector2 pos;
 	SDL_Texture* playerTexture;
-	//std::vector<TerrainTile*> navigationList;
+	std::vector<TerrainTile*> navigationList;
 	Terrain* terrain;
 	bool playing;
 };

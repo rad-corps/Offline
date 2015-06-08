@@ -14,6 +14,7 @@ g++ -std=c++11 \
 ./source/SetupGame.cpp \
 ./source/UVTranslator.cpp \
 ./source/GLText.cpp \
+./source/Goal.cpp \
 -I./include \
 -lSDL2 \
 -lSDL2_image \
