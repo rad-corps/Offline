@@ -21,6 +21,7 @@ Terrain::Terrain(int w_, int h_)
 	textureTrees = CreateSprite("./resources/images/terrain_tree.png", TILE_SIZE, TILE_SIZE);
 	textureWater = CreateSprite("./resources/images/terrain_water.png", TILE_SIZE, TILE_SIZE);
 	textureDoor = CreateSprite("./resources/images/terrain_door.png", TILE_SIZE, TILE_SIZE);
+	//textureDoor = CreateSprite("./resources/images/terrain_goal.png", TILE_SIZE, TILE_SIZE);
 
 	for (int row = 0; row < h_; ++row)
 	{
@@ -69,6 +70,8 @@ void Terrain::KeyStroke(SDL_Keycode key_)
 		SetTileDrawType(DOOR);
 	if (key_ == SDLK_5)
 		SetTileDrawType(WATER);
+	//if (key_ == SDLK_6)
+	//	SetTileDrawType(GOAL);
 }
 
 void Terrain::MouseClick(int mouseButton_)
@@ -107,6 +110,7 @@ void Terrain::Draw(TERRAIN_TILE_TYPE type_, int row_, int col_)
 		case BUILDING_FLOOR:	tempPtr = textureFloor;	break;
 		case DOOR:				tempPtr = textureDoor;	break;
 		case WATER:				tempPtr = textureWater;	break;
+		//case GOAL:				tempPtr = textureGoal;	break;
 	}
 
 	if (tempPtr == nullptr)

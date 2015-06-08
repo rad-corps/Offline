@@ -12,6 +12,10 @@
 
 using namespace std;
 
+//profiling functions
+void			StartTimer();
+double			StopTimer(); //returns miliseconds?
+
 	//input handling
 void			AddInputListener(InputListener* inputListener_);
 void			ReplaceInputListener(InputListener* inputListener_, int index_);

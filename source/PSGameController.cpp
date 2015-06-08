@@ -15,16 +15,21 @@ using namespace std;
 PSGameController::PSGameController()
 {
 	//instructions
+	cout << "Editing Mode" << endl;
+	cout << "----------------------------" << endl;
 	cout << "T: Switch To Terrain Editing" << endl;
 	cout << "P: Place Player" << endl;
 	cout << "E: Place Enemy" << endl;
-	cout << "Enter: Start Game" << endl;
-	cout << "Escape: Editing Mode" << endl;
+	cout << "G: Place Goal" << endl;
+	cout << "Enter: Begin Simulation" << endl;
+	//cout << "Escape: Editing Mode" << endl;
 
 	state = GS_LEVEL_SETUP;	
 	
 	terrain = new Terrain(SCREEN_W / TILE_SIZE, SCREEN_H / TILE_SIZE);
 	player = new Player(terrain);
+	goal = new Goal();
+
 	enemyList = new EnemyList(terrain, player);
 
 	//sampleText.SetText("test text");
@@ -35,20 +40,25 @@ PSGameController::PSGameController()
 	enteringLevelName = false;
 }
 
-PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_)
+PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_, Goal* goal_)
 {
 	terrain = terrain_;
 	player = player_;
+	goal = goal_;
 	enemyList = enemyList_;
+	player->SetPlaying(true);
 	state = GS_PLAY;
 	initialised = false;
+	enteringLevelName = false;
 }
 
 PSGameController::PSGameController(int levelID_)
 {
-	SetupGame::LoadGameObjects(levelID_, terrain, player, enemyList);
+	SetupGame::LoadGameObjects(levelID_, terrain, player, enemyList, goal);
 	state = GS_PLAY;
+	player->SetPlaying(true);
 	initialised = false;
+	enteringLevelName = false;
 }
 
 PSGameController::~PSGameController()
@@ -69,8 +79,6 @@ PSGameController::Init()
 
 void PSGameController::KeyStroke(SDL_Keycode key_)
 {
-
-
 	if (state == GS_LEVEL_SETUP)
 	{
 		if (enteringLevelName)
@@ -79,7 +87,7 @@ void PSGameController::KeyStroke(SDL_Keycode key_)
 			{
 				enteringLevelName = false;
 				cout << "Saving Level" << endl;
-				if (SetupGame::SaveLevel(terrain, player, enemyList, levelName))
+				if (SetupGame::SaveLevel(terrain, player, enemyList, levelName, goal))
 				{
 					cout << "Level save successful" << endl;
 				}
@@ -115,12 +123,18 @@ void PSGameController::KeyStroke(SDL_Keycode key_)
 			cout << "3: Select Floor Tile" << endl;
 			cout << "4: Select Door Tile" << endl;
 			cout << "5: Select Water Tile" << endl;
+			//cout << "6: Select Goal Tile" << endl;
 		}
 
 		if (key_ == SDLK_p)
 		{
 			ReplaceInputListener(player, 1);
 			cout << "Left click to place player" << endl;
+		}
+		if (key_ == SDLK_g)
+		{
+			ReplaceInputListener(goal, 1);
+			cout << "Left click to place goal" << endl;
 		}
 		if (key_ == SDLK_e)
 		{
@@ -149,7 +163,8 @@ void PSGameController::KeyStroke(SDL_Keycode key_)
 			cout << "T: Switch To Terrain Editing" << endl;
 			cout << "P: Place Player" << endl;
 			cout << "E: Place Enemy" << endl;
-			cout << "Enter: Start Game" << endl;
+			cout << "G: Place Goal" << endl;
+			cout << "Enter: Begin Simulation" << endl;
 		}
 	}
 }
@@ -167,7 +182,6 @@ ProgramState* PSGameController::Update(float delta_)
 		enemyList->Update(delta_);
 		player->Update(delta_);
 	}
-
 	return nullptr;
 }
 
@@ -175,6 +189,7 @@ void PSGameController::Draw()
 {
 	//draw calls
 	terrain->Draw();
+	goal->Draw();
 	player->Draw();
 	enemyList->Draw();
 	//sampleText.Draw();

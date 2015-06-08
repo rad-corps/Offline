@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "Terrain.h"
 #include "Player.h"
+#include "Goal.h"
 #include "InputListener.h"
 #include "GLText.h"
 #include "ProgramState.h"
@@ -27,7 +28,7 @@ public:
 	PSGameController();
 
 	//used when in level load mode
-	PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_);
+	PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_, Goal* goal_ = nullptr);
 	PSGameController(int levelID_);
 	
 	//destructor
@@ -53,6 +54,7 @@ private:
 	bool enteringLevelName;
 	std::string levelName;
 	
+	Goal* goal;
 	Player* player;
 	Terrain* terrain;
 	EnemyList* enemyList;

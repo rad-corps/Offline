@@ -10,6 +10,7 @@
 #include "GLAHGraphics.h"
 #include "ProgramState.h"
 #include "PSGameController.h"
+#include "GLAHGraphics.h"
 #include "PSMainMenu.h"
 #include <iostream>
 #include "CONSTS.h"
@@ -21,7 +22,7 @@ OuterLoop::OuterLoop(void)
 {
 	Initialise(SCREEN_W, SCREEN_H, false, "Offline");
 
-	cout << "OuterLoop()" << endl;
+	//cout << "OuterLoop()" << endl;
 
 	//mouseX = 0.0;
 	//mouseY = 0.0;
@@ -50,8 +51,16 @@ void OuterLoop::Go()
 		gameTimer += GetDeltaTime();
 		if (gameTimer > updateInterval)
 		{
+
 			gameTimer -= updateInterval;
+			
+			StartTimer();
 			newState = currentProgramState->Update(updateInterval);
+			double time = StopTimer();
+			//cout << "Update took: " << time << endl;
+		}
+		else
+		{
 		}
 
 		//change state if required

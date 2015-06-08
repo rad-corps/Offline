@@ -16,6 +16,7 @@ enum TERRAIN_TILE_TYPE
 	BUILDING_FLOOR,
 	DOOR,
 	WATER
+	//GOAL
 };
 
 
@@ -38,6 +39,7 @@ struct TerrainTile
 			case BUILDING_FLOOR: return 1;
 			case DOOR:			return 9999999;
 			case WATER:			return 5;
+			//case GOAL:			return 1;
 		}
 		return 0;
 	}
@@ -104,6 +106,7 @@ private:
 	SDL_Texture* textureTrees;
 	SDL_Texture* textureWater;
 	SDL_Texture* textureDoor;
+	//SDL_Texture* textureGoal;
 
 	TERRAIN_TILE_TYPE drawType;
 	//bool findingPath; //do not perform a search while one is in progress. 

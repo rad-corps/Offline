@@ -70,6 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -81,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Goal.cpp" />
     <ClCompile Include="source\PSLevelSelect.cpp" />
     <ClCompile Include="source\PSMainMenu.cpp" />
     <ClCompile Include="source\OuterLoop.cpp" />
@@ -99,6 +101,7 @@
     <ClCompile Include="source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Goal.h" />
     <ClInclude Include="source\CONSTS.h" />
     <ClInclude Include="source\GLAHGraphics.h" />
     <ClInclude Include="source\InputListener.h" />

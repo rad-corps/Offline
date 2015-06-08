@@ -32,6 +32,8 @@ std::map<SDL_Texture*, GLAHEntity> spriteList;
 
 std::vector<InputListener*> inputListeners;
 
+
+
 //GLFWwindow* window;
 
 //SDL Specific
@@ -58,6 +60,10 @@ SDL_Renderer* renderer;
 //timers for delta time
 std::chrono::time_point<high_resolution_clock> timeBegin;
 std::chrono::time_point<high_resolution_clock> timeEnd;
+
+//timers for profiling
+std::chrono::time_point<high_resolution_clock> profileBegin;
+std::chrono::time_point<high_resolution_clock> profileEnd;
 
 double delta;
 
@@ -185,6 +191,18 @@ ScaleSprite( SDL_Texture* sprite_, float scalarX_, float scalarY_ )
 void GLAHErroCallback(int errorCode_, const char *errStr_)
 {
 	cout << "GLFW error: " << errStr_ << endl;
+}
+
+void StartTimer()
+{
+	profileBegin = high_resolution_clock::now();
+}
+
+double StopTimer()
+{
+	profileEnd = high_resolution_clock::now();
+	double ret = duration_cast<duration<double> >(profileEnd - profileBegin).count();
+	return ret;
 }
 
 //Calculate Delta time (time in miliseconds since last update)
@@ -368,8 +386,7 @@ void DrawSprite(SDL_Texture* sprite_, bool xFlip_, float alpha_, SDL_Point* orig
 		flip = SDL_FLIP_HORIZONTAL;
 	}
 	//SDL_RenderCopyEx( renderer, sprite_, NULL, &dst, entity.rotation * 57.2957795f, origin_, flip );	
-	SDL_RenderCopyEx(renderer, sprite_, &src, &dst, entity.rotation * 57.2957795f, origin_, flip);
-	
+	SDL_RenderCopyEx(renderer, sprite_, &src, &dst, entity.rotation * 57.2957795f, origin_, flip);	
 }
 
 //GLAH::DrawSprite

@@ -9,7 +9,7 @@ using namespace std;
 
 PSMainMenu::PSMainMenu()
 {
-	startGameText.SetText("Start Game");
+	startGameText.SetText("Begin Simulation");
 	startGameText.SetPos(Vector2(SCREEN_W/2, 100));
 	startGameText.SetAlignment(ALIGN_CENTRE);
 	createLevelText.SetText("Create New Level");

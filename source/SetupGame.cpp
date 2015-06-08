@@ -15,12 +15,13 @@ SetupGame::~SetupGame()
 {
 }
 
-void SetupGame::LoadGameObjects(int levelID_, Terrain* &terrainOut_, Player* &playerOut_, EnemyList* &enemyListOut_)
+void SetupGame::LoadGameObjects(int levelID_, Terrain* &terrainOut_, Player* &playerOut_, EnemyList* &enemyListOut_, Goal* & goalOut_)
 {
 	//create the shell game objects on the heap. then we fill
 	terrainOut_ = new Terrain(SCREEN_W / TILE_SIZE, SCREEN_H / TILE_SIZE);
 	playerOut_ = new Player(terrainOut_);
 	enemyListOut_ = new EnemyList(terrainOut_, playerOut_);
+	goalOut_ = new Goal();
 
 	DatabaseManager dm;
 	char * error = nullptr;
@@ -35,11 +36,15 @@ void SetupGame::LoadGameObjects(int levelID_, Terrain* &terrainOut_, Player* &pl
 		cout << "something went wrong selecting tbl_level. WHERE = " << whereStmt;
 		return;
 	}
-	else
-	{
+	else//set the player and goal positions
+	{		
 		int playerRow = dm.GetValueInt(0, "player_row");
 		int playerCol = dm.GetValueInt(0, "player_col");
 		playerOut_->SetStartingPos(playerRow, playerCol);
+
+		int goalRow = dm.GetValueInt(0, "goal_row");
+		int goalCol = dm.GetValueInt(0, "goal_col");
+		goalOut_->SetStartingPos(goalRow, goalCol);
 	}
 
 
@@ -92,7 +97,7 @@ void SetupGame::DBTest1()
 	dm.Insert(DB_STR, "tbl_level", emptyVec, emptyVec, error);
 }
 
-bool SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyList_, std::string levelName_)
+bool SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyList_, std::string levelName_, Goal* goal_)
 {
 	//setup the DatabaseManager object
 	DatabaseManager dm;
@@ -102,10 +107,15 @@ bool SetupGame::SaveLevel(Terrain* terrain_, Player* player_, EnemyList* enemyLi
 	TerrainTile* playerTile = terrain_->TileAtMouseCoords(player_->Pos());
 	string playerCol = ToString(playerTile->col);
 	string playerRow = ToString(playerTile->row);
+
+	//get goal row and col
+	TerrainTile* goalTile = terrain_->TileAtMouseCoords(goal_->Pos());
+	string goalCol = ToString(goalTile->col);
+	string goalRow = ToString(goalTile->row);
 	 
 	//insert the level record and retreive the ID
-	vector<string> lvlColNames{ "player_row", "player_col", "level_name" };
-	vector<string> lvlValues{ playerRow, playerCol, "'" + levelName_ + "'" };
+	vector<string> lvlColNames{ "player_row", "player_col", "level_name", "goal_row", "goal_col" };
+	vector<string> lvlValues{ playerRow, playerCol, "'" + levelName_ + "'", goalRow, goalCol };
 	int levelID = dm.Insert(DB_STR, "tbl_level", lvlColNames, lvlValues, error);
 
 	if (error != nullptr)
