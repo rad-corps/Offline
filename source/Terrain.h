@@ -26,6 +26,7 @@ struct TerrainTile
 	TERRAIN_TILE_TYPE type;
 	int col, row;
 	int g, f;
+	bool watchedByEnemy;
 	//int cost;
 	TerrainTile* parent;
 

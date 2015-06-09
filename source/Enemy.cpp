@@ -53,7 +53,14 @@ void Enemy::Update(float delta_, Player* player_)
 		animSwitch++;
 	}
 
-
+	//set all tiles to be not watched by enemy
+	for (int row = 0; row < terrain->Rows(); ++row)
+	{
+		for (int col = 0; col < terrain->Cols(); ++col)
+		{
+			terrain->TileAt(row, col).watchedByEnemy = false;
+		}
+	}
 
 	//update viewable tiles
 	viewableTiles.clear();
@@ -71,6 +78,7 @@ void Enemy::Update(float delta_, Player* player_)
 			//compare the distance and angle
 			if (distanceToTile < 400.f && angleToTile < 0.65f)
 			{
+				terrain->TileAt(row, col).watchedByEnemy = true;
 				viewableTiles.push_back(terrain->TileAt(row, col));
 			}
 		}
