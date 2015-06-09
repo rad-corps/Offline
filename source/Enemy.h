@@ -8,6 +8,7 @@
 #include "Terrain.h"
 #include "InputListener.h"
 #include "Player.h"
+#include "BulletListener.h"
 
 enum EnemyBehaviour
 {
@@ -22,6 +23,8 @@ public:
 
 	Enemy(Terrain* terrain_);
 	~Enemy();
+
+	void SetBulletListener(BulletListener* bulletListener_);
 
 	void Update(float delta_, Player* player_);
 	void SetPos(int x_, int y_);
@@ -52,6 +55,8 @@ private:
 	int currentTerrainCost;
 	TerrainTile* currentTile;
 	EnemyBehaviour behaviour;
+	BulletListener* bulletListener;
+	float reloadTime;
 
 };
 
@@ -60,6 +65,8 @@ class EnemyList : public InputListener
 public:
 	EnemyList(Terrain* terrain_, Player* player_);
 	~EnemyList();
+
+	void SetBulletListener(BulletListener* bulletListener_);
 	void Draw();
 	void Update(float delta_);
 	void CreateEnemy(int x_, int y_);
@@ -85,6 +92,7 @@ private:
 	SDL_Texture * viewTexture;
 	Terrain* terrain;
 	SDL_Texture* currentTileTexture;
+	BulletListener* bulletListener;
 
 	Player* player;
 };

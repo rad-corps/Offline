@@ -23,6 +23,11 @@ Enemy::Enemy(Terrain* terrain_)
 Enemy::~Enemy()
 {}
 
+void Enemy::SetBulletListener(BulletListener* bulletListener_)
+{
+	bulletListener = bulletListener_;
+}
+
 void Enemy::AddGoalNode(TerrainTile* goalNode_)
 {
 	goalNodes.push_back(goalNode_);
@@ -38,6 +43,8 @@ Vector2 Enemy::Pos()
 	return pos;
 }
 
+
+
 //
 //void Enemy::SetTexture(SDL_Texture* texture_)
 //{
@@ -51,15 +58,6 @@ void Enemy::Update(float delta_, Player* player_)
 	{
 		animationTimer = 0.0f;
 		animSwitch++;
-	}
-
-	//set all tiles to be not watched by enemy
-	for (int row = 0; row < terrain->Rows(); ++row)
-	{
-		for (int col = 0; col < terrain->Cols(); ++col)
-		{
-			terrain->TileAt(row, col).watchedByEnemy = false;
-		}
 	}
 
 	//update viewable tiles
@@ -78,7 +76,7 @@ void Enemy::Update(float delta_, Player* player_)
 			//compare the distance and angle
 			if (distanceToTile < 400.f && angleToTile < 0.65f)
 			{
-				terrain->TileAt(row, col).watchedByEnemy = true;
+				//terrain->TileAt(row, col).watchedByEnemy = true;
 				viewableTiles.push_back(terrain->TileAt(row, col));
 			}
 		}
@@ -93,6 +91,12 @@ void Enemy::Update(float delta_, Player* player_)
 	else
 	{
 		behaviour = EB_PURSUE;
+		reloadTime += delta_;
+		if ( reloadTime > 1.0f )
+		{
+			bulletListener->ShootBullet(pos, Vector2());
+			reloadTime = 0.0f;
+		}
 	}
 
 
@@ -178,8 +182,14 @@ EnemyList::~EnemyList()
 {
 }
 
+void EnemyList::SetBulletListener(BulletListener* bulletListener_)
+{
+	bulletListener = bulletListener;
+}
+
 void EnemyList::AddEnemy(Enemy enemy_)
 {
+	enemy_.SetBulletListener(bulletListener);
 	enemyList.push_back(enemy_);
 }
 
@@ -203,8 +213,6 @@ void EnemyList::DrawViewFrustrum(Enemy* enemy_)
 void
 EnemyList::Draw()
 {
-	
-
 	bool flip = false;
 	//draw the enemies
 	for (auto& enemy : enemyList)
@@ -251,10 +259,6 @@ EnemyList::Draw()
 			enemy.direction.AddAngle(3.14f);
 			RotateSprite(tempTexture, enemy.direction.GetAngle());
 		}
-
-
-		
-		
 
 		//draw an enemy
 		MoveSprite(tempTexture, enemy.Pos().x, enemy.Pos().y);

@@ -45,6 +45,8 @@ PSGameController::PSGameController()
 	enteringLevelName = false;
 
 	gameFinishTimer = 0.0f; 
+
+	enemyList->SetBulletListener(this);
 }
 
 PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_, Goal* goal_)
@@ -65,6 +67,7 @@ PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList
 	gameText.SetAlignment(ALIGN_CENTRE);
 
 	gameFinishTimer = 0.0f;
+	enemyList->SetBulletListener(this);
 }
 
 PSGameController::PSGameController(int levelID_)
@@ -82,6 +85,7 @@ PSGameController::PSGameController(int levelID_)
 	gameText.SetAlignment(ALIGN_CENTRE);
 
 	gameFinishTimer = 0.0f;
+	enemyList->SetBulletListener(this);
 }
 
 PSGameController::~PSGameController()
@@ -98,6 +102,12 @@ PSGameController::Init()
 	AddInputListener(this);
 	AddInputListener(player);
 	initialised = true;
+}
+
+void PSGameController::ShootBullet(Vector2 pos_, Vector2 dir_)
+{
+	Bullet bullet;
+	bullet.Shoot(pos_, dir_);
 }
 
 void PSGameController::KeyStroke(SDL_Keycode key_)

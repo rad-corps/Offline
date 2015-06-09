@@ -7,6 +7,7 @@
 #include "InputListener.h"
 #include "GLText.h"
 #include "ProgramState.h"
+#include "Bullet.h"
 
 enum USER_INPUT_SWITCH
 {
@@ -21,7 +22,7 @@ enum GAME_STATE
 	GS_PLAY
 };
 
-class PSGameController : public InputListener, public ProgramState
+class PSGameController : public InputListener, public ProgramState, public BulletListener
 {
 public:
 	//used when in level creation mode
@@ -34,8 +35,12 @@ public:
 	//destructor
 	virtual ~PSGameController();
 
+	//ProgramState interface Req
 	virtual ProgramState* Update(float delta);
 	virtual void Draw();
+
+	//BulletListener Interface Req
+	virtual void ShootBullet(Vector2 pos_, Vector2 dir_);
 
 
 	//InputListener interface requirements
