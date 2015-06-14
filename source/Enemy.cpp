@@ -18,6 +18,7 @@ Enemy::Enemy(Terrain* terrain_)
 	behaviour = EB_PATROL;
 	currentTile = nullptr;	
 	currentTerrainCost = 1;
+	reloadTime = 0.0f;
 }
 
 Enemy::~Enemy()
@@ -186,7 +187,7 @@ EnemyList::~EnemyList()
 
 void EnemyList::SetBulletListener(BulletListener* bulletListener_)
 {
-	bulletListener = bulletListener;
+	bulletListener = bulletListener_;
 }
 
 void EnemyList::AddEnemy(Enemy enemy_)
