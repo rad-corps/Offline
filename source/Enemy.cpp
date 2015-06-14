@@ -97,7 +97,7 @@ void Enemy::Update(float delta_, Player* player_)
 		if ( reloadTime > 1.0f )
 		{
 			cout << "bulletListener->Shoot Bullet" << bulletListener << endl;
-			bulletListener->ShootBullet(pos, Vector2());
+			bulletListener->ShootBullet(pos, (player_->Pos() - pos).GetNormal());
 			reloadTime = 0.0f;
 		}
 	}

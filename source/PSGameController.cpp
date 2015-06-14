@@ -108,6 +108,7 @@ void PSGameController::ShootBullet(Vector2 pos_, Vector2 dir_)
 	cout << "PSGameController::ShootBullet" << endl;
 	Bullet bullet;
 	bullet.Shoot(pos_, dir_);
+	bullets.push_back(bullet);
 }
 
 void PSGameController::KeyStroke(SDL_Keycode key_)
@@ -238,6 +239,11 @@ ProgramState* PSGameController::Update(float delta_)
 		{
 			gameText.SetText("Player Failure");
 		}
+
+		for ( auto &bullet : bullets)
+		{
+			bullet.Update(delta_);
+		}
 			
 	}
 	return nullptr;
@@ -253,4 +259,9 @@ void PSGameController::Draw()
 	//sampleText.Draw();
 	promptText.Draw();
 	gameText.Draw();
+
+	for (auto &bullet : bullets )
+	{
+		bullet.Draw();
+	}
 }
