@@ -25,6 +25,7 @@ Enemy::~Enemy()
 
 void Enemy::SetBulletListener(BulletListener* bulletListener_)
 {
+	cout << "SetBulletListener " << bulletListener_ << endl;
 	bulletListener = bulletListener_;
 }
 
@@ -94,6 +95,7 @@ void Enemy::Update(float delta_, Player* player_)
 		reloadTime += delta_;
 		if ( reloadTime > 1.0f )
 		{
+			cout << "bulletListener->Shoot Bullet" << bulletListener << endl;
 			bulletListener->ShootBullet(pos, Vector2());
 			reloadTime = 0.0f;
 		}
@@ -301,7 +303,7 @@ void EnemyList::CreateEnemy(int x_, int y_)
 	enemyList[enemyList.size() - 1].AddNode(terrain->TileAtMouseCoords(x_, y_));
  }
 
- void EnemyList::UserInputGameSetup()
+void EnemyList::UserInputGameSetup()
 {
 
 }
@@ -317,6 +319,7 @@ void EnemyList::CreateEnemy(int x_, int y_)
 		 }
 	 }	 
  }
+
  void EnemyList::MouseClick(int mouseButton)
  {
 	if (mouseButton == 1 && !addingNodes)
@@ -344,6 +347,3 @@ void EnemyList::CreateEnemy(int x_, int y_)
 		enemyList[enemyList.size()-1].AddNode(terrain->TileAtMouseCoords(mouseX, mouseY));
 	}
  }
-
-
-

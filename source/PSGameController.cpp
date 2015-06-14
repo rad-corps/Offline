@@ -72,7 +72,7 @@ PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList
 
 PSGameController::PSGameController(int levelID_)
 {
-	SetupGame::LoadGameObjects(levelID_, terrain, player, enemyList, goal);
+	SetupGame::LoadGameObjects(levelID_, terrain, player, enemyList, goal, this);
 	state = GS_PLAY;
 	player->SetPlaying(true);
 	initialised = false;
@@ -85,7 +85,6 @@ PSGameController::PSGameController(int levelID_)
 	gameText.SetAlignment(ALIGN_CENTRE);
 
 	gameFinishTimer = 0.0f;
-	enemyList->SetBulletListener(this);
 }
 
 PSGameController::~PSGameController()
@@ -106,6 +105,7 @@ PSGameController::Init()
 
 void PSGameController::ShootBullet(Vector2 pos_, Vector2 dir_)
 {
+	cout << "PSGameController::ShootBullet" << endl;
 	Bullet bullet;
 	bullet.Shoot(pos_, dir_);
 }

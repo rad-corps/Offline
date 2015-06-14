@@ -15,12 +15,13 @@ SetupGame::~SetupGame()
 {
 }
 
-void SetupGame::LoadGameObjects(int levelID_, Terrain* &terrainOut_, Player* &playerOut_, EnemyList* &enemyListOut_, Goal* & goalOut_)
+void SetupGame::LoadGameObjects(int levelID_, Terrain* &terrainOut_, Player* &playerOut_, EnemyList* &enemyListOut_, Goal* & goalOut_, BulletListener* bulletListener_)
 {
 	//create the shell game objects on the heap. then we fill
 	terrainOut_ = new Terrain(SCREEN_W / TILE_SIZE, SCREEN_H / TILE_SIZE);
 	playerOut_ = new Player(terrainOut_);
 	enemyListOut_ = new EnemyList(terrainOut_, playerOut_);
+	enemyListOut_->SetBulletListener(bulletListener_);
 	goalOut_ = new Goal();
 
 	DatabaseManager dm;
