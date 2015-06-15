@@ -7,6 +7,7 @@
 #include "InputListener.h"
 #include "Goal.h"
 #include "Bullet.h"
+#include <set>
 
 enum PLAYER_UPDATE_STATE
 {
@@ -15,13 +16,20 @@ enum PLAYER_UPDATE_STATE
 	PUS_WON
 };
 
+enum PLAYER_BEHAVIOUR
+{
+	SEEK,
+	FLEE,
+	WAIT
+};
+
 class Player : public InputListener
 {
 public:
 	Player(Terrain* terrain_);
 	~Player();
 
-	PLAYER_UPDATE_STATE Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_);
+	PLAYER_UPDATE_STATE Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_, std::set<TerrainTile*> unmonitoredTiles_);
 	void Draw();
 	void UserInputGameSetup();
 	void UserInput(Terrain* terrain_);
@@ -44,6 +52,9 @@ private:
 	std::vector<TerrainTile*> navigationList;
 	Terrain* terrain;
 	bool playing;
-	bool inPursuit;
+	bool spotted;
+	float playerWaitTimer;
+
+	PLAYER_BEHAVIOUR behaviour;
 };
 

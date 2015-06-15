@@ -5,6 +5,7 @@
 #include "Vector.h"
 #include "GLAHGraphics.h"
 #include <vector>
+#include <set>
 #include "Terrain.h"
 #include "InputListener.h"
 #include "Player.h"
@@ -65,6 +66,8 @@ class EnemyList : public InputListener
 public:
 	EnemyList(Terrain* terrain_, Player* player_);
 	~EnemyList();
+
+	std::set<TerrainTile*> GetMonitoredTiles();
 
 	void SetBulletListener(BulletListener* bulletListener_);
 	void Draw();

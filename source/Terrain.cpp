@@ -262,7 +262,7 @@ std::vector<TerrainTile*> Terrain::ShortestPath(TerrainTile* origin_, TerrainTil
 		//lowest f score node to go to front (use lambda as we dont want to compare Node pointer addresses) 
 		std::sort(openList.begin(), openList.end(), [](TerrainTile* a, TerrainTile* b){return a->f < b->f; });
 
-		//get the lowest f score node TODO: are we getting the lowest or highest here? test
+		//get the lowest f score node 
 		currentNode = openList[0];
 
 		//remove the node from the open list
@@ -332,4 +332,102 @@ std::vector<TerrainTile*> Terrain::ShortestPath(TerrainTile* origin_, TerrainTil
 	return ret;
 }
 
-//END ASTAR SPECIFIC CODE
+std::vector<TerrainTile*> Terrain::ClosestUnmonitoredTile(TerrainTile* origin_, std::set<TerrainTile*> monitoredTiles_)
+{
+	//initialise variables
+	std::vector<TerrainTile*> ret;
+	std::vector<TerrainTile*> closedList;
+	std::vector<TerrainTile*> openList;
+	TerrainTile* dest = nullptr;
+	TerrainTile* currentNode;
+
+	//set origin to 0 g (cost)
+	origin_->g = 0;
+
+	//perform dijkstras to create a "shortest path tree"
+	openList.push_back(origin_);
+
+	while (!openList.empty())
+	{
+		//lowest f score node to go to front (use lambda as we dont want to compare Node pointer addresses) 
+		std::sort(openList.begin(), openList.end(), [](TerrainTile* a, TerrainTile* b){return a->g < b->g; });
+
+		//get the lowest g score node 
+		currentNode = openList[0];
+
+		//remove the node from the open list
+		openList.erase(openList.begin());
+
+		//add it to the closed (traversed list) 
+		closedList.push_back(currentNode);
+
+		//loop through edges
+		for (TerrainTile* edge : Edges(currentNode))
+		{
+			//if end node is not traversed (does not appear in closed list) 
+			if (std::find(closedList.begin(), closedList.end(), edge) == closedList.end())
+			{
+				//calculate g cost of the edge's end node
+				int tentativeG = currentNode->g + edge->Cost();
+
+				//if the tentative f cost is less than the edge node's current f cost, update its data
+				if (tentativeG < edge->g)
+				{
+					//update scores since we have found a new lower f cost for this node
+					edge->parent = currentNode;
+					edge->g = tentativeG;
+
+					//add it to the open list if it is not there already
+					if (std::find(openList.begin(), openList.end(), edge) == openList.end())
+					{
+						openList.push_back(edge);
+					}
+				}
+			}
+		}
+	}
+
+	//get the lowest cost g node (must not be the origin_ or exist in monitoredTiles_
+	for (auto& tile : closedList)
+	{
+		if (tile != origin_)
+		{
+			//if tile exists in monitoredTiles_ or is the origin, do not process
+			if (std::find(monitoredTiles_.begin(), monitoredTiles_.end(), tile) == monitoredTiles_.end())
+			{
+				if (dest == nullptr)
+				{
+					dest = tile;
+				}
+
+				//set the destination to the lowest tile that is not monitored
+				if (tile->g < dest->g)
+				{
+					dest = tile;
+				}
+			}
+		}
+	}
+
+	currentNode = dest;
+
+	//reconstruct the path	
+	do
+	{
+		ret.push_back(currentNode);
+		currentNode = currentNode->parent;
+	} while (currentNode != nullptr);
+
+	//clean up 
+	for (auto& row : tileArray)
+	{
+		for (auto& cell : row)
+		{
+			cell->Reset();
+		}
+	}
+
+	return ret;
+
+
+}

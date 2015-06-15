@@ -13,7 +13,9 @@ Player::Player(Terrain* terrain_)
 	rect.height = TILE_SIZE;
 	rect.width = TILE_SIZE;
 	rect.centre = Vector2(0, 0);
-	inPursuit = false;
+	spotted = false;
+	behaviour = SEEK;
+	playerWaitTimer = 0.0f;
 }
 
 
@@ -23,7 +25,7 @@ Player::~Player()
 
 void Player::PursuitNotification()
 {
-	inPursuit = true;
+	spotted = true;
 }
 
 Vector2 Player::Pos()
@@ -101,24 +103,54 @@ void Player::Draw()
 	DrawSprite(playerTexture);
 }
 
-PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_)
+PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_, std::set<TerrainTile*> unmonitoredTiles_)
 {
-	//update player on normal path if not in pursuit
-	if (!inPursuit)
+	if (spotted && behaviour != FLEE)
 	{
-		//while the navigationList is not empty. 
-		if (navigationList.empty())
-		{
-			//		//convert click location to tile
-			TerrainTile* dstTile = terrain->TileAtMouseCoords(goal_->Pos());
+		cout << "behaviour == FLEE" << endl;
+		behaviour = FLEE;
+		navigationList.clear();
+		TerrainTile* playerTile = terrain->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
+		//get a new path from terrain to get away from enemy
+		navigationList = terrain->ClosestUnmonitoredTile(playerTile, unmonitoredTiles_);
+		spotted = false;
+	}
 
-			//convert player location to tile
-			TerrainTile* playerTile = terrain->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
+	//update player on normal path 
+	//while the navigationList is not empty. 
+	if (navigationList.empty() && behaviour == SEEK)
+	{
+		//		//convert click location to tile
+		TerrainTile* dstTile = terrain->TileAtMouseCoords(goal_->Pos());
 
-			//		//get the vector of tiles to nav to 
-			navigationList = terrain->ShortestPath(playerTile, dstTile);
+		//convert player location to tile
+		TerrainTile* playerTile = terrain->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
+
+		//		//get the vector of tiles to nav to 
+		navigationList = terrain->ShortestPath(playerTile, dstTile);
+	}
+
+	//wait for x seconds
+	if (navigationList.empty() && behaviour == FLEE)
+	{
+		cout << "behaviour == WAIT" << endl;
+		behaviour = WAIT;
+	}
+
+	if (behaviour == WAIT)
+	{
+		playerWaitTimer += delta_;
+		if (delta_ > 3.0f)
+		{			
+			playerWaitTimer = 0.0f;
+			cout << "behaviour == SEEK" << endl;
+			behaviour = SEEK;
 		}
-		else if (!navigationList.empty())
+	}
+
+	if (!navigationList.empty())
+	{
+		if ( behaviour != WAIT )
 		{
 			//get the next node and move towards it
 			TerrainTile* nextNode = navigationList[navigationList.size() - 1];
@@ -139,6 +171,9 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 			}
 		}
 	}
+	
+
+
 
 	//update player rect
 	rect.centre = pos;

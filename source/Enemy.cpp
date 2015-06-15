@@ -186,6 +186,21 @@ EnemyList::~EnemyList()
 {
 }
 
+std::set<TerrainTile*> EnemyList::GetMonitoredTiles()
+{
+	std::set<TerrainTile*> ret;
+
+	for (auto& enemy : enemyList)
+	{
+		for (auto& tile : enemy.viewableTiles)
+		{
+			//only insert unique elements in a set
+			ret.insert(tile);
+		}
+	}
+	return ret;
+}
+
 void EnemyList::SetBulletListener(BulletListener* bulletListener_)
 {
 	bulletListener = bulletListener_;

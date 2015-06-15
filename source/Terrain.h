@@ -7,6 +7,7 @@
 #include "Vector.h"
 #include "InputListener.h"
 #include "CONSTS.h"
+#include <set>
 
 enum TERRAIN_TILE_TYPE
 {
@@ -61,7 +62,6 @@ struct TerrainTile
 		type = type_; 
 		col = col_;
 		row = row_;		
-		//cost = 1; //TODO different for each unit and TERRAIN_TILE_TYPE
 
 		Reset();
 	}
@@ -85,6 +85,8 @@ public:
 	TerrainTile* TileAtMouseCoords(Vector2 pos_);
 	std::vector<TerrainTile*> Edges(TerrainTile* tile_);
 	std::vector<TerrainTile*> ShortestPath(TerrainTile* origin_, TerrainTile* dest_);
+
+	std::vector<TerrainTile*> ClosestUnmonitoredTile(TerrainTile* origin_, std::set<TerrainTile*> monitoredTiles_);
 
 	//InputListener interface requirement
 	virtual void KeyStroke(SDL_Keycode key_);

@@ -230,7 +230,7 @@ ProgramState* PSGameController::Update(float delta_)
 	if (state == GS_PLAY)
 	{
 		enemyList->Update(delta_);
-		pus = player->Update(delta_, goal, bullets);
+		pus = player->Update(delta_, goal, bullets, enemyList->GetMonitoredTiles());
 		if (pus == PUS_WON) //player won the game, start a timer, display success screen, back to menu
 		{
 			gameText.SetText("Player Success");			
