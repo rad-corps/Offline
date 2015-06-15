@@ -29,7 +29,7 @@ public:
 	Player(Terrain* terrain_);
 	~Player();
 
-	PLAYER_UPDATE_STATE Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_, std::set<TerrainTile*> unmonitoredTiles_);
+	PLAYER_UPDATE_STATE Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_, std::set<TerrainTile*> monitoredTiles_);
 	void Draw();
 	void UserInputGameSetup();
 	void UserInput(Terrain* terrain_);

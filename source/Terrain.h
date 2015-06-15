@@ -84,7 +84,7 @@ public:
 	TerrainTile* TileAtMouseCoords(int x_, int y_);
 	TerrainTile* TileAtMouseCoords(Vector2 pos_);
 	std::vector<TerrainTile*> Edges(TerrainTile* tile_);
-	std::vector<TerrainTile*> ShortestPath(TerrainTile* origin_, TerrainTile* dest_);
+	std::vector<TerrainTile*> ShortestPath(TerrainTile* origin_, TerrainTile* dest_, std::set<TerrainTile*> monitoredTiles_ = std::set<TerrainTile*>());
 
 	std::vector<TerrainTile*> ClosestUnmonitoredTile(TerrainTile* origin_, std::set<TerrainTile*> monitoredTiles_);
 

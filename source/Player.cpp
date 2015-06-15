@@ -103,7 +103,7 @@ void Player::Draw()
 	DrawSprite(playerTexture);
 }
 
-PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_, std::set<TerrainTile*> unmonitoredTiles_)
+PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_, std::set<TerrainTile*> monitoredTiles_)
 {
 	if (spotted && behaviour != FLEE)
 	{
@@ -112,7 +112,7 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 		navigationList.clear();
 		TerrainTile* playerTile = terrain->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
 		//get a new path from terrain to get away from enemy
-		navigationList = terrain->ClosestUnmonitoredTile(playerTile, unmonitoredTiles_);
+		navigationList = terrain->ClosestUnmonitoredTile(playerTile, monitoredTiles_);
 		spotted = false;
 	}
 
@@ -127,7 +127,7 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 		TerrainTile* playerTile = terrain->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
 
 		//		//get the vector of tiles to nav to 
-		navigationList = terrain->ShortestPath(playerTile, dstTile);
+		navigationList = terrain->ShortestPath(playerTile, dstTile, monitoredTiles_);
 	}
 
 	//wait for x seconds
@@ -140,7 +140,7 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 	if (behaviour == WAIT)
 	{
 		playerWaitTimer += delta_;
-		if (delta_ > 3.0f)
+		if (playerWaitTimer > 0.25f)
 		{			
 			playerWaitTimer = 0.0f;
 			cout << "behaviour == SEEK" << endl;

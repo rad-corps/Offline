@@ -245,7 +245,7 @@ std::vector<TerrainTile*> Terrain::Edges(TerrainTile* tile_)
 	return ret;
 }
 
-std::vector<TerrainTile*> Terrain::ShortestPath(TerrainTile* origin_, TerrainTile* dest_)
+std::vector<TerrainTile*> Terrain::ShortestPath(TerrainTile* origin_, TerrainTile* dest_, std::set<TerrainTile*> monitoredTiles_)
 {
 	std::vector<TerrainTile*> ret;	
 	std::vector<TerrainTile*> closedList;
@@ -281,11 +281,16 @@ std::vector<TerrainTile*> Terrain::ShortestPath(TerrainTile* origin_, TerrainTil
 		//loop through edges
 		for (TerrainTile* edge : Edges(currentNode))
 		{
+			//if enemy can see the tile, then monitored cost goes up
+			int monitoredCost = 0;
+			if (std::find(monitoredTiles_.begin(), monitoredTiles_.end(), edge) != monitoredTiles_.end())
+				monitoredCost = 40;
+
 			//if end node is not traversed (does not appear in closed list) 
 			if (std::find(closedList.begin(), closedList.end(), edge) == closedList.end())
 			{
 				//calculate a tentative f cost of the edge's end node
-				int tentativeF = currentNode->g + edge->Cost() + Heuristic(edge, dest_);
+				int tentativeF = currentNode->g + edge->Cost() + Heuristic(edge, dest_) + monitoredCost;
 
 				//if the tentative f cost is less than the edge node's current f cost, update its data
 				if (tentativeF < edge->f)

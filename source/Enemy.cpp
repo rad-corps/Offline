@@ -95,7 +95,7 @@ void Enemy::Update(float delta_, Player* player_)
 		player_->PursuitNotification();
 		behaviour = EB_PURSUE;
 		reloadTime += delta_;
-		if ( reloadTime > 1.0f )
+		if ( reloadTime > 0.4f )
 		{
 			cout << "bulletListener->Shoot Bullet" << bulletListener << endl;
 			bulletListener->ShootBullet(pos, (player_->Pos() - pos).GetNormal());
