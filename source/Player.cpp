@@ -105,6 +105,8 @@ void Player::Draw()
 
 PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_, std::set<TerrainTile*> monitoredTiles_)
 {
+	playerWaitTimer += delta_;
+
 	if (spotted && behaviour != FLEE)
 	{
 		cout << "behaviour == FLEE" << endl;
@@ -139,8 +141,8 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 
 	if (behaviour == WAIT)
 	{
-		playerWaitTimer += delta_;
-		if (playerWaitTimer > 0.25f)
+		
+		if (playerWaitTimer > 0.1f)
 		{			
 			playerWaitTimer = 0.0f;
 			cout << "behaviour == SEEK" << endl;
@@ -157,17 +159,30 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 			Vector2 nextNodePos = nextNode->Pos();
 
 			//if reached pop it off the top
-			if ((pos - nextNode->Pos()).GetMagnitude() < 16.0f)
+			if ((pos - nextNode->Pos()).GetMagnitude() < 1.0f)
 			{
 				pos = nextNode->Pos();
 				navigationList.erase(navigationList.end() - 1);
 			}
 			else
 			{
+				int currentTerrainCost = 1;
+				if ((pos - nextNode->Pos()).GetMagnitude() < TILE_SIZE * 0.5f)
+				{
+					currentTerrainCost = nextNode->Cost();
+				}
+
 				//TODO FIX - .GetNormal does not work on vector with Magnitude of 0
 				Vector2 direction = (nextNodePos - pos).GetNormal();
-				Vector2 velocity = (direction * 200) * delta_;
+				Vector2 velocity = (direction * 75) * delta_;
+				velocity *= 1.f / (float)currentTerrainCost;
 				pos += velocity;
+			}
+
+			if ( playerWaitTimer > 2.0f )
+			{
+				navigationList.clear();
+				playerWaitTimer = 0.0f;
 			}
 		}
 	}

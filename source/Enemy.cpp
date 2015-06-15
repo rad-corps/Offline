@@ -98,7 +98,9 @@ void Enemy::Update(float delta_, Player* player_)
 		if ( reloadTime > 0.4f )
 		{
 			cout << "bulletListener->Shoot Bullet" << bulletListener << endl;
-			bulletListener->ShootBullet(pos, (player_->Pos() - pos).GetNormal());
+			Vector2 bulletVelocity = ((player_->Pos() - pos).GetNormal()) * 30;
+			bulletVelocity *= delta_;
+			bulletListener->ShootBullet(pos, bulletVelocity);
 			reloadTime = 0.0f;
 		}
 	}
@@ -230,7 +232,7 @@ void EnemyList::DrawViewFrustrum(Enemy* enemy_)
 
 //EnemyList
 void
-EnemyList::Draw()
+EnemyList::Draw(bool drawNodes_)
 {
 	bool flip = false;
 	//draw the enemies
@@ -290,13 +292,14 @@ EnemyList::Draw()
 		//	DrawSprite(currentTileTexture);
 		//}
 
-		
-
 		//draw the nodes
-		for (auto& terrainTile : enemy.goalNodes)
+		if ( drawNodes_)
 		{
-			MoveSprite(nodeTexture, terrainTile->Pos().x, terrainTile->Pos().y);
-			DrawSprite(nodeTexture);
+			for (auto& terrainTile : enemy.goalNodes)
+			{
+				MoveSprite(nodeTexture, terrainTile->Pos().x, terrainTile->Pos().y);
+				DrawSprite(nodeTexture);
+			}
 		}
 	}
 }

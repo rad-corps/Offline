@@ -16,6 +16,7 @@ g++ -std=c++11 \
 ./source/GLText.cpp \
 ./source/Goal.cpp \
 ./source/Bullet.cpp \
+./source/Collision.cpp \
 -I./include \
 -lSDL2 \
 -lSDL2_image \

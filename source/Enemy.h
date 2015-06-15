@@ -70,7 +70,7 @@ public:
 	std::set<TerrainTile*> GetMonitoredTiles();
 
 	void SetBulletListener(BulletListener* bulletListener_);
-	void Draw();
+	void Draw(bool drawNodes_ = true);
 	void Update(float delta_);
 	void CreateEnemy(int x_, int y_);
 	void UserInputGameSetup();

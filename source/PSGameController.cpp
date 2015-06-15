@@ -255,7 +255,10 @@ void PSGameController::Draw()
 	terrain->Draw();
 	goal->Draw();
 	player->Draw();
-	enemyList->Draw();
+	if ( state == GS_LEVEL_SETUP )
+		enemyList->Draw(true);
+	else
+		enemyList->Draw(false);
 	//sampleText.Draw();
 	promptText.Draw();
 	gameText.Draw();
