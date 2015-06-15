@@ -12,6 +12,10 @@ Bullet::Bullet()
 	bulletTexture = CreateSprite("./resources/images/bullet.png", BULLET_SIZE, BULLET_SIZE);
 	active = false;
 	timeActive = 0.0f;
+	pos = Vector2(0, 0);
+	rect.centre = pos;
+	rect.height = BULLET_SIZE;
+	rect.width = BULLET_SIZE;
 }
 
 Bullet::~Bullet()
@@ -25,6 +29,11 @@ bool Bullet::Active()
 	return active;
 }
 
+Rect Bullet::GetRect()
+{
+	return rect;
+}
+
 void Bullet::Update(float delta_)
 {
 	//do not update if inactive
@@ -33,6 +42,9 @@ void Bullet::Update(float delta_)
 
 	//move bullet through space
 	pos += magnitude * delta_;
+
+	//update the rect for collision
+	rect.centre = pos;
 
 	//check how long bullet has been active for
 	timeActive += delta_;

@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Collision.cpp" />
     <ClCompile Include="source\Bullet.cpp" />
     <ClCompile Include="source\Goal.cpp" />
     <ClCompile Include="source\PSLevelSelect.cpp" />
@@ -102,6 +103,7 @@
     <ClCompile Include="source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Collision.h" />
     <ClInclude Include="source\Bullet.h" />
     <ClInclude Include="source\BulletListener.h" />
     <ClInclude Include="source\Goal.h" />

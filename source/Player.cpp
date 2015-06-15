@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <iostream>
 #include "CONSTS.h"
+#include "Collision.h"
 
 using namespace std;
 
@@ -9,11 +10,20 @@ Player::Player(Terrain* terrain_)
 	terrain = terrain_;
 	playerTexture = CreateSprite("./resources/images/player.png", TILE_SIZE, TILE_SIZE);
 	playing = false;
+	rect.height = TILE_SIZE;
+	rect.width = TILE_SIZE;
+	rect.centre = Vector2(0, 0);
+	inPursuit = false;
 }
 
 
 Player::~Player()
 {
+}
+
+void Player::PursuitNotification()
+{
+	inPursuit = true;
 }
 
 Vector2 Player::Pos()
@@ -91,38 +101,55 @@ void Player::Draw()
 	DrawSprite(playerTexture);
 }
 
-PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_)
+PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_)
 {
-	//while the navigationList is not empty. 
-	if ( navigationList.empty())
+	//update player on normal path if not in pursuit
+	if (!inPursuit)
 	{
-		//		//convert click location to tile
-		TerrainTile* dstTile = terrain->TileAtMouseCoords(goal_->Pos());
-
-		//convert player location to tile
-		TerrainTile* playerTile = terrain->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
-
-		//		//get the vector of tiles to nav to 
-		navigationList = terrain->ShortestPath(playerTile, dstTile);
-	}
-	else if (!navigationList.empty())
-	{
-		//get the next node and move towards it
-		TerrainTile* nextNode = navigationList[navigationList.size()-1];
-		Vector2 nextNodePos = nextNode->Pos();
-
-		//if reached pop it off the top
-		if ((pos - nextNode->Pos()).GetMagnitude() < 16.0f)
+		//while the navigationList is not empty. 
+		if (navigationList.empty())
 		{
-			pos = nextNode->Pos();
-			navigationList.erase(navigationList.end() - 1);
+			//		//convert click location to tile
+			TerrainTile* dstTile = terrain->TileAtMouseCoords(goal_->Pos());
+
+			//convert player location to tile
+			TerrainTile* playerTile = terrain->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
+
+			//		//get the vector of tiles to nav to 
+			navigationList = terrain->ShortestPath(playerTile, dstTile);
 		}
-		else
+		else if (!navigationList.empty())
 		{
-			//TODO FIX - .GetNormal does not work on vector with Magnitude of 0
-			Vector2 direction = (nextNodePos - pos).GetNormal();
-			Vector2 velocity = (direction * 200) * delta_;
-			pos += velocity;
+			//get the next node and move towards it
+			TerrainTile* nextNode = navigationList[navigationList.size() - 1];
+			Vector2 nextNodePos = nextNode->Pos();
+
+			//if reached pop it off the top
+			if ((pos - nextNode->Pos()).GetMagnitude() < 16.0f)
+			{
+				pos = nextNode->Pos();
+				navigationList.erase(navigationList.end() - 1);
+			}
+			else
+			{
+				//TODO FIX - .GetNormal does not work on vector with Magnitude of 0
+				Vector2 direction = (nextNodePos - pos).GetNormal();
+				Vector2 velocity = (direction * 200) * delta_;
+				pos += velocity;
+			}
+		}
+	}
+
+	//update player rect
+	rect.centre = pos;
+
+	//check if bullet collided with player
+	for (auto& bullet : bullets_)
+	{
+		if (Collision::RectCollision(bullet.GetRect(), rect))
+		{
+			cout << "bullet struck player" << endl;
+			return PUS_DIED;
 		}
 	}
 

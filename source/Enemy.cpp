@@ -92,6 +92,7 @@ void Enemy::Update(float delta_, Player* player_)
 	}
 	else
 	{
+		player_->PursuitNotification();
 		behaviour = EB_PURSUE;
 		reloadTime += delta_;
 		if ( reloadTime > 1.0f )

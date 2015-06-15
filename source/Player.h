@@ -6,6 +6,7 @@
 #include <vector>
 #include "InputListener.h"
 #include "Goal.h"
+#include "Bullet.h"
 
 enum PLAYER_UPDATE_STATE
 {
@@ -20,12 +21,14 @@ public:
 	Player(Terrain* terrain_);
 	~Player();
 
-	PLAYER_UPDATE_STATE Update(float delta_, Goal* goal_);
+	PLAYER_UPDATE_STATE Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_);
 	void Draw();
 	void UserInputGameSetup();
 	void UserInput(Terrain* terrain_);
 	void SetPlaying(bool playing_);
 	void SetStartingPos(int row_, int col_);
+
+	void PursuitNotification();
 
 	Vector2 Pos();
 
@@ -35,10 +38,12 @@ public:
 	virtual void MouseDown(int mouseButton){}
 
 private:
+	Rect rect;
 	Vector2 pos;
 	SDL_Texture* playerTexture;
 	std::vector<TerrainTile*> navigationList;
 	Terrain* terrain;
 	bool playing;
+	bool inPursuit;
 };
 
