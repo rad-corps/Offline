@@ -69,6 +69,7 @@ private:
 
 	//can not initialise inputListeners in the constructor as it will have side effects from where the constructor is called. 
 	bool initialised;
+	bool updatePlayer;
 	float gameFinishTimer;
 
 };

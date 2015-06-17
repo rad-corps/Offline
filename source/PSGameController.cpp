@@ -47,6 +47,7 @@ PSGameController::PSGameController()
 	gameFinishTimer = 0.0f; 
 
 	enemyList->SetBulletListener(this);
+	updatePlayer = true;
 }
 
 PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList* enemyList_, Goal* goal_)
@@ -68,6 +69,7 @@ PSGameController::PSGameController(Player* player_, Terrain* terrain_, EnemyList
 
 	gameFinishTimer = 0.0f;
 	enemyList->SetBulletListener(this);
+	updatePlayer = true;
 }
 
 PSGameController::PSGameController(int levelID_)
@@ -85,6 +87,7 @@ PSGameController::PSGameController(int levelID_)
 	gameText.SetAlignment(ALIGN_CENTRE);
 
 	gameFinishTimer = 0.0f;
+	updatePlayer = true;
 }
 
 PSGameController::~PSGameController()
@@ -200,6 +203,11 @@ void PSGameController::KeyStroke(SDL_Keycode key_)
 			cout << "G: Place Goal" << endl;
 			cout << "Enter: Begin Simulation" << endl;
 		}
+		if (key_ == SDLK_p)
+		{
+			cout << "Player update toggled" << endl;
+			updatePlayer = !updatePlayer;
+		}
 	}
 }
 
@@ -230,7 +238,12 @@ ProgramState* PSGameController::Update(float delta_)
 	if (state == GS_PLAY)
 	{
 		enemyList->Update(delta_);
-		pus = player->Update(delta_, goal, bullets, enemyList->GetMonitoredTiles());
+		
+		if (updatePlayer)
+		{
+			pus = player->Update(delta_, goal, bullets, enemyList->GetMonitoredTiles());
+		}
+
 		if (pus == PUS_WON) //player won the game, start a timer, display success screen, back to menu
 		{
 			gameText.SetText("Player Success");			
