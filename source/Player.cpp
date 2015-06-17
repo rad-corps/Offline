@@ -112,9 +112,7 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 		cout << "behaviour == FLEE" << endl;
 		behaviour = FLEE;
 		navigationList.clear();
-		TerrainTile* playerTile = terrain->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
-		//get a new path from terrain to get away from enemy
-		navigationList = terrain->ClosestUnmonitoredTile(playerTile, monitoredTiles_);
+		
 		spotted = false;
 	}
 
@@ -132,28 +130,41 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 		navigationList = terrain->ShortestPath(playerTile, dstTile, monitoredTiles_);
 	}
 
-	//wait for x seconds
 	if (navigationList.empty() && behaviour == FLEE)
 	{
-		cout << "behaviour == WAIT" << endl;
-		behaviour = WAIT;
-	}
+		TerrainTile* playerTile = terrain->TileAtMouseCoords(static_cast<int>(pos.x), static_cast<int>(pos.y));
+		//get a new path from terrain to get away from enemy
+		navigationList = terrain->ClosestUnmonitoredTile(playerTile, monitoredTiles_);
 
-	if (behaviour == WAIT)
-	{
-		
-		if (playerWaitTimer > 0.1f)
-		{			
-			playerWaitTimer = 0.0f;
-			cout << "behaviour == SEEK" << endl;
+		//is current tile monitored? 
+		if (std::find(monitoredTiles_.begin(), monitoredTiles_.end(), playerTile) == monitoredTiles_.end())
+		{
 			behaviour = SEEK;
 		}
 	}
 
+	////wait for x seconds
+	//if (navigationList.empty() && behaviour == FLEE)
+	//{
+	//	cout << "behaviour == WAIT" << endl;
+	//	behaviour = WAIT;
+	//}
+
+	//if (behaviour == WAIT)
+	//{
+	//	
+	//	if (playerWaitTimer > 0.1f)
+	//	{			
+	//		playerWaitTimer = 0.0f;
+	//		cout << "behaviour == SEEK" << endl;
+	//		behaviour = SEEK;
+	//	}
+	//}
+
 	if (!navigationList.empty())
 	{
-		if ( behaviour != WAIT )
-		{
+		//if ( behaviour != WAIT )
+		//{
 			//get the next node and move towards it
 			TerrainTile* nextNode = navigationList[navigationList.size() - 1];
 			Vector2 nextNodePos = nextNode->Pos();
@@ -163,6 +174,7 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 			{
 				pos = nextNode->Pos();
 				navigationList.erase(navigationList.end() - 1);
+				navigationList.clear();
 			}
 			else
 			{
@@ -179,12 +191,12 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 				pos += velocity;
 			}
 
-			if ( playerWaitTimer > 2.0f )
-			{
-				navigationList.clear();
-				playerWaitTimer = 0.0f;
-			}
-		}
+			//if ( playerWaitTimer > 2.0f )
+			//{
+			//	navigationList.clear();
+			//	playerWaitTimer = 0.0f;
+			//}
+		//}
 	}
 	
 

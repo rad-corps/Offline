@@ -325,6 +325,9 @@ std::vector<TerrainTile*> Terrain::ShortestPath(TerrainTile* origin_, TerrainTil
 		currentNode = currentNode->parent;
 	} while (currentNode != nullptr);
 
+	//erase last parent (starting point)
+	ret.erase(ret.end() - 1);
+
 	//clean up 
 	for (auto& row : tileArray)
 	{
@@ -422,6 +425,9 @@ std::vector<TerrainTile*> Terrain::ClosestUnmonitoredTile(TerrainTile* origin_, 
 		ret.push_back(currentNode);
 		currentNode = currentNode->parent;
 	} while (currentNode != nullptr);
+
+	//erase last parent (starting point)
+	ret.erase(ret.end() - 1);
 
 	//clean up 
 	for (auto& row : tileArray)

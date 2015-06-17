@@ -20,7 +20,7 @@ enum PLAYER_BEHAVIOUR
 {
 	SEEK,
 	FLEE,
-	WAIT
+	//WAIT
 };
 
 class Player : public InputListener
