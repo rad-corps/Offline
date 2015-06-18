@@ -1,3 +1,10 @@
+//////////////////////////////////////////////////////////////////////////
+// Project - Offline
+// All Game Code By Adam Hulbert
+// For AIE Advanced Diploma - Artificial Intelligence for Games Term 2 2015
+// 18/06/2015
+/////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 /**
@@ -9,7 +16,7 @@ struct SColour
 	SColour() {}
 	/// @brief Constructor for an SColour obejct that constructs the SColour object from an unsigned integer value
 	/// @param a_iColor the colour that the SColour will be created to specify
-	SColour(unsigned int a_iColour) {argb.colour = a_iColour;}
+	SColour(unsigned int a_iColour) { argb.colour = a_iColour; }
 	/// @brief Constructor to create an SColor object from four char values RGBA
 	/// @param r unsigned char to represent the red component of an SColour object
 	/// @param g unsigned char to represent the red component of an SColour object

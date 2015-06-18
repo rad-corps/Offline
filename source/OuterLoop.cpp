@@ -1,9 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
-// Offline
-// Game Code By Adam Hulbert
-// For AIE Advanced Diploma - Practice Production Term 4 2014
-// 12/05/2015
-// OuterLoop.cpp
+// Project - Offline
+// All Game Code By Adam Hulbert
+// For AIE Advanced Diploma - Artificial Intelligence for Games Term 2 2015
+// 18/06/2015
 /////////////////////////////////////////////////////////////////////////
 
 #include "OuterLoop.h"

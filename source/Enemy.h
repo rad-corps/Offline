@@ -1,3 +1,10 @@
+//////////////////////////////////////////////////////////////////////////
+// Project - Offline
+// All Game Code By Adam Hulbert
+// For AIE Advanced Diploma - Artificial Intelligence for Games Term 2 2015
+// 18/06/2015
+/////////////////////////////////////////////////////////////////////////
+
 //Enemy.h
 
 #pragma once
@@ -94,7 +101,7 @@ private:
 	SDL_Texture * nodeTexture;
 	SDL_Texture * viewTexture;
 	Terrain* terrain;
-	SDL_Texture* currentTileTexture;
+	//SDL_Texture* currentTileTexture;
 	BulletListener* bulletListener;
 
 	Player* player;

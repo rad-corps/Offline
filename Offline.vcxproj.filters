@@ -140,5 +140,11 @@
     <ClInclude Include="source\Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\GLAHColour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GLAHEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

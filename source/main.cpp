@@ -1,9 +1,10 @@
 //////////////////////////////////////////////////////////////////////////
-// GeoWarp
-// By Adam Hulbert
-// For AIE Advanced Diploma - Game Development Using CPP
-//\
+// Project - Offline
+// All Game Code By Adam Hulbert
+// For AIE Advanced Diploma - Artificial Intelligence for Games Term 2 2015
+// 18/06/2015
 /////////////////////////////////////////////////////////////////////////
+
 #include "GLAHGraphics.h"
 //#include "PSGameController.h"
 #include "SetupGame.h"

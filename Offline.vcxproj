@@ -103,6 +103,8 @@
     <ClCompile Include="source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\GLAHColour.h" />
+    <ClInclude Include="source\GLAHEntity.h" />
     <ClInclude Include="source\Collision.h" />
     <ClInclude Include="source\Bullet.h" />
     <ClInclude Include="source\BulletListener.h" />

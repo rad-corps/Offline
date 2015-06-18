@@ -1,3 +1,10 @@
+//////////////////////////////////////////////////////////////////////////
+// Project - Offline
+// All Game Code By Adam Hulbert
+// For AIE Advanced Diploma - Artificial Intelligence for Games Term 2 2015
+// 18/06/2015
+/////////////////////////////////////////////////////////////////////////
+
 //Enemy.cpp
 
 #include "CONSTS.h"
@@ -180,7 +187,7 @@ EnemyList::EnemyList(Terrain* terrain_, Player * player_)
 	textures.push_back(CreateSprite("./resources/images/enemy_attack.png", TILE_SIZE, TILE_SIZE));
 	nodeTexture = CreateSprite("./resources/images/node.png", TILE_SIZE, TILE_SIZE);
 	viewTexture = CreateSprite("./resources/images/enemyView.png", TILE_SIZE, TILE_SIZE);
-	currentTileTexture = CreateSprite("./resources/images/current_tile.png", TILE_SIZE, TILE_SIZE);
+	//currentTileTexture = CreateSprite("./resources/images/current_tile.png", TILE_SIZE, TILE_SIZE);
 	addingNodes = false;
 	player = player_;
 }

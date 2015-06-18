@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
-// 
-// By Adam Hulbert
-// Vector2.h
-// For AIE Advanced Diploma - Game Math And OpenGL
+// Project - Offline
+// All Game Code By Adam Hulbert
+// For AIE Advanced Diploma - Artificial Intelligence for Games Term 2 2015
+// 18/06/2015
 /////////////////////////////////////////////////////////////////////////
 
 #pragma once
