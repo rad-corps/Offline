@@ -8,7 +8,10 @@ using namespace std;
 Player::Player(Terrain* terrain_)
 {
 	terrain = terrain_;
-	playerTexture = CreateSprite("./resources/images/player.png", TILE_SIZE, TILE_SIZE);
+	//playerTexture = CreateSprite("./resources/images/player.png", TILE_SIZE, TILE_SIZE);
+	playerTexture = nullptr;
+	textures.push_back(CreateSprite("./resources/images/player1.png", TILE_SIZE, TILE_SIZE));
+	textures.push_back(CreateSprite("./resources/images/player2.png", TILE_SIZE, TILE_SIZE));
 	playing = false;
 	rect.height = TILE_SIZE;
 	rect.width = TILE_SIZE;
@@ -16,6 +19,8 @@ Player::Player(Terrain* terrain_)
 	spotted = false;
 	behaviour = SEEK;
 	playerWaitTimer = 0.0f;
+	animationTimer = 0.0f;
+	animSwitch = 0;
 }
 
 
@@ -106,6 +111,26 @@ void Player::Draw()
 PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet> bullets_, std::set<TerrainTile*> monitoredTiles_)
 {
 	playerWaitTimer += delta_;
+	animationTimer += delta_;
+
+	//set animation
+	if (animationTimer > 0.6f)
+	{
+		animationTimer = 0.0f;
+		animSwitch++;
+
+		if (animSwitch % 2 == 0)
+		{
+			playerTexture = textures[0];
+		}
+		else
+		{
+			playerTexture = textures[1];
+		}
+	}
+
+
+
 
 	if (spotted && behaviour != FLEE)
 	{
@@ -189,7 +214,27 @@ PLAYER_UPDATE_STATE Player::Update(float delta_, Goal* goal_, std::vector<Bullet
 				Vector2 velocity = (direction * 75) * delta_;
 				velocity *= 1.f / (float)currentTerrainCost;
 				pos += velocity;
+
+				//rotate animation
+				if (direction.x > 0.6) //heading right
+				{
+					RotateSprite(playerTexture, 0);
+				}
+				else if (direction.x < -0.6) //heading left
+				{
+					RotateSprite(playerTexture, PI);
+				}
+				else if (direction.y > 0.6) //heading down
+				{
+					RotateSprite(playerTexture, PI / 2);
+				}
+				else if (direction.y < -0.6) //heading up
+				{
+					RotateSprite(playerTexture, -(PI / 2));
+				}
 			}
+
+
 
 			//if ( playerWaitTimer > 2.0f )
 			//{

@@ -54,6 +54,9 @@ private:
 	bool playing;
 	bool spotted;
 	float playerWaitTimer;
+	std::vector<SDL_Texture*> textures;
+	float animationTimer;
+	int animSwitch;
 
 	PLAYER_BEHAVIOUR behaviour;
 };
