@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 #include "GLAHGraphics.h"
-#include <SDL2/SDL_image.h>
+#include <SDL_image.h>
 //#include "GLAH/GLAHInput.h"
 //#include "GLAH/Shaders.h"
 #include <iostream>

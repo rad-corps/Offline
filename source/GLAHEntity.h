@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "../source/Vector.h"
 
 struct GLAHEntity

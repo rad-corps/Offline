@@ -9,7 +9,7 @@
 
 #include <map>
 #include <vector>
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "GLAHGraphics.h"
 #include "Vector.h"
 #include "InputListener.h"
